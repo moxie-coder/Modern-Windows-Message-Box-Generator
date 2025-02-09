@@ -60,6 +60,7 @@
             textBoxCustomIconPath = new TextBox();
             buttonBrowseCustomIcon = new Button();
             groupBoxCustomIcon = new GroupBox();
+            buttonTest = new Button();
             gbButtons.SuspendLayout();
             gbIcon.SuspendLayout();
             groupBoxCustomIcon.SuspendLayout();
@@ -426,11 +427,23 @@
             groupBoxCustomIcon.TabStop = false;
             groupBoxCustomIcon.Text = "Custom Icon";
             // 
+            // buttonTest
+            // 
+            buttonTest.Location = new Point(22, 630);
+            buttonTest.Name = "buttonTest";
+            buttonTest.Size = new Size(112, 34);
+            buttonTest.TabIndex = 15;
+            buttonTest.Text = "Test";
+            buttonTest.UseVisualStyleBackColor = true;
+            buttonTest.Visible = false;
+            buttonTest.Click += buttonTest_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1120, 768);
+            Controls.Add(buttonTest);
             Controls.Add(groupBoxCustomIcon);
             Controls.Add(txtExpandedInfo);
             Controls.Add(lblExpandedInfo);
@@ -492,5 +505,6 @@
         private TextBox textBoxCustomIconPath;
         private Button buttonBrowseCustomIcon;
         private GroupBox groupBoxCustomIcon;
+        private Button buttonTest;
     }
 }

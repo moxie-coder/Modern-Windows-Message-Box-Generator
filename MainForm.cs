@@ -11,6 +11,10 @@ namespace Windows_Task_Dialog_Generator
         public MainForm()
         {
             InitializeComponent();
+
+            #if DEBUG
+            buttonTest.Visible = true;
+            #endif
         }
 
         private void btnShowDialog_Click(object sender, EventArgs e)
@@ -253,6 +257,11 @@ namespace Windows_Task_Dialog_Generator
         {
             // Toggle the enabled state of the custom icon path text box and browse button
             groupBoxCustomIcon.Enabled = rbIconCustom.Checked;
+        }
+
+        private void buttonTest_Click(object sender, EventArgs e)
+        {
+            CustomTaskDialog.Test();
         }
     }
 }
