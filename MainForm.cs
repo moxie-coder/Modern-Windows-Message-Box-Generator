@@ -90,7 +90,12 @@ namespace Windows_Task_Dialog_Generator
             else if ( rbIconShieldSuccessGreenBar.Checked ) page.Icon = TaskDialogIcon.ShieldSuccessGreenBar;
             if ( rbIconCustom.Checked )
             {
-                page.Icon = GetCustomIconFromPath();
+                TaskDialogIcon? customIcon = GetCustomIconFromPath();
+
+                if ( customIcon != null )
+                    page.Icon = customIcon;
+                else
+                    return;
             }
 
             // Show the Task Dialog and get the result (as DialogResult)
@@ -188,22 +193,33 @@ namespace Windows_Task_Dialog_Generator
                 }
             }
             // If it's another image type, try to convert to bitmap
-            else if ( Image.FromFile(filePath) is Bitmap bitmap )
+            else
             {
                 try
                 {
-                    taskDialogIcon = new TaskDialogIcon(bitmap);
+                    using ( Image img = Image.FromFile(filePath) )
+                    {
+                        if ( img is Bitmap bitmap )
+                        {
+                            taskDialogIcon = new TaskDialogIcon(bitmap);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Unsupported image format.");
+                            return null;
+                        }
+                    }
+                }
+                catch ( OutOfMemoryException )
+                {
+                    MessageBox.Show("The file is not a valid image. Must be one of the following: ICO, BMP, GIF, JPG, PNG or TIFF");
+                    return null;
                 }
                 catch ( Exception ex )
                 {
-                    MessageBox.Show("Error loading icon: " + ex.Message);
+                    MessageBox.Show("Error loading image: " + ex.Message);
                     return null;
                 }
-            }
-            else
-            {
-                MessageBox.Show("Unsupported file type.\nMust be one of the following: ICO, BMP, GIF, JPG, PNG or TIFF");
-                return null;
             }
 
             return taskDialogIcon;
