@@ -202,7 +202,7 @@
             gbIcon.Margin = new Padding(4, 5, 4, 5);
             gbIcon.Name = "gbIcon";
             gbIcon.Padding = new Padding(4, 5, 4, 5);
-            gbIcon.Size = new Size(286, 390);
+            gbIcon.Size = new Size(286, 425);
             gbIcon.TabIndex = 7;
             gbIcon.TabStop = false;
             gbIcon.Text = "Icon";
@@ -210,7 +210,7 @@
             // rbIconShieldSuccessGreenBar
             // 
             rbIconShieldSuccessGreenBar.AutoSize = true;
-            rbIconShieldSuccessGreenBar.Location = new Point(21, 340);
+            rbIconShieldSuccessGreenBar.Location = new Point(21, 320);
             rbIconShieldSuccessGreenBar.Margin = new Padding(4, 5, 4, 5);
             rbIconShieldSuccessGreenBar.Name = "rbIconShieldSuccessGreenBar";
             rbIconShieldSuccessGreenBar.Size = new Size(244, 29);
@@ -221,7 +221,7 @@
             // rbIconShieldWarningYellowBar
             // 
             rbIconShieldWarningYellowBar.AutoSize = true;
-            rbIconShieldWarningYellowBar.Location = new Point(21, 280);
+            rbIconShieldWarningYellowBar.Location = new Point(21, 260);
             rbIconShieldWarningYellowBar.Margin = new Padding(4, 5, 4, 5);
             rbIconShieldWarningYellowBar.Name = "rbIconShieldWarningYellowBar";
             rbIconShieldWarningYellowBar.Size = new Size(252, 29);
@@ -232,7 +232,7 @@
             // rbIconShieldErrorRedBar
             // 
             rbIconShieldErrorRedBar.AutoSize = true;
-            rbIconShieldErrorRedBar.Location = new Point(21, 310);
+            rbIconShieldErrorRedBar.Location = new Point(21, 290);
             rbIconShieldErrorRedBar.Margin = new Padding(4, 5, 4, 5);
             rbIconShieldErrorRedBar.Name = "rbIconShieldErrorRedBar";
             rbIconShieldErrorRedBar.Size = new Size(205, 29);
@@ -243,7 +243,7 @@
             // rbIconShieldGrayBar
             // 
             rbIconShieldGrayBar.AutoSize = true;
-            rbIconShieldGrayBar.Location = new Point(21, 250);
+            rbIconShieldGrayBar.Location = new Point(21, 230);
             rbIconShieldGrayBar.Margin = new Padding(4, 5, 4, 5);
             rbIconShieldGrayBar.Name = "rbIconShieldGrayBar";
             rbIconShieldGrayBar.Size = new Size(168, 29);
@@ -254,7 +254,7 @@
             // rbIconShieldBlueBar
             // 
             rbIconShieldBlueBar.AutoSize = true;
-            rbIconShieldBlueBar.Location = new Point(21, 220);
+            rbIconShieldBlueBar.Location = new Point(21, 200);
             rbIconShieldBlueBar.Margin = new Padding(4, 5, 4, 5);
             rbIconShieldBlueBar.Name = "rbIconShieldBlueBar";
             rbIconShieldBlueBar.Size = new Size(165, 29);
@@ -265,7 +265,7 @@
             // rbIconError
             // 
             rbIconError.AutoSize = true;
-            rbIconError.Location = new Point(21, 151);
+            rbIconError.Location = new Point(21, 120);
             rbIconError.Margin = new Padding(4, 5, 4, 5);
             rbIconError.Name = "rbIconError";
             rbIconError.Size = new Size(75, 29);
@@ -276,7 +276,7 @@
             // rbIconShield
             // 
             rbIconShield.AutoSize = true;
-            rbIconShield.Location = new Point(21, 190);
+            rbIconShield.Location = new Point(21, 170);
             rbIconShield.Margin = new Padding(4, 5, 4, 5);
             rbIconShield.Name = "rbIconShield";
             rbIconShield.Size = new Size(85, 29);
@@ -287,7 +287,7 @@
             // rbIconWarning
             // 
             rbIconWarning.AutoSize = true;
-            rbIconWarning.Location = new Point(21, 112);
+            rbIconWarning.Location = new Point(21, 90);
             rbIconWarning.Margin = new Padding(4, 5, 4, 5);
             rbIconWarning.Name = "rbIconWarning";
             rbIconWarning.Size = new Size(103, 29);
@@ -298,7 +298,7 @@
             // rbIconInformation
             // 
             rbIconInformation.AutoSize = true;
-            rbIconInformation.Location = new Point(21, 70);
+            rbIconInformation.Location = new Point(21, 60);
             rbIconInformation.Margin = new Padding(4, 5, 4, 5);
             rbIconInformation.Name = "rbIconInformation";
             rbIconInformation.Size = new Size(131, 29);
@@ -310,7 +310,7 @@
             // 
             rbIconNone.AutoSize = true;
             rbIconNone.Checked = true;
-            rbIconNone.Location = new Point(21, 28);
+            rbIconNone.Location = new Point(21, 30);
             rbIconNone.Margin = new Padding(4, 5, 4, 5);
             rbIconNone.Name = "rbIconNone";
             rbIconNone.Size = new Size(80, 29);
