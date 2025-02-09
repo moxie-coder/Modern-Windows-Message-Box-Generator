@@ -262,6 +262,11 @@ namespace Windows_Task_Dialog_Generator
         private void buttonTest_Click(object sender, EventArgs e)
         {
             CustomTaskDialog.Test();
+            TaskDialogIconExtractor.GetShieldSuccessGreenBarIcon();
+            //TaskDialogIcon test = TaskDialogIcon.ShieldSuccessGreenBar;'
+            //TaskDialogStandardIcon testIcon = TaskDialogStandardIcon.ShieldSuccessGreenBar;
+
+            //bool testVar = true;
         }
     }
 }

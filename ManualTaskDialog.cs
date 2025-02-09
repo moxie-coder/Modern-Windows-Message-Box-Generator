@@ -1,24 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Windows_Task_Dialog_Generator
 {
-    
-
     public class CustomTaskDialog
     {
-        private static readonly System.Windows.Forms.TaskDialogIcon shieldErrorBar = TaskDialogIcon.ShieldErrorRedBar;
-
-        // Win32 Constants
+        // Win32 Constants for standard icons
         private const int TD_WARNING_ICON = 65535;
         private const int TD_ERROR_ICON = 65534;
         private const int TD_INFORMATION_ICON = 65533;
         private const int TD_SHIELD_ICON = 65532;
+
+        // Constants for shield with bar icons (these are different from the standard shield!)
+        private const int TD_SHIELD_BLUE_BAR = ushort.MaxValue - 4;          
+        private const int TD_SHIELD_YELLOW_BAR = ushort.MaxValue - 5;        
+        private const int TD_SHIELD_RED_BAR = ushort.MaxValue - 6;           
+        private const int TD_SHIELD_GREEN_BAR = ushort.MaxValue - 7;         
+        private const int TD_SHIELD_GRAY_BAR = ushort.MaxValue - 8;          
 
         [Flags]
         public enum TaskDialogFlags : uint
@@ -40,7 +39,9 @@ namespace Windows_Task_Dialog_Generator
             public uint dwCommonButtons;
             [MarshalAs(UnmanagedType.LPWStr)]
             public string pszWindowTitle;
-            public IntPtr hMainIcon;
+            // This is a union in the native struct, so we need both fields
+            public IntPtr hMainIcon;      // HICON handle when TDF_USE_HICON_MAIN is set
+            //public IntPtr pszMainIcon;  // Icon resource ID when TDF_USE_HICON_MAIN is not set
             [MarshalAs(UnmanagedType.LPWStr)]
             public string pszMainInstruction;
             [MarshalAs(UnmanagedType.LPWStr)]
@@ -59,7 +60,9 @@ namespace Windows_Task_Dialog_Generator
             public string pszExpandedControlText;
             [MarshalAs(UnmanagedType.LPWStr)]
             public string pszCollapsedControlText;
-            public IntPtr hFooterIcon;
+            // Another union in the native struct
+            public IntPtr hFooterIcon;    // HICON handle when TDF_USE_HICON_FOOTER is set
+            //public IntPtr pszFooterIcon; // Icon resource ID when TDF_USE_HICON_FOOTER is not set
             [MarshalAs(UnmanagedType.LPWStr)]
             public string pszFooter;
             public IntPtr pfCallback;
@@ -74,24 +77,22 @@ namespace Windows_Task_Dialog_Generator
             out int pnRadioButton,
             out bool pfVerificationFlagChecked);
 
-        public static void ShowCustomTaskDialog(string title, string mainInstruction, string content, Icon customIcon)
+        public static void ShowCustomTaskDialog(string title, string mainInstruction, string content, int standardIcon)
         {
             var config = new TaskDialogConfig
             {
                 cbSize = (uint)Marshal.SizeOf(typeof(TaskDialogConfig)),
                 hwndParent = IntPtr.Zero,
                 hInstance = IntPtr.Zero,
-                dwFlags = TaskDialogFlags.TDF_USE_HICON_MAIN | TaskDialogFlags.TDF_ALLOW_DIALOG_CANCELLATION | TaskDialogFlags.TDF_SIZE_TO_CONTENT,
+                // Remove TDF_USE_HICON_MAIN since we're using a resource ID
+                dwFlags = TaskDialogFlags.TDF_ALLOW_DIALOG_CANCELLATION | TaskDialogFlags.TDF_SIZE_TO_CONTENT,
                 dwCommonButtons = 1, // OK button
                 pszWindowTitle = title,
-                hMainIcon = customIcon.Handle,  // Use custom icon
+                hMainIcon = new IntPtr(standardIcon),  // Since TDF_USE_HICON_MAIN is not used, this is a resource ID, not truly a pointer
                 pszMainInstruction = mainInstruction,
                 pszContent = content,
                 cxWidth = 0
             };
-
-            // We can also set a footer icon with the shield/warning bar style
-            config.hFooterIcon = new IntPtr(TD_SHIELD_ICON);  // This gives us the blue bar
 
             int button;
             int radioButton;
@@ -100,23 +101,22 @@ namespace Windows_Task_Dialog_Generator
             TaskDialogIndirect(ref config, out button, out radioButton, out verificationFlag);
         }
 
+        // Test method showing different bar colors
         public static void Test()
         {
-            ShowCustomTaskDialog("Test", "This is a test", "This is the content", SystemIcons.Information);
-        }
+            // Test with blue bar
+            ShowCustomTaskDialog(
+                title: "Blue Bar Test",
+                mainInstruction: "Custom Icon with Blue Bar",
+                content: "This shows a custom icon with the blue shield bar",
+                standardIcon: TD_SHIELD_BLUE_BAR
+            );
 
-        // Example usage
-        public static void ShowExample()
-        {
-            using ( Icon customIcon = Icon.ExtractAssociatedIcon(Application.ExecutablePath) )
-            {
-                ShowCustomTaskDialog(
-                    "Custom Dialog",
-                    "This is a custom TaskDialog",
-                    "With both a custom icon and a shield bar!",
-                    customIcon
-                );
-            }
+            // You can also try other colors by changing TD_SHIELD_BLUE_BAR to:
+            // TD_SHIELD_YELLOW_BAR - For warning yellow bar
+            // TD_SHIELD_RED_BAR - For error red bar
+            // TD_SHIELD_GREEN_BAR - For success green bar
+            // TD_SHIELD_GRAY_BAR - For gray bar
         }
     }
 }
