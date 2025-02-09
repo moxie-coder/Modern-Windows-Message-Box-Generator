@@ -79,8 +79,14 @@ namespace Windows_Task_Dialog_Generator
             if ( rbIconNone.Checked ) page.Icon = TaskDialogIcon.None;
             else if ( rbIconInformation.Checked ) page.Icon = TaskDialogIcon.Information;
             else if ( rbIconWarning.Checked ) page.Icon = TaskDialogIcon.Warning;
-            else if ( rbIconQuestion.Checked ) page.Icon = TaskDialogIcon.Shield;
             else if ( rbIconError.Checked ) page.Icon = TaskDialogIcon.Error;
+            else if ( rbIconShield.Checked ) page.Icon = TaskDialogIcon.Shield;
+            else if ( rbIconShieldBlueBar.Checked ) page.Icon = TaskDialogIcon.ShieldBlueBar;
+            else if ( rbIconShieldGrayBar.Checked ) page.Icon = TaskDialogIcon.ShieldGrayBar;
+            else if ( rbIconShieldWarningYellowBar.Checked ) page.Icon = TaskDialogIcon.ShieldWarningYellowBar;
+            else if ( rbIconShieldErrorRedBar.Checked ) page.Icon = TaskDialogIcon.ShieldErrorRedBar;
+            else if ( rbIconShieldSuccessGreenBar.Checked ) page.Icon = TaskDialogIcon.ShieldSuccessGreenBar;
+
 
             // Show the Task Dialog and get the result (as DialogResult)
             TaskDialogButton result = TaskDialog.ShowDialog(page);  // Use DialogResult
