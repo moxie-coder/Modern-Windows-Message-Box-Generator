@@ -1,0 +1,81 @@
+﻿using Microsoft.VisualBasic.ApplicationServices;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Windows_Task_Dialog_Generator
+{
+    class WinEnums
+    {
+        public enum WM : uint
+        {
+            USER = 0x0400,
+        }
+
+        public enum TDM : uint
+        {
+            NAVIGATE_PAGE = WM.USER + 101,
+            /// <summary>
+            ///   "wParam = Button ID"
+            /// </summary>
+            CLICK_BUTTON = WM.USER + 102,
+            /// <summary>
+            ///   "wParam = 0 (nonMarque) wParam != 0 (Marquee)"
+            /// </summary>
+            SET_MARQUEE_PROGRESS_BAR = WM.USER + 103,
+            /// <summary>
+            ///   "wParam = new progress state"
+            /// </summary>
+            SET_PROGRESS_BAR_STATE = WM.USER + 104,
+            /// <summary>
+            ///   "lParam = MAKELPARAM(nMinRange, nMaxRange)"
+            /// </summary>
+            SET_PROGRESS_BAR_RANGE = WM.USER + 105,
+            /// <summary>
+            ///   "wParam = new position"
+            /// </summary>
+            SET_PROGRESS_BAR_POS = WM.USER + 106,
+            /// <summary>
+            ///   "wParam = 0 (stop marquee), wParam != 0 (start marquee),
+            ///   lparam = speed (milliseconds between repaints)"
+            /// </summary>
+            SET_PROGRESS_BAR_MARQUEE = WM.USER + 107,
+            /// <summary>
+            ///   "wParam = element (TASKDIALOG_ELEMENTS), lParam = new element text (LPCWSTR)"
+            /// </summary>
+            SET_ELEMENT_TEXT = WM.USER + 108,
+            /// <summary>
+            ///   "wParam = Radio Button ID"
+            /// </summary>
+            CLICK_RADIO_BUTTON = WM.USER + 110,
+            /// <summary>
+            ///   "lParam = 0 (disable), lParam != 0 (enable), wParam = Button ID"
+            /// </summary>
+            ENABLE_BUTTON = WM.USER + 111,
+            /// <summary>
+            ///   "lParam = 0 (disable), lParam != 0 (enable), wParam = Radio Button ID"
+            /// </summary>
+            ENABLE_RADIO_BUTTON = WM.USER + 112,
+            /// <summary>
+            ///   "wParam = 0 (unchecked), 1 (checked), lParam = 1 (set key focus)"
+            /// </summary>
+            CLICK_VERIFICATION = WM.USER + 113,
+            /// <summary>
+            ///   "wParam = element (TASKDIALOG_ELEMENTS), lParam = new element text (LPCWSTR)"
+            /// </summary>
+            UPDATE_ELEMENT_TEXT = WM.USER + 114,
+            /// <summary>
+            ///   "wParam = Button ID, lParam = 0 (elevation not required),
+            ///   lParam != 0 (elevation required)"
+            /// </summary>
+            SET_BUTTON_ELEVATION_REQUIRED_STATE = WM.USER + 115,
+            /// <summary>
+            ///   "wParam = icon element (TASKDIALOG_ICON_ELEMENTS), lParam = new icon
+            ///   (hIcon if TDF_USE_HICON_* was set, PCWSTR otherwise)"
+            /// </summary>
+            UPDATE_ICON = WM.USER + 116,
+        }
+    }
+}

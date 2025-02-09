@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics.Arm;
 using System.Windows.Forms;
 
 namespace Windows_Task_Dialog_Generator
@@ -77,32 +78,32 @@ namespace Windows_Task_Dialog_Generator
             out int pnRadioButton,
             out bool pfVerificationFlagChecked);
 
-        //public static void ShowCustomTaskDialog(string title, string mainInstruction, string content, int standardIcon)
-        //{
-        //    var config = new TaskDialogConfig
-        //    {
-        //        cbSize = (uint)Marshal.SizeOf(typeof(TaskDialogConfig)),
-        //        hwndParent = IntPtr.Zero,
-        //        hInstance = IntPtr.Zero,
-        //        // Remove TDF_USE_HICON_MAIN since we're using a resource ID
-        //        dwFlags = TaskDialogFlags.TDF_ALLOW_DIALOG_CANCELLATION | TaskDialogFlags.TDF_SIZE_TO_CONTENT,
-        //        dwCommonButtons = 1, // OK button
-        //        pszWindowTitle = title,
-        //        hMainIcon = new IntPtr(standardIcon),  // Since TDF_USE_HICON_MAIN is not used, this is a resource ID, not truly a pointer
-        //        pszMainInstruction = mainInstruction,
-        //        pszContent = content,
-        //        cxWidth = 0
-        //    };
+        // Delegate for the callback
+        private delegate int TaskDialogCallback(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam, IntPtr lpRefData);
 
-        //    int button;
-        //    int radioButton;
-        //    bool verificationFlag;
+        // Constants for TaskDialog messages
+        private const int TDM_UPDATE_ICON = 0x0414;
 
-        //    TaskDialogIndirect(ref config, out button, out radioButton, out verificationFlag);
-        //}
+        private static int initialIcon;
+        private static int updatedIcon;
 
         public static void ShowCustomTaskDialog(string title, string mainInstruction, string content, int standardIcon)
         {
+            // For storing the dialog window handle
+            IntPtr dialogHwnd = IntPtr.Zero;
+
+            // Callback to get window handle and update icon
+            TaskDialogCallbackProc callback = (hwnd, msg, wParam, lParam, lpRefData) =>
+            {
+                if (msg == 0) // TDN_CREATED
+                {
+                    dialogHwnd = hwnd;
+                    // Update the icon but keep the bar
+                    SendMessage(hwnd, (int)WinEnums.TDM.UPDATE_ICON, IntPtr.Zero, new IntPtr(standardIcon));
+                }
+                return 0;
+            };
+
             var config = new TaskDialogConfig
             {
                 cbSize = (uint)Marshal.SizeOf(typeof(TaskDialogConfig)),
@@ -111,21 +112,26 @@ namespace Windows_Task_Dialog_Generator
                 dwFlags = TaskDialogFlags.TDF_ALLOW_DIALOG_CANCELLATION | TaskDialogFlags.TDF_SIZE_TO_CONTENT,
                 dwCommonButtons = 1,
                 pszWindowTitle = title,
-                hMainIcon = new IntPtr(standardIcon),  // Start with blue bar
+                hMainIcon = new IntPtr(TD_SHIELD_BLUE_BAR),  // Start with blue bar
                 pszMainInstruction = mainInstruction,
                 pszContent = content,
+                pfCallback = Marshal.GetFunctionPointerForDelegate(callback),
                 cxWidth = 0
             };
 
-            // Show dialog first to get the bar
             int button;
             int radioButton;
             bool verificationFlag;
-            int dialog = TaskDialogIndirect(ref config, out button, out radioButton, out verificationFlag);
 
-            // Then update to a different predefined icon while keeping the bar
-            config.hMainIcon = new IntPtr(TD_WARNING_ICON);  // Could switch to warning icon
+            TaskDialogIndirect(ref config, out button, out radioButton, out verificationFlag);
+
+            GC.KeepAlive(callback);
         }
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
+
+        private delegate int TaskDialogCallbackProc(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam, IntPtr lpRefData);
 
 
         // Test method showing different bar colors
@@ -136,7 +142,7 @@ namespace Windows_Task_Dialog_Generator
                 title: "Blue Bar Test",
                 mainInstruction: "Custom Icon with Blue Bar",
                 content: "This shows a custom icon with the blue shield bar",
-                standardIcon: TD_SHIELD_GREEN_BAR
+                standardIcon: (int)TaskDialogCommonIcon.Sheet
             );
         }
 

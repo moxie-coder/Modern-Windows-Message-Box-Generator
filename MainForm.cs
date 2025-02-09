@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -17,9 +18,12 @@ namespace Windows_Task_Dialog_Generator
             #endif
         }
 
+        [DllImport("user32.dll")]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
+
         private void btnShowDialog_Click(object sender, EventArgs e)
         {
-            var page = new TaskDialogPage()
+            TaskDialogPage page = new TaskDialogPage()
             {
                 Caption = txtTitle.Text,
                 Heading = txtMessage.Text,
@@ -102,8 +106,28 @@ namespace Windows_Task_Dialog_Generator
                     return;
             }
 
-            // Show the Task Dialog and get the result (as DialogResult)
-            TaskDialogButton result = TaskDialog.ShowDialog(page);  // Use DialogResult
+            int? overrideIcon = null;
+
+            if (overrideIcon != null )
+            {
+                // Show the Task Dialog and get the result (as DialogResult)
+                //TaskDialogButton result = TaskDialog.ShowDialog(page);
+                page.Created += (sender, args) =>
+                {
+                    // This is called when the dialog is shown
+                    // You can update the dialog here
+                    TaskDialogPage? dialogPage = sender as TaskDialogPage;
+                    TaskDialog? dialog = dialogPage?.BoundDialog;
+
+                    if ( dialog != null )
+                    {
+                        IntPtr hwnd = dialog.Handle;
+                        SendMessage(hwnd, (int)WinEnums.TDM.UPDATE_ICON, IntPtr.Zero, new IntPtr((int)overrideIcon));
+                    }
+                };
+            }
+
+            TaskDialogButton result = TaskDialog.ShowDialog(page);
 
             // Example of how to use the result
             if ( page.Verification is not null && page.Verification.Checked )
