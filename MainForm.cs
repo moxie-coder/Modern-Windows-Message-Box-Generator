@@ -149,7 +149,7 @@ namespace Windows_Task_Dialog_Generator
         private void buttonBrowseCustomIcon_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Image files (*.ico;*.bmp;*.gif;*.jpg;*.jpeg;*.png;*.tiff)|*.ico;*.bmp;*.gif;*.jpg;*.jpeg;*.png;*.tiff|Icon files (*.ico)|*.ico|All files (*.*)|*.*";
+            openFileDialog.Filter = "Image files (*.ico;*.bmp;*.gif;*.jpg;*.jpeg;*.png;*.tiff)|*.ico;*.bmp;*.gif;*.jpg;*.jpeg;*.png;*.tiff|Icon files (*.ico)|*.ico|Icon From Exe (*.exe)|*.exe|All files (*.*)|*.*";
             if ( openFileDialog.ShowDialog() == DialogResult.OK )
             {
                 textBoxCustomIconPath.Text = openFileDialog.FileName;
@@ -192,7 +192,31 @@ namespace Windows_Task_Dialog_Generator
                     return null;
                 }
             }
-            // If it's another image type, try to convert to bitmap
+            // If it's an EXE, try to load the main icon
+            else if ( Path.GetExtension(filePath).Equals(".exe", StringComparison.CurrentCultureIgnoreCase) )
+            {
+                try
+                {
+                    icon = Icon.ExtractAssociatedIcon(filePath);
+                    if ( icon != null )
+                    {
+                        taskDialogIcon = new TaskDialogIcon(icon);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error loading icon: No icon found in EXE");
+                        return null;
+                    }
+
+                }
+                catch ( Exception ex )
+                {
+                    MessageBox.Show("Error loading icon: " + ex.Message);
+                    return null;
+                }
+            }
+
+            // If it's another image type or file, try to convert to bitmap
             else
             {
                 try
