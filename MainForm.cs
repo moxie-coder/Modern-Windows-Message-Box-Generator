@@ -18,6 +18,18 @@ namespace Windows_Task_Dialog_Generator
             #endif
         }
 
+        private const int TD_WARNING_ICON = 65535;
+        private const int TD_ERROR_ICON = 65534;
+        private const int TD_INFORMATION_ICON = 65533;
+        private const int TD_SHIELD_ICON = 65532;
+
+        // Constants for shield with bar icons (these are different from the standard shield!)
+        private const int TD_SHIELD_BLUE_BAR = ushort.MaxValue - 4;
+        private const int TD_SHIELD_YELLOW_BAR = ushort.MaxValue - 5;
+        private const int TD_SHIELD_RED_BAR = ushort.MaxValue - 6;
+        private const int TD_SHIELD_GREEN_BAR = ushort.MaxValue - 7;
+        private const int TD_SHIELD_GRAY_BAR = ushort.MaxValue - 8;
+
         [DllImport("user32.dll")]
         private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
 
@@ -86,29 +98,112 @@ namespace Windows_Task_Dialog_Generator
                 page.Buttons.Add(TaskDialogButton.Cancel);
             }
 
-            if ( rbIconNone.Checked ) page.Icon = TaskDialogIcon.None;
-            else if ( rbIconInformation.Checked ) page.Icon = TaskDialogIcon.Information;
-            else if ( rbIconWarning.Checked ) page.Icon = TaskDialogIcon.Warning;
-            else if ( rbIconError.Checked ) page.Icon = TaskDialogIcon.Error;
-            else if ( rbIconShield.Checked ) page.Icon = TaskDialogIcon.Shield;
-            else if ( rbIconShieldBlueBar.Checked ) page.Icon = TaskDialogIcon.ShieldBlueBar;
-            else if ( rbIconShieldGrayBar.Checked ) page.Icon = TaskDialogIcon.ShieldGrayBar;
-            else if ( rbIconShieldWarningYellowBar.Checked ) page.Icon = TaskDialogIcon.ShieldWarningYellowBar;
-            else if ( rbIconShieldErrorRedBar.Checked ) page.Icon = TaskDialogIcon.ShieldErrorRedBar;
-            else if ( rbIconShieldSuccessGreenBar.Checked ) page.Icon = TaskDialogIcon.ShieldSuccessGreenBar;
+            TaskDialogIcon mainIcon = TaskDialogIcon.None;
+
+            if ( rbIconNone.Checked ) mainIcon = TaskDialogIcon.None;
+            else if ( rbIconInformation.Checked ) mainIcon = TaskDialogIcon.Information;
+            else if ( rbIconWarning.Checked ) mainIcon   = TaskDialogIcon.Warning;
+            else if ( rbIconError.Checked ) mainIcon = TaskDialogIcon.Error;
+            else if ( rbIconShield.Checked ) mainIcon = TaskDialogIcon.Shield;
+            else if ( rbIconShieldBlueBar.Checked ) mainIcon = TaskDialogIcon.ShieldBlueBar;
+            else if ( rbIconShieldGrayBar.Checked ) mainIcon = TaskDialogIcon.ShieldGrayBar;
+            else if ( rbIconShieldWarningYellowBar.Checked ) mainIcon = TaskDialogIcon.ShieldWarningYellowBar;
+            else if ( rbIconShieldErrorRedBar.Checked ) mainIcon = TaskDialogIcon.ShieldErrorRedBar;
+            else if ( rbIconShieldSuccessGreenBar.Checked ) mainIcon = TaskDialogIcon.ShieldSuccessGreenBar;
             else if ( rbIconCustom.Checked )
             {
                 TaskDialogIcon? customIcon = GetCustomIconFromPath();
 
                 if ( customIcon != null )
-                    page.Icon = customIcon;
+                    mainIcon = customIcon;
                 else
                     return;
             }
 
-            int? overrideIcon = null;
+            TaskDialogIcon? initialIcon = null;
+            int? mainIconInt = null;
 
-            if (overrideIcon != null )
+            if ( rbBarColorNone.Checked )
+            {
+                initialIcon = null;
+                page.Icon = mainIcon;
+            }
+            else
+            {
+                if ( rbBarColorGreen.Checked )
+                {
+                    initialIcon = TaskDialogIcon.ShieldSuccessGreenBar;
+                }
+                else if ( rbBarColorBlue.Checked )
+                {
+                    initialIcon = TaskDialogIcon.ShieldBlueBar;
+                }
+                else if ( rbBarColorGray.Checked )
+                {
+                    initialIcon = TaskDialogIcon.ShieldGrayBar;
+                }
+                else if ( rbBarColorRed.Checked )
+                {
+                    initialIcon = TaskDialogIcon.ShieldErrorRedBar;
+                }
+                else if ( rbBarColorYellow.Checked )
+                {
+                    initialIcon = TaskDialogIcon.ShieldWarningYellowBar;
+                }
+                else
+                {
+                    initialIcon = null;
+                }
+
+                // Use the initial icon for the main icon to get the colored bar
+                page.Icon = initialIcon;
+
+                // Then define what we will change the icon to when the dialog is shown after we get the colored bar to show
+                if ( rbIconWarning.Checked )
+                {
+                    mainIconInt = TD_WARNING_ICON;
+                }
+                else if ( rbIconError.Checked )
+                {
+                    mainIconInt = TD_ERROR_ICON;
+                }
+                else if ( rbIconInformation.Checked )
+                {
+                    mainIconInt = TD_INFORMATION_ICON;
+                }
+                else if ( rbIconShield.Checked )
+                {
+                    mainIconInt = TD_SHIELD_ICON;
+                }
+                else if ( rbIconShieldBlueBar.Checked )
+                {
+                    mainIconInt = TD_SHIELD_BLUE_BAR;
+                }
+                else if ( rbIconShieldGrayBar.Checked )
+                {
+                    mainIconInt = TD_SHIELD_GRAY_BAR;
+                }
+                else if ( rbIconShieldWarningYellowBar.Checked )
+                {
+                    mainIconInt = TD_SHIELD_YELLOW_BAR;
+                }
+                else if ( rbIconShieldErrorRedBar.Checked )
+                {
+                    mainIconInt = TD_SHIELD_RED_BAR;
+                }
+                else if ( rbIconShieldSuccessGreenBar.Checked )
+                {
+                    mainIconInt = TD_SHIELD_GREEN_BAR;
+                }
+                else
+                {
+                    mainIconInt = 0;
+                }
+
+            }
+            
+
+            if ( initialIcon != null )
             {
                 // Show the Task Dialog and get the result (as DialogResult)
                 //TaskDialogButton result = TaskDialog.ShowDialog(page);
@@ -122,7 +217,7 @@ namespace Windows_Task_Dialog_Generator
                     if ( dialog != null )
                     {
                         IntPtr hwnd = dialog.Handle;
-                        SendMessage(hwnd, (int)WinEnums.TDM.UPDATE_ICON, IntPtr.Zero, new IntPtr((int)overrideIcon));
+                        SendMessage(hwnd, (int)WinEnums.TDM.UPDATE_ICON, IntPtr.Zero, new IntPtr((int)mainIconInt));
                     }
                 };
             }
@@ -281,6 +376,13 @@ namespace Windows_Task_Dialog_Generator
         {
             // Toggle the enabled state of the custom icon path text box and browse button
             groupBoxCustomIcon.Enabled = rbIconCustom.Checked;
+            groupBoxBarColor.Enabled = !rbIconCustom.Checked;
+
+            if ( rbIconCustom.Checked )
+            {
+                // If the custom icon is selected, disable the bar color options
+                rbBarColorNone.Checked = true;
+            }
         }
 
         private void buttonTest_Click(object sender, EventArgs e)
