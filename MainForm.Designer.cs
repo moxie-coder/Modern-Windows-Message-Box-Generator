@@ -40,6 +40,7 @@
             rbOkCancel = new RadioButton();
             rbOk = new RadioButton();
             gbIcon = new GroupBox();
+            rbIconCustom = new RadioButton();
             rbIconShieldSuccessGreenBar = new RadioButton();
             rbIconShieldWarningYellowBar = new RadioButton();
             rbIconShieldErrorRedBar = new RadioButton();
@@ -56,8 +57,12 @@
             chkVerification = new CheckBox();
             lblExpandedInfo = new Label();
             txtExpandedInfo = new TextBox();
+            textBoxCustomIconPath = new TextBox();
+            buttonBrowseCustomIcon = new Button();
+            groupBoxCustomIcon = new GroupBox();
             gbButtons.SuspendLayout();
             gbIcon.SuspendLayout();
+            groupBoxCustomIcon.SuspendLayout();
             SuspendLayout();
             // 
             // txtTitle
@@ -188,6 +193,7 @@
             // 
             // gbIcon
             // 
+            gbIcon.Controls.Add(rbIconCustom);
             gbIcon.Controls.Add(rbIconShieldSuccessGreenBar);
             gbIcon.Controls.Add(rbIconShieldWarningYellowBar);
             gbIcon.Controls.Add(rbIconShieldErrorRedBar);
@@ -202,10 +208,24 @@
             gbIcon.Margin = new Padding(4, 5, 4, 5);
             gbIcon.Name = "gbIcon";
             gbIcon.Padding = new Padding(4, 5, 4, 5);
-            gbIcon.Size = new Size(286, 425);
+            gbIcon.Size = new Size(321, 425);
             gbIcon.TabIndex = 7;
             gbIcon.TabStop = false;
             gbIcon.Text = "Icon";
+            // 
+            // rbIconCustom
+            // 
+            rbIconCustom.AutoSize = true;
+            rbIconCustom.Checked = true;
+            rbIconCustom.Location = new Point(21, 370);
+            rbIconCustom.Margin = new Padding(4, 5, 4, 5);
+            rbIconCustom.Name = "rbIconCustom";
+            rbIconCustom.Size = new Size(99, 29);
+            rbIconCustom.TabIndex = 10;
+            rbIconCustom.TabStop = true;
+            rbIconCustom.Text = "Custom";
+            rbIconCustom.UseVisualStyleBackColor = true;
+            rbIconCustom.CheckedChanged += rbIconCustom_CheckedChanged;
             // 
             // rbIconShieldSuccessGreenBar
             // 
@@ -378,11 +398,40 @@
             txtExpandedInfo.Size = new Size(427, 187);
             txtExpandedInfo.TabIndex = 9;
             // 
+            // textBoxCustomIconPath
+            // 
+            textBoxCustomIconPath.Location = new Point(17, 39);
+            textBoxCustomIconPath.Name = "textBoxCustomIconPath";
+            textBoxCustomIconPath.Size = new Size(317, 31);
+            textBoxCustomIconPath.TabIndex = 12;
+            // 
+            // buttonBrowseCustomIcon
+            // 
+            buttonBrowseCustomIcon.Location = new Point(340, 37);
+            buttonBrowseCustomIcon.Name = "buttonBrowseCustomIcon";
+            buttonBrowseCustomIcon.Size = new Size(112, 34);
+            buttonBrowseCustomIcon.TabIndex = 13;
+            buttonBrowseCustomIcon.Text = "Browse";
+            buttonBrowseCustomIcon.UseVisualStyleBackColor = true;
+            buttonBrowseCustomIcon.Click += buttonBrowseCustomIcon_Click;
+            // 
+            // groupBoxCustomIcon
+            // 
+            groupBoxCustomIcon.Controls.Add(textBoxCustomIconPath);
+            groupBoxCustomIcon.Controls.Add(buttonBrowseCustomIcon);
+            groupBoxCustomIcon.Location = new Point(635, 467);
+            groupBoxCustomIcon.Name = "groupBoxCustomIcon";
+            groupBoxCustomIcon.Size = new Size(472, 89);
+            groupBoxCustomIcon.TabIndex = 14;
+            groupBoxCustomIcon.TabStop = false;
+            groupBoxCustomIcon.Text = "Custom Icon";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1120, 768);
+            Controls.Add(groupBoxCustomIcon);
             Controls.Add(txtExpandedInfo);
             Controls.Add(lblExpandedInfo);
             Controls.Add(chkVerification);
@@ -403,6 +452,8 @@
             gbButtons.PerformLayout();
             gbIcon.ResumeLayout(false);
             gbIcon.PerformLayout();
+            groupBoxCustomIcon.ResumeLayout(false);
+            groupBoxCustomIcon.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -437,5 +488,9 @@
         private RadioButton rbIconShieldErrorRedBar;
         private RadioButton rbIconShieldGrayBar;
         private RadioButton rbIconShieldBlueBar;
+        private RadioButton rbIconCustom;
+        private TextBox textBoxCustomIconPath;
+        private Button buttonBrowseCustomIcon;
+        private GroupBox groupBoxCustomIcon;
     }
 }

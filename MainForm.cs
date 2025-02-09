@@ -2,6 +2,8 @@ using System;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
+#nullable enable
+
 namespace Windows_Task_Dialog_Generator
 {
     public partial class MainForm : Form
@@ -86,7 +88,10 @@ namespace Windows_Task_Dialog_Generator
             else if ( rbIconShieldWarningYellowBar.Checked ) page.Icon = TaskDialogIcon.ShieldWarningYellowBar;
             else if ( rbIconShieldErrorRedBar.Checked ) page.Icon = TaskDialogIcon.ShieldErrorRedBar;
             else if ( rbIconShieldSuccessGreenBar.Checked ) page.Icon = TaskDialogIcon.ShieldSuccessGreenBar;
-
+            if ( rbIconCustom.Checked )
+            {
+                page.Icon = GetCustomIconFromPath();
+            }
 
             // Show the Task Dialog and get the result (as DialogResult)
             TaskDialogButton result = TaskDialog.ShowDialog(page);  // Use DialogResult
@@ -134,6 +139,80 @@ namespace Windows_Task_Dialog_Generator
             {
                 Console.WriteLine("No was clicked");
             }
+        }
+
+        private void buttonBrowseCustomIcon_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Image files (*.ico;*.bmp;*.gif;*.jpg;*.jpeg;*.png;*.tiff)|*.ico;*.bmp;*.gif;*.jpg;*.jpeg;*.png;*.tiff|Icon files (*.ico)|*.ico|All files (*.*)|*.*";
+            if ( openFileDialog.ShowDialog() == DialogResult.OK )
+            {
+                textBoxCustomIconPath.Text = openFileDialog.FileName;
+            }
+        }
+
+        private TaskDialogIcon? GetCustomIconFromPath()
+        {
+            String filePath = textBoxCustomIconPath.Text;
+
+            // Strip quotes if present
+            filePath = filePath.Trim('"');
+
+            // Get the file path from the text box, and get info about the file type
+            if ( string.IsNullOrEmpty(filePath) )
+            {
+                MessageBox.Show("No custom icon path specified.");
+                return null;
+            }
+            if ( !File.Exists(filePath) )
+            {
+                MessageBox.Show("Custom icon path does not exist.");
+                return null;
+            }
+
+            Icon? icon;
+            TaskDialogIcon taskDialogIcon;
+
+            // If it's an icon file, we can use it directly
+            if ( Path.GetExtension(filePath).Equals(".ico", StringComparison.CurrentCultureIgnoreCase) )
+            {
+                try
+                {
+                    icon = new Icon(filePath);
+                    taskDialogIcon = new TaskDialogIcon(icon);
+                }
+                catch ( Exception ex )
+                {
+                    MessageBox.Show("Error loading icon: " + ex.Message);
+                    return null;
+                }
+            }
+            // If it's another image type, try to convert to bitmap
+            else if ( Image.FromFile(filePath) is Bitmap bitmap )
+            {
+                try
+                {
+                    taskDialogIcon = new TaskDialogIcon(bitmap);
+                }
+                catch ( Exception ex )
+                {
+                    MessageBox.Show("Error loading icon: " + ex.Message);
+                    return null;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Unsupported file type.\nMust be one of the following: ICO, BMP, GIF, JPG, PNG or TIFF");
+                return null;
+            }
+
+            return taskDialogIcon;
+        }
+
+        private void rbIconCustom_CheckedChanged(object sender, EventArgs e)
+        {
+            // Toggle the enabled state of the custom icon path text box and browse button
+            groupBoxCustomIcon.Enabled = rbIconCustom.Checked;
         }
     }
 }
