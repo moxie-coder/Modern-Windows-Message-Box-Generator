@@ -93,29 +93,40 @@ namespace Windows_Task_Dialog_Generator
                 Console.WriteLine("Verification was checked!"); // Replace with your persistence logic
             }
 
-            switch ( result.Text )
+            // Using if/else instead of a switch case because that doesn't work
+            // The TaskDialogButton properties are getters and therefore not constant, so they can't be used in a switch case
+            // And the TaskDialogButton enum values it gets are not accessible so we can't use that either in a switch case
+            if ( result == TaskDialogButton.Cancel )
             {
-                case "OK":
-                    Console.WriteLine("OK was clicked");
-                    break;
-                case "Cancel":
-                    Console.WriteLine("Cancel was clicked");
-                    break;
-                case "Abort":
-                    Console.WriteLine("Abort was clicked");
-                    break;
-                case "Retry":
-                    Console.WriteLine("Retry was clicked");
-                    break;
-                case "Ignore":
-                    Console.WriteLine("Ignore was clicked");
-                    break;
-                case "Yes":
-                    Console.WriteLine("Yes was clicked");
-                    break;
-                case "No":
-                    Console.WriteLine("No was clicked");
-                    break;
+                Console.WriteLine("Cancel was clicked");
+            }
+            else if ( result == TaskDialogButton.OK )
+            {
+                Console.WriteLine("OK was clicked");
+            }
+            else if ( result == TaskDialogButton.Cancel )
+            {
+                Console.WriteLine("Cancel was clicked");
+            }
+            else if ( result == TaskDialogButton.Abort )
+            {
+                Console.WriteLine("Abort was clicked");
+            }
+            else if ( result == TaskDialogButton.Retry )
+            {
+                Console.WriteLine("Retry was clicked");
+            }
+            else if ( result == TaskDialogButton.Ignore )
+            {
+                Console.WriteLine("Ignore was clicked");
+            }
+            else if ( result == TaskDialogButton.Yes )
+            {
+                Console.WriteLine("Yes was clicked");
+            }
+            else if ( result == TaskDialogButton.No )
+            {
+                Console.WriteLine("No was clicked");
             }
         }
     }
