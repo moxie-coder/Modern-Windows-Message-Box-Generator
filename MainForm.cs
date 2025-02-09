@@ -92,7 +92,7 @@ namespace Windows_Task_Dialog_Generator
             else if ( rbIconShieldWarningYellowBar.Checked ) page.Icon = TaskDialogIcon.ShieldWarningYellowBar;
             else if ( rbIconShieldErrorRedBar.Checked ) page.Icon = TaskDialogIcon.ShieldErrorRedBar;
             else if ( rbIconShieldSuccessGreenBar.Checked ) page.Icon = TaskDialogIcon.ShieldSuccessGreenBar;
-            if ( rbIconCustom.Checked )
+            else if ( rbIconCustom.Checked )
             {
                 TaskDialogIcon? customIcon = GetCustomIconFromPath();
 
@@ -262,7 +262,7 @@ namespace Windows_Task_Dialog_Generator
         private void buttonTest_Click(object sender, EventArgs e)
         {
             CustomTaskDialog.Test();
-            TaskDialogIconExtractor.GetShieldSuccessGreenBarIcon();
+            //TaskDialogIconExtractor.GetShieldSuccessGreenBarIcon();
             //TaskDialogIcon test = TaskDialogIcon.ShieldSuccessGreenBar;'
             //TaskDialogStandardIcon testIcon = TaskDialogStandardIcon.ShieldSuccessGreenBar;
 

@@ -77,6 +77,30 @@ namespace Windows_Task_Dialog_Generator
             out int pnRadioButton,
             out bool pfVerificationFlagChecked);
 
+        //public static void ShowCustomTaskDialog(string title, string mainInstruction, string content, int standardIcon)
+        //{
+        //    var config = new TaskDialogConfig
+        //    {
+        //        cbSize = (uint)Marshal.SizeOf(typeof(TaskDialogConfig)),
+        //        hwndParent = IntPtr.Zero,
+        //        hInstance = IntPtr.Zero,
+        //        // Remove TDF_USE_HICON_MAIN since we're using a resource ID
+        //        dwFlags = TaskDialogFlags.TDF_ALLOW_DIALOG_CANCELLATION | TaskDialogFlags.TDF_SIZE_TO_CONTENT,
+        //        dwCommonButtons = 1, // OK button
+        //        pszWindowTitle = title,
+        //        hMainIcon = new IntPtr(standardIcon),  // Since TDF_USE_HICON_MAIN is not used, this is a resource ID, not truly a pointer
+        //        pszMainInstruction = mainInstruction,
+        //        pszContent = content,
+        //        cxWidth = 0
+        //    };
+
+        //    int button;
+        //    int radioButton;
+        //    bool verificationFlag;
+
+        //    TaskDialogIndirect(ref config, out button, out radioButton, out verificationFlag);
+        //}
+
         public static void ShowCustomTaskDialog(string title, string mainInstruction, string content, int standardIcon)
         {
             var config = new TaskDialogConfig
@@ -84,22 +108,25 @@ namespace Windows_Task_Dialog_Generator
                 cbSize = (uint)Marshal.SizeOf(typeof(TaskDialogConfig)),
                 hwndParent = IntPtr.Zero,
                 hInstance = IntPtr.Zero,
-                // Remove TDF_USE_HICON_MAIN since we're using a resource ID
                 dwFlags = TaskDialogFlags.TDF_ALLOW_DIALOG_CANCELLATION | TaskDialogFlags.TDF_SIZE_TO_CONTENT,
-                dwCommonButtons = 1, // OK button
+                dwCommonButtons = 1,
                 pszWindowTitle = title,
-                hMainIcon = new IntPtr(standardIcon),  // Since TDF_USE_HICON_MAIN is not used, this is a resource ID, not truly a pointer
+                hMainIcon = new IntPtr(standardIcon),  // Start with blue bar
                 pszMainInstruction = mainInstruction,
                 pszContent = content,
                 cxWidth = 0
             };
 
+            // Show dialog first to get the bar
             int button;
             int radioButton;
             bool verificationFlag;
+            int dialog = TaskDialogIndirect(ref config, out button, out radioButton, out verificationFlag);
 
-            TaskDialogIndirect(ref config, out button, out radioButton, out verificationFlag);
+            // Then update to a different predefined icon while keeping the bar
+            config.hMainIcon = new IntPtr(TD_WARNING_ICON);  // Could switch to warning icon
         }
+
 
         // Test method showing different bar colors
         public static void Test()
@@ -109,14 +136,61 @@ namespace Windows_Task_Dialog_Generator
                 title: "Blue Bar Test",
                 mainInstruction: "Custom Icon with Blue Bar",
                 content: "This shows a custom icon with the blue shield bar",
-                standardIcon: TD_SHIELD_BLUE_BAR
+                standardIcon: TD_SHIELD_GREEN_BAR
             );
+        }
 
-            // You can also try other colors by changing TD_SHIELD_BLUE_BAR to:
-            // TD_SHIELD_YELLOW_BAR - For warning yellow bar
-            // TD_SHIELD_RED_BAR - For error red bar
-            // TD_SHIELD_GREEN_BAR - For success green bar
-            // TD_SHIELD_GRAY_BAR - For gray bar
+        private static int lastIntTested = -5;
+        public static void TestIncrement()
+        {
+            // Loop through and create dialogs testing values ushort.MaxValue -8 through any number
+            int i = lastIntTested;
+            lastIntTested = i - 1;
+
+            ShowCustomTaskDialog(
+                    title: "Test",
+                    mainInstruction: "Custom Icon with Bar",
+                    content: $"This shows a custom icon with the bar value of {i}",
+                    standardIcon: (ushort.MaxValue + i)
+                );
+        }
+
+        public static void TestLoop()
+        {
+            // Loop through and create dialogs testing values ushort.MaxValue -8 through any number
+            for ( int i = -500; i > -1000; i-- )
+            {
+                ShowCustomTaskDialog(
+                    title: "Test",
+                    mainInstruction: "Custom Icon with Bar",
+                    content: $"This shows a custom icon with the bar value of {i}",
+                    standardIcon: (ushort.MaxValue + i)
+                );
+            }
+        }
+
+        // See: https://stackoverflow.com/a/39264594
+        //      https://stackoverflow.com/questions/21656348/using-hidden-security-icons-in-taskdialog
+        enum TaskDialogCommonIcon : int
+        {
+            None = 0,
+            Sheet = 2,
+            ExplorerFolderOpen = 3,
+            ExplorerFolderFlat = 5,
+            ExplorerFolderLeft = 6,
+            Search = 8,
+            ExplorerFolderClosed = 10,
+            ExplorerGames = 14,
+            Application = 15,
+            TransparentSpace = 17,
+            ExplorerSearch = 18,
+            TextFile = 19,
+            Letter = 20,
+            Picture = 21,
+            Diashow = 103,
+            //GreenShieldGreenBar = 65528,
+            GreenShieldGreenBar = ushort.MaxValue - 7,
+            // ...
         }
     }
 }
