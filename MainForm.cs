@@ -23,6 +23,11 @@ namespace Windows_Task_Dialog_Generator
 
         private void btnShowDialog_Click(object sender, EventArgs e)
         {
+            CreateAndShowDialog();
+        }
+
+        private TaskDialogPage AssembleTaskDialogPage()
+        {
             TaskDialogPage page = new TaskDialogPage()
             {
                 Caption = txtTitle.Text,
@@ -86,68 +91,69 @@ namespace Windows_Task_Dialog_Generator
                 page.Buttons.Add(TaskDialogButton.Cancel);
             }
 
-            TaskDialogIcon mainIcon = TaskDialogIcon.None;
+            return page;
+        }
 
-            if ( rbIconNone.Checked ) mainIcon = TaskDialogIcon.None;
-            else if ( rbIconInformation.Checked ) mainIcon = TaskDialogIcon.Information;
-            else if ( rbIconWarning.Checked ) mainIcon   = TaskDialogIcon.Warning;
-            else if ( rbIconError.Checked ) mainIcon = TaskDialogIcon.Error;
-            else if ( rbIconShield.Checked ) mainIcon = TaskDialogIcon.Shield;
-            else if ( rbIconShieldBlueBar.Checked ) mainIcon = TaskDialogIcon.ShieldBlueBar;
-            else if ( rbIconShieldGrayBar.Checked ) mainIcon = TaskDialogIcon.ShieldGrayBar;
-            else if ( rbIconShieldWarningYellowBar.Checked ) mainIcon = TaskDialogIcon.ShieldWarningYellowBar;
-            else if ( rbIconShieldErrorRedBar.Checked ) mainIcon = TaskDialogIcon.ShieldErrorRedBar;
-            else if ( rbIconShieldSuccessGreenBar.Checked ) mainIcon = TaskDialogIcon.ShieldSuccessGreenBar;
+        private void CreateAndShowDialog()
+        {
+            // Create the initial dialog page by adding buttons, but not yet setting the icon
+            TaskDialogPage page = AssembleTaskDialogPage();
+
+            TaskDialogIcon chosenIcon = TaskDialogIcon.None;
+
+            if ( rbIconNone.Checked ) chosenIcon = TaskDialogIcon.None;
+            else if ( rbIconInformation.Checked ) chosenIcon = TaskDialogIcon.Information;
+            else if ( rbIconWarning.Checked ) chosenIcon   = TaskDialogIcon.Warning;
+            else if ( rbIconError.Checked ) chosenIcon = TaskDialogIcon.Error;
+            else if ( rbIconShield.Checked ) chosenIcon = TaskDialogIcon.Shield;
+            else if ( rbIconShieldBlueBar.Checked ) chosenIcon = TaskDialogIcon.ShieldBlueBar;
+            else if ( rbIconShieldGrayBar.Checked ) chosenIcon = TaskDialogIcon.ShieldGrayBar;
+            else if ( rbIconShieldWarningYellowBar.Checked ) chosenIcon = TaskDialogIcon.ShieldWarningYellowBar;
+            else if ( rbIconShieldErrorRedBar.Checked ) chosenIcon = TaskDialogIcon.ShieldErrorRedBar;
+            else if ( rbIconShieldSuccessGreenBar.Checked ) chosenIcon = TaskDialogIcon.ShieldSuccessGreenBar;
             else if ( rbIconCustom.Checked )
             {
                 TaskDialogIcon? customIcon = GetCustomIconFromPath();
 
                 if ( customIcon != null )
-                    mainIcon = customIcon;
+                    chosenIcon = customIcon;
                 else
                     return;
             }
 
-            TaskDialogIcon? initialIcon = null;
-            int? mainIconInt = null;
+            // If applicable, determine the icon to be used initially to set the colored bar, which will then be replaced with the chosen icon
+            TaskDialogIcon? temporaryColorBarIcon = null;
 
             if ( rbBarColorNone.Checked )
             {
-                initialIcon = null;
-                page.Icon = mainIcon;
+                temporaryColorBarIcon = null;
+                page.Icon = chosenIcon;
             }
             else
             {
                 if ( rbBarColorGreen.Checked )
-                    initialIcon = TaskDialogIcon.ShieldSuccessGreenBar;
+                    temporaryColorBarIcon = TaskDialogIcon.ShieldSuccessGreenBar;
                 else if ( rbBarColorBlue.Checked )
-                    initialIcon = TaskDialogIcon.ShieldBlueBar;
+                    temporaryColorBarIcon = TaskDialogIcon.ShieldBlueBar;
                 else if ( rbBarColorGray.Checked )
-                    initialIcon = TaskDialogIcon.ShieldGrayBar;
+                    temporaryColorBarIcon = TaskDialogIcon.ShieldGrayBar;
                 else if ( rbBarColorRed.Checked )
-                    initialIcon = TaskDialogIcon.ShieldErrorRedBar;
+                    temporaryColorBarIcon = TaskDialogIcon.ShieldErrorRedBar;
                 else if ( rbBarColorYellow.Checked )
-                    initialIcon = TaskDialogIcon.ShieldWarningYellowBar;
+                    temporaryColorBarIcon = TaskDialogIcon.ShieldWarningYellowBar;
 
                 // Use the initial icon for the main icon to get the colored bar
-                page.Icon = initialIcon;
+                page.Icon = temporaryColorBarIcon;
 
-                if ( initialIcon != null )
+                if ( temporaryColorBarIcon != null )
                 {
                     // This will fire after the dialog is created
                     page.Created += UpdateIcon_OnCreated;
                 }
             }
 
+            // Shows the actual dialog. Returns the button that was pressed
             TaskDialogButton result = TaskDialog.ShowDialog(page);
-
-            // Example of how to use the result
-            if ( page.Verification is not null && page.Verification.Checked )
-            {
-                // The user checked the verification checkbox.  Store this preference!
-                // (e.g., in application settings, a config file, etc.)
-                Console.WriteLine("Verification was checked!"); // Replace with your persistence logic
-            }
         }
 
         private void UpdateIcon_OnCreated(object? sender, EventArgs e)
