@@ -96,13 +96,6 @@ namespace Windows_Task_Dialog_Generator
 
         private void CreateAndShowDialog()
         {
-            bool iconUpdateRequired; // Whether we need to use the technique of setting the icon after the dialog is created, like for custom icons
-
-            if ( !rbBarColorDefault.Checked )
-            {
-                iconUpdateRequired = true;
-            }
-
             // Create the initial dialog page by adding buttons, but not yet setting the icon
             TaskDialogPage page = AssembleTaskDialogPage();
 
@@ -130,12 +123,12 @@ namespace Windows_Task_Dialog_Generator
                 chosenIcon = DetermineChosenIconFromSelection();
             }
 
-            // If applicable, determine the icon to be used initially to set the colored bar, which will then be replaced with the chosen icon
-            // TODO: Add ability to use colored shields with no colored bar
+            // Directly set the icon if we don't need to specify a custom color bar
             if ( rbBarColorDefault.Checked )
             {
                 page.Icon = chosenIcon;
             }
+            // Otherwise we'll set the icon after the dialog is created, after creating it with the temporary color bar icon
             else
             {
                 page = SetupIconUpdate(page);
@@ -159,10 +152,12 @@ namespace Windows_Task_Dialog_Generator
                 temporaryColorBarIcon = TaskDialogIcon.ShieldErrorRedBar;
             else if ( rbBarColorYellow.Checked )
                 temporaryColorBarIcon = TaskDialogIcon.ShieldWarningYellowBar;
+            else if (rbBarColorNone.Checked )
+                temporaryColorBarIcon = TaskDialogIcon.None;
             else
                 temporaryColorBarIcon = TaskDialogIcon.None; // This should not happen since the radio buttons are mutually exclusive, but just in case
 
-            // Use the temporary initial icon for the main icon to get the colored bar
+            // Use the temporary initial icon for the main icon to get the colored bar, then change it to the chosen icon after the dialog is created with SendMessage
             page.Icon = temporaryColorBarIcon;
 
             int chosenIconInt = DetermineChosenIconFromSelection_Int();
@@ -175,13 +170,12 @@ namespace Windows_Task_Dialog_Generator
 
         private void UpdateIcon_OnCreated(object? sender, EventArgs e, int chosenIconID)
         {
-            // This is called when the dialog is shown
-            // You can update the dialog here
             TaskDialogPage? dialogPage = sender as TaskDialogPage;
             TaskDialog? dialog = dialogPage?.BoundDialog;
             if ( dialog != null )
             {
                 IntPtr hwnd = dialog.Handle;
+                // We can update the icon using a SendMessage call. But we must specify the icon via ID, not an object or hIcon handle
                 SendMessage(hwnd, (int)WinEnums.TDM.UPDATE_ICON, IntPtr.Zero, new IntPtr(chosenIconID));
             }
         }

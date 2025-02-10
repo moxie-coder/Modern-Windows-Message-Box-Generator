@@ -63,6 +63,7 @@
             groupBoxCustomIconFile = new GroupBox();
             buttonTest = new Button();
             groupBoxBarColor = new GroupBox();
+            rbBarColorNone = new RadioButton();
             rbBarColorDefault = new RadioButton();
             rbBarColorGreen = new RadioButton();
             rbBarColorRed = new RadioButton();
@@ -257,9 +258,9 @@
             rbIconShieldSuccessGreenBar.Location = new Point(21, 320);
             rbIconShieldSuccessGreenBar.Margin = new Padding(4, 5, 4, 5);
             rbIconShieldSuccessGreenBar.Name = "rbIconShieldSuccessGreenBar";
-            rbIconShieldSuccessGreenBar.Size = new Size(244, 29);
+            rbIconShieldSuccessGreenBar.Size = new Size(151, 29);
             rbIconShieldSuccessGreenBar.TabIndex = 9;
-            rbIconShieldSuccessGreenBar.Text = "Shield Success - Green Bar";
+            rbIconShieldSuccessGreenBar.Text = "Shield Success";
             rbIconShieldSuccessGreenBar.UseVisualStyleBackColor = true;
             // 
             // rbIconShieldWarningYellowBar
@@ -268,9 +269,9 @@
             rbIconShieldWarningYellowBar.Location = new Point(21, 260);
             rbIconShieldWarningYellowBar.Margin = new Padding(4, 5, 4, 5);
             rbIconShieldWarningYellowBar.Name = "rbIconShieldWarningYellowBar";
-            rbIconShieldWarningYellowBar.Size = new Size(252, 29);
+            rbIconShieldWarningYellowBar.Size = new Size(156, 29);
             rbIconShieldWarningYellowBar.TabIndex = 8;
-            rbIconShieldWarningYellowBar.Text = "Shield Warning - Yellow Bar";
+            rbIconShieldWarningYellowBar.Text = "Shield Warning";
             rbIconShieldWarningYellowBar.UseVisualStyleBackColor = true;
             // 
             // rbIconShieldErrorRedBar
@@ -279,9 +280,9 @@
             rbIconShieldErrorRedBar.Location = new Point(21, 290);
             rbIconShieldErrorRedBar.Margin = new Padding(4, 5, 4, 5);
             rbIconShieldErrorRedBar.Name = "rbIconShieldErrorRedBar";
-            rbIconShieldErrorRedBar.Size = new Size(205, 29);
+            rbIconShieldErrorRedBar.Size = new Size(128, 29);
             rbIconShieldErrorRedBar.TabIndex = 7;
-            rbIconShieldErrorRedBar.Text = "Shield Error - Red Bar";
+            rbIconShieldErrorRedBar.Text = "Shield Error";
             rbIconShieldErrorRedBar.UseVisualStyleBackColor = true;
             // 
             // rbIconShieldGrayBar
@@ -464,6 +465,7 @@
             // 
             // groupBoxBarColor
             // 
+            groupBoxBarColor.Controls.Add(rbBarColorNone);
             groupBoxBarColor.Controls.Add(rbBarColorDefault);
             groupBoxBarColor.Controls.Add(rbBarColorGreen);
             groupBoxBarColor.Controls.Add(rbBarColorRed);
@@ -472,16 +474,26 @@
             groupBoxBarColor.Controls.Add(rbBarColorBlue);
             groupBoxBarColor.Location = new Point(633, 572);
             groupBoxBarColor.Name = "groupBoxBarColor";
-            groupBoxBarColor.Size = new Size(305, 132);
+            groupBoxBarColor.Size = new Size(474, 132);
             groupBoxBarColor.TabIndex = 16;
             groupBoxBarColor.TabStop = false;
             groupBoxBarColor.Text = "Bar Color";
+            // 
+            // rbBarColorNone
+            // 
+            rbBarColorNone.AutoSize = true;
+            rbBarColorNone.Location = new Point(324, 45);
+            rbBarColorNone.Name = "rbBarColorNone";
+            rbBarColorNone.Size = new Size(128, 29);
+            rbBarColorNone.TabIndex = 6;
+            rbBarColorNone.Text = "Force None";
+            rbBarColorNone.UseVisualStyleBackColor = true;
             // 
             // rbBarColorDefault
             // 
             rbBarColorDefault.AutoSize = true;
             rbBarColorDefault.Checked = true;
-            rbBarColorDefault.Location = new Point(16, 48);
+            rbBarColorDefault.Location = new Point(39, 45);
             rbBarColorDefault.Name = "rbBarColorDefault";
             rbBarColorDefault.Size = new Size(94, 29);
             rbBarColorDefault.TabIndex = 5;
@@ -492,7 +504,7 @@
             // rbBarColorGreen
             // 
             rbBarColorGreen.AutoSize = true;
-            rbBarColorGreen.Location = new Point(115, 48);
+            rbBarColorGreen.Location = new Point(138, 45);
             rbBarColorGreen.Name = "rbBarColorGreen";
             rbBarColorGreen.Size = new Size(83, 29);
             rbBarColorGreen.TabIndex = 4;
@@ -502,7 +514,7 @@
             // rbBarColorRed
             // 
             rbBarColorRed.AutoSize = true;
-            rbBarColorRed.Location = new Point(210, 48);
+            rbBarColorRed.Location = new Point(233, 45);
             rbBarColorRed.Name = "rbBarColorRed";
             rbBarColorRed.Size = new Size(67, 29);
             rbBarColorRed.TabIndex = 3;
@@ -512,7 +524,7 @@
             // rbBarColorYellow
             // 
             rbBarColorYellow.AutoSize = true;
-            rbBarColorYellow.Location = new Point(115, 83);
+            rbBarColorYellow.Location = new Point(138, 80);
             rbBarColorYellow.Name = "rbBarColorYellow";
             rbBarColorYellow.Size = new Size(86, 29);
             rbBarColorYellow.TabIndex = 2;
@@ -522,7 +534,7 @@
             // rbBarColorGray
             // 
             rbBarColorGray.AutoSize = true;
-            rbBarColorGray.Location = new Point(16, 83);
+            rbBarColorGray.Location = new Point(39, 80);
             rbBarColorGray.Name = "rbBarColorGray";
             rbBarColorGray.Size = new Size(73, 29);
             rbBarColorGray.TabIndex = 1;
@@ -532,7 +544,7 @@
             // rbBarColorBlue
             // 
             rbBarColorBlue.AutoSize = true;
-            rbBarColorBlue.Location = new Point(210, 83);
+            rbBarColorBlue.Location = new Point(233, 80);
             rbBarColorBlue.Name = "rbBarColorBlue";
             rbBarColorBlue.Size = new Size(70, 29);
             rbBarColorBlue.TabIndex = 0;
@@ -641,5 +653,6 @@
         private RadioButton rbIconCustomID;
         private GroupBox groupBoxCustomIconID;
         private TextBox textBoxCustomIconID;
+        private RadioButton rbBarColorNone;
     }
 }
