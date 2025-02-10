@@ -113,29 +113,12 @@ namespace Windows_Task_Dialog_Generator
             }
             else if (rbIconCustomID.Checked )
             {
-                // Get System.Drawing.Icon from the imageres.dll file of the given ID, then convert to TaskDialogIcon
-                int id = int.Parse(textBoxCustomIconID.Text);
-
-                if ( id < 0 )
-                {
-                    MessageBox.Show("Invalid icon ID. Must be a positive integer.");
-                    return;
-                }
+                TaskDialogIcon? extractedIcon = GetCustomIconObjectFromID();
+                
+                if ( extractedIcon == null )
+                    return; // If error / invalid custom icon, return without showing the dialog
                 else
-                {
-                    string winPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
-                    string imageresPath = Path.Combine(winPath, "imageres.dll");
-
-                    Icon? imageresIcon = System.Drawing.Icon.ExtractIcon(imageresPath, id);
-
-                    if ( imageresIcon != null )
-                        chosenIcon = new TaskDialogIcon(imageresIcon);
-                    else
-                    {
-                        MessageBox.Show($"No icon found in imageres.dll with ID {id}");
-                        return;
-                    }
-                }
+                    chosenIcon = extractedIcon;
             }
             else
             {
@@ -192,6 +175,44 @@ namespace Windows_Task_Dialog_Generator
             {
                 IntPtr hwnd = dialog.Handle;
                 SendMessage(hwnd, (int)WinEnums.TDM.UPDATE_ICON, IntPtr.Zero, new IntPtr(DetermineChosenIconFromSelection_Int()));
+            }
+        }
+
+        private TaskDialogIcon? GetCustomIconObjectFromID()
+        {
+            // Get System.Drawing.Icon from the imageres.dll file of the given ID, then convert to TaskDialogIcon
+            int id = int.Parse(textBoxCustomIconID.Text);
+            TaskDialogIcon extractedIcon;
+
+            if ( id < 0 || id > ushort.MaxValue)
+            {
+                MessageBox.Show("Invalid icon ID. Valid values are from 0 to 65535.");
+                return null;
+            }
+            else
+            {
+                string winPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
+                string imageresPath = Path.Combine(winPath, "imageres.dll");
+
+                Icon? imageresIcon = System.Drawing.Icon.ExtractIcon(imageresPath, id);
+
+                if ( imageresIcon != null )
+                    extractedIcon = new TaskDialogIcon(imageresIcon);
+                else
+                {
+                    MessageBox.Show($"No icon found in imageres.dll with ID {id}");
+                    return null;
+                }
+
+                if ( extractedIcon != null )
+                {
+                    return extractedIcon;
+                }
+                else
+                {
+                    MessageBox.Show("Error loading icon.");
+                    return null;
+                }
             }
         }
 
