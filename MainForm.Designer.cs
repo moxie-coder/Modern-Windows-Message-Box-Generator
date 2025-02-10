@@ -126,11 +126,11 @@
             gbButtons.Controls.Add(rbYesNo);
             gbButtons.Controls.Add(rbOkCancel);
             gbButtons.Controls.Add(rbOk);
-            gbButtons.Location = new Point(471, 22);
+            gbButtons.Location = new Point(476, 22);
             gbButtons.Margin = new Padding(4, 5, 4, 5);
             gbButtons.Name = "gbButtons";
             gbButtons.Padding = new Padding(4, 5, 4, 5);
-            gbButtons.Size = new Size(286, 292);
+            gbButtons.Size = new Size(318, 292);
             gbButtons.TabIndex = 6;
             gbButtons.TabStop = false;
             gbButtons.Text = "Buttons";
@@ -222,7 +222,7 @@
             gbIcon.Controls.Add(rbIconWarning);
             gbIcon.Controls.Add(rbIconInformation);
             gbIcon.Controls.Add(rbIconNone);
-            gbIcon.Location = new Point(786, 22);
+            gbIcon.Location = new Point(823, 22);
             gbIcon.Margin = new Padding(4, 5, 4, 5);
             gbIcon.Name = "gbIcon";
             gbIcon.Padding = new Padding(4, 5, 4, 5);
@@ -241,7 +241,6 @@
             rbIconCustomID.TabIndex = 11;
             rbIconCustomID.Text = "Custom (imageres.dll ID)";
             rbIconCustomID.UseVisualStyleBackColor = true;
-            rbIconCustomID.CheckedChanged += rbIconCustomID_CheckedChanged;
             // 
             // rbIconCustomFile
             // 
@@ -253,7 +252,6 @@
             rbIconCustomFile.TabIndex = 10;
             rbIconCustomFile.Text = "Custom (File)";
             rbIconCustomFile.UseVisualStyleBackColor = true;
-            rbIconCustomFile.CheckedChanged += rbIconCustomFile_CheckedChanged;
             // 
             // rbIconShieldSuccessGreenBar
             // 
@@ -428,9 +426,9 @@
             // 
             // textBoxCustomIconPath
             // 
-            textBoxCustomIconPath.Location = new Point(17, 39);
+            textBoxCustomIconPath.Location = new Point(66, 39);
             textBoxCustomIconPath.Name = "textBoxCustomIconPath";
-            textBoxCustomIconPath.Size = new Size(317, 31);
+            textBoxCustomIconPath.Size = new Size(268, 31);
             textBoxCustomIconPath.TabIndex = 12;
             // 
             // buttonBrowseCustomIcon
@@ -448,7 +446,7 @@
             groupBoxCustomIconFile.Controls.Add(textBoxCustomIconPath);
             groupBoxCustomIconFile.Controls.Add(buttonBrowseCustomIcon);
             groupBoxCustomIconFile.Enabled = false;
-            groupBoxCustomIconFile.Location = new Point(635, 467);
+            groupBoxCustomIconFile.Location = new Point(672, 467);
             groupBoxCustomIconFile.Name = "groupBoxCustomIconFile";
             groupBoxCustomIconFile.Size = new Size(472, 89);
             groupBoxCustomIconFile.TabIndex = 14;
@@ -457,7 +455,7 @@
             // 
             // buttonTest
             // 
-            buttonTest.Location = new Point(995, 722);
+            buttonTest.Location = new Point(1032, 722);
             buttonTest.Name = "buttonTest";
             buttonTest.Size = new Size(112, 34);
             buttonTest.TabIndex = 15;
@@ -475,7 +473,7 @@
             groupBoxBarColor.Controls.Add(rbBarColorYellow);
             groupBoxBarColor.Controls.Add(rbBarColorGray);
             groupBoxBarColor.Controls.Add(rbBarColorBlue);
-            groupBoxBarColor.Location = new Point(633, 572);
+            groupBoxBarColor.Location = new Point(670, 572);
             groupBoxBarColor.Name = "groupBoxBarColor";
             groupBoxBarColor.Size = new Size(474, 132);
             groupBoxBarColor.TabIndex = 16;
@@ -558,16 +556,16 @@
             // 
             groupBoxCustomIconID.Controls.Add(textBoxCustomIconID);
             groupBoxCustomIconID.Enabled = false;
-            groupBoxCustomIconID.Location = new Point(471, 347);
+            groupBoxCustomIconID.Location = new Point(476, 572);
             groupBoxCustomIconID.Name = "groupBoxCustomIconID";
-            groupBoxCustomIconID.Size = new Size(183, 102);
+            groupBoxCustomIconID.Size = new Size(172, 91);
             groupBoxCustomIconID.TabIndex = 17;
             groupBoxCustomIconID.TabStop = false;
             groupBoxCustomIconID.Text = "Custom Icon (ID)";
             // 
             // textBoxCustomIconID
             // 
-            textBoxCustomIconID.Location = new Point(21, 46);
+            textBoxCustomIconID.Location = new Point(21, 39);
             textBoxCustomIconID.Name = "textBoxCustomIconID";
             textBoxCustomIconID.Size = new Size(135, 31);
             textBoxCustomIconID.TabIndex = 14;
@@ -602,7 +600,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1120, 768);
+            ClientSize = new Size(1157, 768);
             Controls.Add(textBoxVerification);
             Controls.Add(lblMessage);
             Controls.Add(txtMessage);

@@ -13,9 +13,18 @@ namespace Windows_Task_Dialog_Generator
         {
             InitializeComponent();
 
-#if DEBUG
+            #if DEBUG
             buttonTest.Visible = true;
-#endif
+            #endif
+
+            // Attach event handler to all radio buttons in the gbIcon group to enable/disable necessary controls when the radio button selection changes
+            foreach ( Control control in gbIcon.Controls )
+            {
+                if ( control is RadioButton rb )
+                {
+                    rb.CheckedChanged += EnableDisableNecessaryControls;
+                }
+            }
         }
 
         [DllImport("user32.dll")]
@@ -403,27 +412,17 @@ namespace Windows_Task_Dialog_Generator
             return taskDialogIcon;
         }
 
-        private void EnableDisableNecessaryControls()
+        private void EnableDisableNecessaryControls(object? sender, EventArgs e)
         {
             groupBoxCustomIconFile.Enabled = rbIconCustomFile.Checked; // Enable the custom file path group box if the custom file radio button is checked
             groupBoxBarColor.Enabled = !rbIconCustomFile.Checked; // We cannot use bar colors with custom icons from a file, only an imageRes.dll ID
-            groupBoxCustomIconID.Enabled = !rbIconCustomFile.Checked; // Custom ID and custom file are mutually exclusive
+            groupBoxCustomIconID.Enabled = rbIconCustomID.Checked; // Custom ID and custom file are mutually exclusive
 
             if ( rbIconCustomFile.Checked )
             {
                 // If the custom icon is selected, disable the bar color options
                 rbBarColorDefault.Checked = true;
             }
-        }
-
-        private void rbIconCustomFile_CheckedChanged(object sender, EventArgs e)
-        {
-            EnableDisableNecessaryControls();
-        }
-
-        private void rbIconCustomID_CheckedChanged(object sender, EventArgs e)
-        {
-            EnableDisableNecessaryControls();
         }
 
         private void buttonTest_Click(object sender, EventArgs e)
