@@ -18,18 +18,6 @@ namespace Windows_Task_Dialog_Generator
             #endif
         }
 
-        private const int TD_WARNING_ICON = 65535;
-        private const int TD_ERROR_ICON = 65534;
-        private const int TD_INFORMATION_ICON = 65533;
-        private const int TD_SHIELD_ICON = 65532;
-
-        // Constants for shield with bar icons (these are different from the standard shield!)
-        private const int TD_SHIELD_BLUE_BAR = ushort.MaxValue - 4;
-        private const int TD_SHIELD_YELLOW_BAR = ushort.MaxValue - 5;
-        private const int TD_SHIELD_RED_BAR = ushort.MaxValue - 6;
-        private const int TD_SHIELD_GREEN_BAR = ushort.MaxValue - 7;
-        private const int TD_SHIELD_GRAY_BAR = ushort.MaxValue - 8;
-
         [DllImport("user32.dll")]
         private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
 
@@ -131,75 +119,23 @@ namespace Windows_Task_Dialog_Generator
             else
             {
                 if ( rbBarColorGreen.Checked )
-                {
                     initialIcon = TaskDialogIcon.ShieldSuccessGreenBar;
-                }
                 else if ( rbBarColorBlue.Checked )
-                {
                     initialIcon = TaskDialogIcon.ShieldBlueBar;
-                }
                 else if ( rbBarColorGray.Checked )
-                {
                     initialIcon = TaskDialogIcon.ShieldGrayBar;
-                }
                 else if ( rbBarColorRed.Checked )
-                {
                     initialIcon = TaskDialogIcon.ShieldErrorRedBar;
-                }
                 else if ( rbBarColorYellow.Checked )
-                {
                     initialIcon = TaskDialogIcon.ShieldWarningYellowBar;
-                }
                 else
-                {
                     initialIcon = null;
-                }
 
                 // Use the initial icon for the main icon to get the colored bar
                 page.Icon = initialIcon;
 
                 // Then define what we will change the icon to when the dialog is shown after we get the colored bar to show
-                if ( rbIconWarning.Checked )
-                {
-                    mainIconInt = TD_WARNING_ICON;
-                }
-                else if ( rbIconError.Checked )
-                {
-                    mainIconInt = TD_ERROR_ICON;
-                }
-                else if ( rbIconInformation.Checked )
-                {
-                    mainIconInt = TD_INFORMATION_ICON;
-                }
-                else if ( rbIconShield.Checked )
-                {
-                    mainIconInt = TD_SHIELD_ICON;
-                }
-                else if ( rbIconShieldBlueBar.Checked )
-                {
-                    mainIconInt = TD_SHIELD_BLUE_BAR;
-                }
-                else if ( rbIconShieldGrayBar.Checked )
-                {
-                    mainIconInt = TD_SHIELD_GRAY_BAR;
-                }
-                else if ( rbIconShieldWarningYellowBar.Checked )
-                {
-                    mainIconInt = TD_SHIELD_YELLOW_BAR;
-                }
-                else if ( rbIconShieldErrorRedBar.Checked )
-                {
-                    mainIconInt = TD_SHIELD_RED_BAR;
-                }
-                else if ( rbIconShieldSuccessGreenBar.Checked )
-                {
-                    mainIconInt = TD_SHIELD_GREEN_BAR;
-                }
-                else
-                {
-                    mainIconInt = 0;
-                }
-
+                mainIconInt = DetermineMainIconInt();
             }
             
 
@@ -231,42 +167,30 @@ namespace Windows_Task_Dialog_Generator
                 // (e.g., in application settings, a config file, etc.)
                 Console.WriteLine("Verification was checked!"); // Replace with your persistence logic
             }
+        }
 
-            // Using if/else instead of a switch case because that doesn't work
-            // The TaskDialogButton properties are getters and therefore not constant, so they can't be used in a switch case
-            // And the TaskDialogButton enum values it gets are not accessible so we can't use that either in a switch case
-            if ( result == TaskDialogButton.Cancel )
-            {
-                Console.WriteLine("Cancel was clicked");
-            }
-            else if ( result == TaskDialogButton.OK )
-            {
-                Console.WriteLine("OK was clicked");
-            }
-            else if ( result == TaskDialogButton.Cancel )
-            {
-                Console.WriteLine("Cancel was clicked");
-            }
-            else if ( result == TaskDialogButton.Abort )
-            {
-                Console.WriteLine("Abort was clicked");
-            }
-            else if ( result == TaskDialogButton.Retry )
-            {
-                Console.WriteLine("Retry was clicked");
-            }
-            else if ( result == TaskDialogButton.Ignore )
-            {
-                Console.WriteLine("Ignore was clicked");
-            }
-            else if ( result == TaskDialogButton.Yes )
-            {
-                Console.WriteLine("Yes was clicked");
-            }
-            else if ( result == TaskDialogButton.No )
-            {
-                Console.WriteLine("No was clicked");
-            }
+        private int DetermineMainIconInt()
+        {
+            if ( rbIconWarning.Checked )
+                return (int)WinEnums.StandardIcons.Warning;
+            else if ( rbIconError.Checked )
+                return (int)WinEnums.StandardIcons.Error;
+            else if ( rbIconInformation.Checked )
+                return (int)WinEnums.StandardIcons.Information;
+            else if ( rbIconShield.Checked )
+                return (int)WinEnums.StandardIcons.Shield;
+            else if ( rbIconShieldBlueBar.Checked )
+                return (int)WinEnums.ShieldIcons.BlueBar;
+            else if ( rbIconShieldGrayBar.Checked )
+                return (int)WinEnums.ShieldIcons.GrayBar;
+            else if ( rbIconShieldWarningYellowBar.Checked )
+                return (int)WinEnums.ShieldIcons.YellowBar;
+            else if ( rbIconShieldErrorRedBar.Checked )
+                return (int)WinEnums.ShieldIcons.RedBar;
+            else if ( rbIconShieldSuccessGreenBar.Checked )
+                return (int)WinEnums.ShieldIcons.GreenBar;
+            else
+                return 0;
         }
 
         private void buttonBrowseCustomIcon_Click(object sender, EventArgs e)

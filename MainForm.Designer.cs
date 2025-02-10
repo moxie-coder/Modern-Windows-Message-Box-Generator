@@ -62,12 +62,12 @@
             groupBoxCustomIcon = new GroupBox();
             buttonTest = new Button();
             groupBoxBarColor = new GroupBox();
-            rbBarColorBlue = new RadioButton();
-            rbBarColorGray = new RadioButton();
-            rbBarColorYellow = new RadioButton();
-            rbBarColorRed = new RadioButton();
             rbBarColorNone = new RadioButton();
             rbBarColorGreen = new RadioButton();
+            rbBarColorRed = new RadioButton();
+            rbBarColorYellow = new RadioButton();
+            rbBarColorGray = new RadioButton();
+            rbBarColorBlue = new RadioButton();
             gbButtons.SuspendLayout();
             gbIcon.SuspendLayout();
             groupBoxCustomIcon.SuspendLayout();
@@ -461,59 +461,16 @@
             groupBoxBarColor.TabStop = false;
             groupBoxBarColor.Text = "Bar Color";
             // 
-            // rbBarColorBlue
-            // 
-            rbBarColorBlue.AutoSize = true;
-            rbBarColorBlue.Location = new Point(210, 83);
-            rbBarColorBlue.Name = "rbBarColorBlue";
-            rbBarColorBlue.Size = new Size(70, 29);
-            rbBarColorBlue.TabIndex = 0;
-            rbBarColorBlue.TabStop = true;
-            rbBarColorBlue.Text = "Blue";
-            rbBarColorBlue.UseVisualStyleBackColor = true;
-            // 
-            // rbBarColorGray
-            // 
-            rbBarColorGray.AutoSize = true;
-            rbBarColorGray.Location = new Point(16, 83);
-            rbBarColorGray.Name = "rbBarColorGray";
-            rbBarColorGray.Size = new Size(73, 29);
-            rbBarColorGray.TabIndex = 1;
-            rbBarColorGray.TabStop = true;
-            rbBarColorGray.Text = "Gray";
-            rbBarColorGray.UseVisualStyleBackColor = true;
-            // 
-            // rbBarColorYellow
-            // 
-            rbBarColorYellow.AutoSize = true;
-            rbBarColorYellow.Location = new Point(115, 83);
-            rbBarColorYellow.Name = "rbBarColorYellow";
-            rbBarColorYellow.Size = new Size(86, 29);
-            rbBarColorYellow.TabIndex = 2;
-            rbBarColorYellow.TabStop = true;
-            rbBarColorYellow.Text = "Yellow";
-            rbBarColorYellow.UseVisualStyleBackColor = true;
-            // 
-            // rbBarColorRed
-            // 
-            rbBarColorRed.AutoSize = true;
-            rbBarColorRed.Location = new Point(210, 48);
-            rbBarColorRed.Name = "rbBarColorRed";
-            rbBarColorRed.Size = new Size(67, 29);
-            rbBarColorRed.TabIndex = 3;
-            rbBarColorRed.TabStop = true;
-            rbBarColorRed.Text = "Red";
-            rbBarColorRed.UseVisualStyleBackColor = true;
-            // 
             // rbBarColorNone
             // 
             rbBarColorNone.AutoSize = true;
+            rbBarColorNone.Checked = true;
             rbBarColorNone.Location = new Point(16, 48);
             rbBarColorNone.Name = "rbBarColorNone";
-            rbBarColorNone.Size = new Size(80, 29);
+            rbBarColorNone.Size = new Size(94, 29);
             rbBarColorNone.TabIndex = 5;
             rbBarColorNone.TabStop = true;
-            rbBarColorNone.Text = "None";
+            rbBarColorNone.Text = "Default";
             rbBarColorNone.UseVisualStyleBackColor = true;
             // 
             // rbBarColorGreen
@@ -523,9 +480,48 @@
             rbBarColorGreen.Name = "rbBarColorGreen";
             rbBarColorGreen.Size = new Size(83, 29);
             rbBarColorGreen.TabIndex = 4;
-            rbBarColorGreen.TabStop = true;
             rbBarColorGreen.Text = "Green";
             rbBarColorGreen.UseVisualStyleBackColor = true;
+            // 
+            // rbBarColorRed
+            // 
+            rbBarColorRed.AutoSize = true;
+            rbBarColorRed.Location = new Point(210, 48);
+            rbBarColorRed.Name = "rbBarColorRed";
+            rbBarColorRed.Size = new Size(67, 29);
+            rbBarColorRed.TabIndex = 3;
+            rbBarColorRed.Text = "Red";
+            rbBarColorRed.UseVisualStyleBackColor = true;
+            // 
+            // rbBarColorYellow
+            // 
+            rbBarColorYellow.AutoSize = true;
+            rbBarColorYellow.Location = new Point(115, 83);
+            rbBarColorYellow.Name = "rbBarColorYellow";
+            rbBarColorYellow.Size = new Size(86, 29);
+            rbBarColorYellow.TabIndex = 2;
+            rbBarColorYellow.Text = "Yellow";
+            rbBarColorYellow.UseVisualStyleBackColor = true;
+            // 
+            // rbBarColorGray
+            // 
+            rbBarColorGray.AutoSize = true;
+            rbBarColorGray.Location = new Point(16, 83);
+            rbBarColorGray.Name = "rbBarColorGray";
+            rbBarColorGray.Size = new Size(73, 29);
+            rbBarColorGray.TabIndex = 1;
+            rbBarColorGray.Text = "Gray";
+            rbBarColorGray.UseVisualStyleBackColor = true;
+            // 
+            // rbBarColorBlue
+            // 
+            rbBarColorBlue.AutoSize = true;
+            rbBarColorBlue.Location = new Point(210, 83);
+            rbBarColorBlue.Name = "rbBarColorBlue";
+            rbBarColorBlue.Size = new Size(70, 29);
+            rbBarColorBlue.TabIndex = 0;
+            rbBarColorBlue.Text = "Blue";
+            rbBarColorBlue.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 

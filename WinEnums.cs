@@ -77,5 +77,41 @@ namespace Windows_Task_Dialog_Generator
             /// </summary>
             UPDATE_ICON = WM.USER + 116,
         }
+
+        public enum TDF : uint
+        {
+            NONE = 0x00000000,
+            ENABLE_HYPERLINKS = 0x00000001,
+            USE_HICON_MAIN = 0x00000002,
+            USE_HICON_FOOTER = 0x00000004,
+            VERIFY_CLICK = 0x00000008,
+            SHOW_PROGRESS_BAR = 0x00000010,
+            SHOW_MARQUEE_PROGRESS_BAR = 0x00000020,
+            CALLBACK_TIMER = 0x00000040,
+            POSITION_RELATIVE_TO_WINDOW = 0x00000080,
+            RTL_LAYOUT = 0x00000100,
+            NO_DEFAULT_RADIO_BUTTON = 0x00000200,
+            CAN_BE_MINIMIZED = 0x00000400,
+            SIZE_TO_CONTENT = 0x00000800,
+        }
+
+        public enum ShieldIcons: int
+        {
+            BlueBar = ushort.MaxValue - 4,
+            YellowBar = ushort.MaxValue - 5,
+            RedBar = ushort.MaxValue - 6,
+            GreenBar = ushort.MaxValue - 7,
+            GrayBar = ushort.MaxValue - 8
+
+        }
+
+        public enum  StandardIcons: int 
+        {
+            Warning = 65535,
+            Error = 65534,
+            Information = 65533,
+            Shield = 65532
+        }
+
     }
 }
