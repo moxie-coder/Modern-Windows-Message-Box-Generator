@@ -31,7 +31,7 @@ namespace Windows_Task_Dialog_Generator
             TaskDialogPage page = new TaskDialogPage()
             {
                 Caption = txtTitle.Text,
-                Heading = txtMessage.Text,
+                Heading = txtHeading.Text,
                 Text = txtMessage.Text,
                 Footnote = new TaskDialogFootnote() { Text = txtFooter.Text },
                 AllowCancel = true,

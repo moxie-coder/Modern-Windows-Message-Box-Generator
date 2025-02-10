@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             txtTitle = new TextBox();
-            txtMessage = new TextBox();
+            txtHeading = new TextBox();
             lblTitle = new Label();
-            lblMessage = new Label();
+            lblHeading = new Label();
             gbButtons = new GroupBox();
             rbRetryCancel = new RadioButton();
             rbAbortRetryIgnore = new RadioButton();
@@ -72,6 +72,8 @@
             rbBarColorBlue = new RadioButton();
             groupBoxCustomIconID = new GroupBox();
             textBoxCustomIconID = new TextBox();
+            lblMessage = new Label();
+            txtMessage = new TextBox();
             gbButtons.SuspendLayout();
             gbIcon.SuspendLayout();
             groupBoxCustomIconFile.SuspendLayout();
@@ -87,13 +89,13 @@
             txtTitle.Size = new Size(427, 31);
             txtTitle.TabIndex = 1;
             // 
-            // txtMessage
+            // txtHeading
             // 
-            txtMessage.Location = new Point(17, 145);
-            txtMessage.Margin = new Padding(4, 5, 4, 5);
-            txtMessage.Name = "txtMessage";
-            txtMessage.Size = new Size(427, 31);
-            txtMessage.TabIndex = 3;
+            txtHeading.Location = new Point(17, 123);
+            txtHeading.Margin = new Padding(4, 5, 4, 5);
+            txtHeading.Name = "txtHeading";
+            txtHeading.Size = new Size(427, 31);
+            txtHeading.TabIndex = 3;
             // 
             // lblTitle
             // 
@@ -105,15 +107,15 @@
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Title:";
             // 
-            // lblMessage
+            // lblHeading
             // 
-            lblMessage.AutoSize = true;
-            lblMessage.Location = new Point(17, 115);
-            lblMessage.Margin = new Padding(4, 0, 4, 0);
-            lblMessage.Name = "lblMessage";
-            lblMessage.Size = new Size(86, 25);
-            lblMessage.TabIndex = 2;
-            lblMessage.Text = "Message:";
+            lblHeading.AutoSize = true;
+            lblHeading.Location = new Point(17, 93);
+            lblHeading.Margin = new Padding(4, 0, 4, 0);
+            lblHeading.Name = "lblHeading";
+            lblHeading.Size = new Size(83, 25);
+            lblHeading.TabIndex = 2;
+            lblHeading.Text = "Heading:";
             // 
             // gbButtons
             // 
@@ -378,7 +380,7 @@
             // lblFooter
             // 
             lblFooter.AutoSize = true;
-            lblFooter.Location = new Point(17, 208);
+            lblFooter.Location = new Point(17, 234);
             lblFooter.Margin = new Padding(4, 0, 4, 0);
             lblFooter.Name = "lblFooter";
             lblFooter.Size = new Size(68, 25);
@@ -387,7 +389,7 @@
             // 
             // txtFooter
             // 
-            txtFooter.Location = new Point(17, 238);
+            txtFooter.Location = new Point(17, 264);
             txtFooter.Margin = new Padding(4, 5, 4, 5);
             txtFooter.Name = "txtFooter";
             txtFooter.Size = new Size(427, 31);
@@ -407,7 +409,7 @@
             // lblExpandedInfo
             // 
             lblExpandedInfo.AutoSize = true;
-            lblExpandedInfo.Location = new Point(17, 302);
+            lblExpandedInfo.Location = new Point(17, 328);
             lblExpandedInfo.Margin = new Padding(4, 0, 4, 0);
             lblExpandedInfo.Name = "lblExpandedInfo";
             lblExpandedInfo.Size = new Size(189, 25);
@@ -416,7 +418,7 @@
             // 
             // txtExpandedInfo
             // 
-            txtExpandedInfo.Location = new Point(17, 332);
+            txtExpandedInfo.Location = new Point(17, 358);
             txtExpandedInfo.Margin = new Padding(4, 5, 4, 5);
             txtExpandedInfo.Multiline = true;
             txtExpandedInfo.Name = "txtExpandedInfo";
@@ -569,11 +571,31 @@
             textBoxCustomIconID.Size = new Size(135, 31);
             textBoxCustomIconID.TabIndex = 14;
             // 
+            // lblMessage
+            // 
+            lblMessage.AutoSize = true;
+            lblMessage.Location = new Point(17, 160);
+            lblMessage.Margin = new Padding(4, 0, 4, 0);
+            lblMessage.Name = "lblMessage";
+            lblMessage.Size = new Size(86, 25);
+            lblMessage.TabIndex = 18;
+            lblMessage.Text = "Message:";
+            // 
+            // txtMessage
+            // 
+            txtMessage.Location = new Point(17, 190);
+            txtMessage.Margin = new Padding(4, 5, 4, 5);
+            txtMessage.Name = "txtMessage";
+            txtMessage.Size = new Size(427, 31);
+            txtMessage.TabIndex = 19;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1120, 768);
+            Controls.Add(lblMessage);
+            Controls.Add(txtMessage);
             Controls.Add(groupBoxCustomIconID);
             Controls.Add(groupBoxBarColor);
             Controls.Add(buttonTest);
@@ -586,9 +608,9 @@
             Controls.Add(btnShowDialog);
             Controls.Add(gbIcon);
             Controls.Add(gbButtons);
-            Controls.Add(lblMessage);
+            Controls.Add(lblHeading);
             Controls.Add(lblTitle);
-            Controls.Add(txtMessage);
+            Controls.Add(txtHeading);
             Controls.Add(txtTitle);
             Margin = new Padding(4, 5, 4, 5);
             MaximizeBox = false;
@@ -611,9 +633,9 @@
         #endregion
 
         private TextBox txtTitle;
-        private TextBox txtMessage;
+        private TextBox txtHeading;
         private Label lblTitle;
-        private Label lblMessage;
+        private Label lblHeading;
         private GroupBox gbButtons;
         private RadioButton rbRetryCancel;
         private RadioButton rbAbortRetryIgnore;
@@ -654,5 +676,7 @@
         private GroupBox groupBoxCustomIconID;
         private TextBox textBoxCustomIconID;
         private RadioButton rbBarColorNone;
+        private Label lblMessage;
+        private TextBox txtMessage;
     }
 }
