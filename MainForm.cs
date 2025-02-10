@@ -96,11 +96,13 @@ namespace Windows_Task_Dialog_Generator
 
         private void CreateAndShowDialog()
         {
+            //bool iconUpdateRequired = false; // Whether we need to use the technique of setting the icon after the dialog is created, like for custom icons
+
             // Create the initial dialog page by adding buttons, but not yet setting the icon
             TaskDialogPage page = AssembleTaskDialogPage();
 
             TaskDialogIcon chosenIcon;
-            if ( rbIconCustom.Checked )
+            if ( rbIconCustomFile.Checked )
             {
                 TaskDialogIcon? customIcon = GetCustomIconFromPath();
 
@@ -108,6 +110,32 @@ namespace Windows_Task_Dialog_Generator
                     chosenIcon = customIcon;
                 else
                     return; // If error / invalid custom icon, return without showing the dialog
+            }
+            else if (rbIconCustomID.Checked )
+            {
+                // Get System.Drawing.Icon from the imageres.dll file of the given ID, then convert to TaskDialogIcon
+                int id = int.Parse(textBoxCustomIconID.Text);
+
+                if ( id < 0 )
+                {
+                    MessageBox.Show("Invalid icon ID. Must be a positive integer.");
+                    return;
+                }
+                else
+                {
+                    string winPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
+                    string imageresPath = Path.Combine(winPath, "imageres.dll");
+
+                    Icon? imageresIcon = System.Drawing.Icon.ExtractIcon(imageresPath, id);
+
+                    if ( imageresIcon != null )
+                        chosenIcon = new TaskDialogIcon(imageresIcon);
+                    else
+                    {
+                        MessageBox.Show($"No icon found in imageres.dll with ID {id}");
+                        return;
+                    }
+                }
             }
             else
             {
@@ -315,10 +343,10 @@ namespace Windows_Task_Dialog_Generator
         private void rbIconCustom_CheckedChanged(object sender, EventArgs e)
         {
             // Toggle the enabled state of the custom icon path text box and browse button
-            groupBoxCustomIcon.Enabled = rbIconCustom.Checked;
-            groupBoxBarColor.Enabled = !rbIconCustom.Checked;
+            groupBoxCustomIconFile.Enabled = rbIconCustomFile.Checked;
+            groupBoxBarColor.Enabled = !rbIconCustomFile.Checked;
 
-            if ( rbIconCustom.Checked )
+            if ( rbIconCustomFile.Checked )
             {
                 // If the custom icon is selected, disable the bar color options
                 rbBarColorNone.Checked = true;
