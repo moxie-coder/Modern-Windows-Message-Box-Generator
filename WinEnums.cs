@@ -107,6 +107,7 @@ namespace Windows_Task_Dialog_Generator
 
         public enum  StandardIcons: int 
         {
+            None = 0,
             Warning = 65535,
             Error = 65534,
             Information = 65533,
