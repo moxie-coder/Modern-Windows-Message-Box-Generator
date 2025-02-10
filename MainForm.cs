@@ -9,6 +9,8 @@ namespace Windows_Task_Dialog_Generator
 {
     public partial class MainForm : Form
     {
+        FlowLayoutPanel? storedFlowLayoutPanel = null;
+
         public MainForm()
         {
             InitializeComponent();
@@ -161,7 +163,7 @@ namespace Windows_Task_Dialog_Generator
                 temporaryColorBarIcon = TaskDialogIcon.ShieldErrorRedBar;
             else if ( rbBarColorYellow.Checked )
                 temporaryColorBarIcon = TaskDialogIcon.ShieldWarningYellowBar;
-            else if (rbBarColorNone.Checked )
+            else if ( rbBarColorNone.Checked )
                 temporaryColorBarIcon = TaskDialogIcon.None;
             else
                 temporaryColorBarIcon = TaskDialogIcon.None; // This should not happen since the radio buttons are mutually exclusive, but just in case
@@ -202,9 +204,10 @@ namespace Windows_Task_Dialog_Generator
                 return null;
             }
 
-            if ( id < 0 || id > ushort.MaxValue )
+            // Ensure the absolute value of the ID is within the valid range, since it can be negative
+            if ( Math.Abs(id) > ushort.MaxValue )
             {
-                MessageBox.Show("Invalid icon ID. Valid values are from 0 to 65535.");
+                MessageBox.Show("Invalid icon ID. Valid values are from -65535 to 65535.");
                 return null;
             }
 
@@ -224,9 +227,9 @@ namespace Windows_Task_Dialog_Generator
             // Get System.Drawing.Icon from the imageres.dll file of the given ID, then convert to TaskDialogIcon
             TaskDialogIcon extractedIcon;
 
-            if ( id < 0 || id > ushort.MaxValue )
+            if ( Math.Abs(id) > ushort.MaxValue )
             {
-                MessageBox.Show("Invalid icon ID. Valid values are from 0 to 65535.");
+                MessageBox.Show("Invalid icon ID. Valid values are from -65535 to 65535.");
                 return null;
             }
             else
@@ -236,11 +239,19 @@ namespace Windows_Task_Dialog_Generator
 
                 Icon? imageresIcon = System.Drawing.Icon.ExtractIcon(imageresPath, id);
 
+                // If it's null, try the negative of the id
+                if (imageresIcon == null )
+                {
+                    imageresIcon = System.Drawing.Icon.ExtractIcon(imageresPath, -1 * id);
+                }
+
                 if ( imageresIcon != null )
+                {
                     extractedIcon = new TaskDialogIcon(imageresIcon);
+                }
                 else
                 {
-                    MessageBox.Show($"No icon found in imageres.dll with ID {id}");
+                    MessageBox.Show($"No icon found in imageres.dll with ID either {id} or {-1 * id}");
                     return null;
                 }
 
@@ -263,6 +274,12 @@ namespace Windows_Task_Dialog_Generator
             try
             {
                 Icon? icon = System.Drawing.Icon.ExtractIcon(imageresPath, id);
+
+                if ( icon == null )
+                {
+                    icon = System.Drawing.Icon.ExtractIcon(imageresPath, -1 * id);
+                }
+
                 return icon;
             }
             catch ( Exception ex )
@@ -478,6 +495,11 @@ namespace Windows_Task_Dialog_Generator
             return taskDialogIcon;
         }
 
+        public void SetCustomID(int id)
+        {
+            textBoxCustomIconID.Text = id.ToString();
+        }
+
         private void EnableDisableNecessaryControls(object? sender, EventArgs e)
         {
             groupBoxCustomIconFile.Enabled = rbIconCustomFile.Checked; // Enable the custom file path group box if the custom file radio button is checked
@@ -501,6 +523,22 @@ namespace Windows_Task_Dialog_Generator
             //bool testVar = true;
         }
 
-        
+        private void buttonImageResIcons_Click(object sender, EventArgs e)
+        {
+            // Check if the form is already open or already created
+            foreach ( Form form in Application.OpenForms )
+            {
+                if ( form is Imageres_Icons )
+                {
+                    form.Show();
+                    form.BringToFront();
+                    return;
+                }
+            }
+
+            // Open the Imageres_Icons form
+            Imageres_Icons imageresIcons = new Imageres_Icons(this);
+            imageresIcons.Show();
+        }
     }
 }

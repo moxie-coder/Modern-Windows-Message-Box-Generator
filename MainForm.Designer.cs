@@ -75,6 +75,7 @@
             lblMessage = new Label();
             txtMessage = new TextBox();
             textBoxVerification = new TextBox();
+            buttonImageResIcons = new Button();
             gbButtons.SuspendLayout();
             gbIcon.SuspendLayout();
             groupBoxCustomIconFile.SuspendLayout();
@@ -597,11 +598,22 @@
             textBoxVerification.Size = new Size(250, 31);
             textBoxVerification.TabIndex = 20;
             // 
+            // buttonImageResIcons
+            // 
+            buttonImageResIcons.Location = new Point(360, 701);
+            buttonImageResIcons.Name = "buttonImageResIcons";
+            buttonImageResIcons.Size = new Size(181, 34);
+            buttonImageResIcons.TabIndex = 21;
+            buttonImageResIcons.Text = "View Icon Options";
+            buttonImageResIcons.UseVisualStyleBackColor = true;
+            buttonImageResIcons.Click += buttonImageResIcons_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1157, 768);
+            Controls.Add(buttonImageResIcons);
             Controls.Add(textBoxVerification);
             Controls.Add(lblMessage);
             Controls.Add(txtMessage);
@@ -689,5 +701,6 @@
         private Label lblMessage;
         private TextBox txtMessage;
         private TextBox textBoxVerification;
+        private Button buttonImageResIcons;
     }
 }
