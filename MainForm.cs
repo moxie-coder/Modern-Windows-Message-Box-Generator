@@ -13,9 +13,9 @@ namespace Windows_Task_Dialog_Generator
         {
             InitializeComponent();
 
-            #if DEBUG
+#if DEBUG
             buttonTest.Visible = true;
-            #endif
+#endif
         }
 
         [DllImport("user32.dll")]
@@ -96,7 +96,12 @@ namespace Windows_Task_Dialog_Generator
 
         private void CreateAndShowDialog()
         {
-            //bool iconUpdateRequired = false; // Whether we need to use the technique of setting the icon after the dialog is created, like for custom icons
+            bool iconUpdateRequired; // Whether we need to use the technique of setting the icon after the dialog is created, like for custom icons
+
+            if ( !rbBarColorDefault.Checked )
+            {
+                iconUpdateRequired = true;
+            }
 
             // Create the initial dialog page by adding buttons, but not yet setting the icon
             TaskDialogPage page = AssembleTaskDialogPage();
@@ -111,12 +116,12 @@ namespace Windows_Task_Dialog_Generator
                 else
                     return; // If error / invalid custom icon, return without showing the dialog
             }
-            else if (rbIconCustomID.Checked )
+            else if ( rbIconCustomID.Checked )
             {
                 TaskDialogIcon? extractedIcon = GetCustomIconObjectFromID();
-                
+
                 if ( extractedIcon == null )
-                    return; // If error / invalid custom icon, return without showing the dialog
+                    return; // If error / invalid custom icon, return without showing the dialog. Error will have been shown in GetCustomIconObjectFromID()
                 else
                     chosenIcon = extractedIcon;
             }
@@ -126,7 +131,8 @@ namespace Windows_Task_Dialog_Generator
             }
 
             // If applicable, determine the icon to be used initially to set the colored bar, which will then be replaced with the chosen icon
-            if ( rbBarColorNone.Checked )
+            // TODO: Add ability to use colored shields with no colored bar
+            if ( rbBarColorDefault.Checked )
             {
                 page.Icon = chosenIcon;
             }
@@ -159,13 +165,15 @@ namespace Windows_Task_Dialog_Generator
             // Use the temporary initial icon for the main icon to get the colored bar
             page.Icon = temporaryColorBarIcon;
 
+            int chosenIconInt = DetermineChosenIconFromSelection_Int();
+
             // This will fire after the dialog is created
-            page.Created += UpdateIcon_OnCreated;
+            page.Created += (sender, e) => UpdateIcon_OnCreated(sender, e, chosenIconInt);
 
             return page;
         }
 
-        private void UpdateIcon_OnCreated(object? sender, EventArgs e)
+        private void UpdateIcon_OnCreated(object? sender, EventArgs e, int chosenIconID)
         {
             // This is called when the dialog is shown
             // You can update the dialog here
@@ -174,17 +182,46 @@ namespace Windows_Task_Dialog_Generator
             if ( dialog != null )
             {
                 IntPtr hwnd = dialog.Handle;
-                SendMessage(hwnd, (int)WinEnums.TDM.UPDATE_ICON, IntPtr.Zero, new IntPtr(DetermineChosenIconFromSelection_Int()));
+                SendMessage(hwnd, (int)WinEnums.TDM.UPDATE_ICON, IntPtr.Zero, new IntPtr(chosenIconID));
             }
+        }
+
+        private int? ParseAndValidateCustomID()
+        {
+            int id;
+            try
+            {
+                id = int.Parse(textBoxCustomIconID.Text);
+            }
+            catch ( Exception ex )
+            {
+                MessageBox.Show("Invalid icon ID. Please enter a valid integer. Error: \n\n" + ex);
+                return null;
+            }
+
+            if ( id < 0 || id > ushort.MaxValue )
+            {
+                MessageBox.Show("Invalid icon ID. Valid values are from 0 to 65535.");
+                return null;
+            }
+
+            return id;
         }
 
         private TaskDialogIcon? GetCustomIconObjectFromID()
         {
+            int? parsedID = ParseAndValidateCustomID();
+            int id;
+
+            if ( parsedID == null )
+                return null;
+            else
+                id = (int)parsedID;
+
             // Get System.Drawing.Icon from the imageres.dll file of the given ID, then convert to TaskDialogIcon
-            int id = int.Parse(textBoxCustomIconID.Text);
             TaskDialogIcon extractedIcon;
 
-            if ( id < 0 || id > ushort.MaxValue)
+            if ( id < 0 || id > ushort.MaxValue )
             {
                 MessageBox.Show("Invalid icon ID. Valid values are from 0 to 65535.");
                 return null;
@@ -254,6 +291,17 @@ namespace Windows_Task_Dialog_Generator
                 return (int)WinEnums.ShieldIcons.RedBar;
             else if ( rbIconShieldSuccessGreenBar.Checked )
                 return (int)WinEnums.ShieldIcons.GreenBar;
+
+            // For custom icon ID
+            else if ( rbIconCustomID.Checked )
+            {
+                int? parsedID = ParseAndValidateCustomID();
+                if ( parsedID == null )
+                    return 0;
+                else
+                    return (int)parsedID;
+            }
+
             else
                 return (int)WinEnums.StandardIcons.None;
         }
@@ -361,17 +409,27 @@ namespace Windows_Task_Dialog_Generator
             return taskDialogIcon;
         }
 
-        private void rbIconCustom_CheckedChanged(object sender, EventArgs e)
+        private void EnableDisableNecessaryControls()
         {
-            // Toggle the enabled state of the custom icon path text box and browse button
-            groupBoxCustomIconFile.Enabled = rbIconCustomFile.Checked;
-            groupBoxBarColor.Enabled = !rbIconCustomFile.Checked;
+            groupBoxCustomIconFile.Enabled = rbIconCustomFile.Checked; // Enable the custom file path group box if the custom file radio button is checked
+            groupBoxBarColor.Enabled = !rbIconCustomFile.Checked; // We cannot use bar colors with custom icons from a file, only an imageRes.dll ID
+            groupBoxCustomIconID.Enabled = !rbIconCustomFile.Checked; // Custom ID and custom file are mutually exclusive
 
             if ( rbIconCustomFile.Checked )
             {
                 // If the custom icon is selected, disable the bar color options
-                rbBarColorNone.Checked = true;
+                rbBarColorDefault.Checked = true;
             }
+        }
+
+        private void rbIconCustomFile_CheckedChanged(object sender, EventArgs e)
+        {
+            EnableDisableNecessaryControls();
+        }
+
+        private void rbIconCustomID_CheckedChanged(object sender, EventArgs e)
+        {
+            EnableDisableNecessaryControls();
         }
 
         private void buttonTest_Click(object sender, EventArgs e)
@@ -383,5 +441,7 @@ namespace Windows_Task_Dialog_Generator
 
             //bool testVar = true;
         }
+
+        
     }
 }

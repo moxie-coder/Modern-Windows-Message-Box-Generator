@@ -40,6 +40,7 @@
             rbOkCancel = new RadioButton();
             rbOk = new RadioButton();
             gbIcon = new GroupBox();
+            rbIconCustomID = new RadioButton();
             rbIconCustomFile = new RadioButton();
             rbIconShieldSuccessGreenBar = new RadioButton();
             rbIconShieldWarningYellowBar = new RadioButton();
@@ -62,13 +63,12 @@
             groupBoxCustomIconFile = new GroupBox();
             buttonTest = new Button();
             groupBoxBarColor = new GroupBox();
-            rbBarColorNone = new RadioButton();
+            rbBarColorDefault = new RadioButton();
             rbBarColorGreen = new RadioButton();
             rbBarColorRed = new RadioButton();
             rbBarColorYellow = new RadioButton();
             rbBarColorGray = new RadioButton();
             rbBarColorBlue = new RadioButton();
-            rbIconCustomID = new RadioButton();
             groupBoxCustomIconID = new GroupBox();
             textBoxCustomIconID = new TextBox();
             gbButtons.SuspendLayout();
@@ -227,6 +227,18 @@
             gbIcon.TabStop = false;
             gbIcon.Text = "Icon";
             // 
+            // rbIconCustomID
+            // 
+            rbIconCustomID.AutoSize = true;
+            rbIconCustomID.Location = new Point(21, 398);
+            rbIconCustomID.Margin = new Padding(4, 5, 4, 5);
+            rbIconCustomID.Name = "rbIconCustomID";
+            rbIconCustomID.Size = new Size(232, 29);
+            rbIconCustomID.TabIndex = 11;
+            rbIconCustomID.Text = "Custom (imageres.dll ID)";
+            rbIconCustomID.UseVisualStyleBackColor = true;
+            rbIconCustomID.CheckedChanged += rbIconCustomID_CheckedChanged;
+            // 
             // rbIconCustomFile
             // 
             rbIconCustomFile.AutoSize = true;
@@ -237,7 +249,7 @@
             rbIconCustomFile.TabIndex = 10;
             rbIconCustomFile.Text = "Custom (File)";
             rbIconCustomFile.UseVisualStyleBackColor = true;
-            rbIconCustomFile.CheckedChanged += rbIconCustom_CheckedChanged;
+            rbIconCustomFile.CheckedChanged += rbIconCustomFile_CheckedChanged;
             // 
             // rbIconShieldSuccessGreenBar
             // 
@@ -431,6 +443,7 @@
             // 
             groupBoxCustomIconFile.Controls.Add(textBoxCustomIconPath);
             groupBoxCustomIconFile.Controls.Add(buttonBrowseCustomIcon);
+            groupBoxCustomIconFile.Enabled = false;
             groupBoxCustomIconFile.Location = new Point(635, 467);
             groupBoxCustomIconFile.Name = "groupBoxCustomIconFile";
             groupBoxCustomIconFile.Size = new Size(472, 89);
@@ -451,7 +464,7 @@
             // 
             // groupBoxBarColor
             // 
-            groupBoxBarColor.Controls.Add(rbBarColorNone);
+            groupBoxBarColor.Controls.Add(rbBarColorDefault);
             groupBoxBarColor.Controls.Add(rbBarColorGreen);
             groupBoxBarColor.Controls.Add(rbBarColorRed);
             groupBoxBarColor.Controls.Add(rbBarColorYellow);
@@ -464,17 +477,17 @@
             groupBoxBarColor.TabStop = false;
             groupBoxBarColor.Text = "Bar Color";
             // 
-            // rbBarColorNone
+            // rbBarColorDefault
             // 
-            rbBarColorNone.AutoSize = true;
-            rbBarColorNone.Checked = true;
-            rbBarColorNone.Location = new Point(16, 48);
-            rbBarColorNone.Name = "rbBarColorNone";
-            rbBarColorNone.Size = new Size(94, 29);
-            rbBarColorNone.TabIndex = 5;
-            rbBarColorNone.TabStop = true;
-            rbBarColorNone.Text = "Default";
-            rbBarColorNone.UseVisualStyleBackColor = true;
+            rbBarColorDefault.AutoSize = true;
+            rbBarColorDefault.Checked = true;
+            rbBarColorDefault.Location = new Point(16, 48);
+            rbBarColorDefault.Name = "rbBarColorDefault";
+            rbBarColorDefault.Size = new Size(94, 29);
+            rbBarColorDefault.TabIndex = 5;
+            rbBarColorDefault.TabStop = true;
+            rbBarColorDefault.Text = "Default";
+            rbBarColorDefault.UseVisualStyleBackColor = true;
             // 
             // rbBarColorGreen
             // 
@@ -526,20 +539,10 @@
             rbBarColorBlue.Text = "Blue";
             rbBarColorBlue.UseVisualStyleBackColor = true;
             // 
-            // rbIconCustomID
-            // 
-            rbIconCustomID.AutoSize = true;
-            rbIconCustomID.Location = new Point(21, 398);
-            rbIconCustomID.Margin = new Padding(4, 5, 4, 5);
-            rbIconCustomID.Name = "rbIconCustomID";
-            rbIconCustomID.Size = new Size(232, 29);
-            rbIconCustomID.TabIndex = 11;
-            rbIconCustomID.Text = "Custom (imageres.dll ID)";
-            rbIconCustomID.UseVisualStyleBackColor = true;
-            // 
             // groupBoxCustomIconID
             // 
             groupBoxCustomIconID.Controls.Add(textBoxCustomIconID);
+            groupBoxCustomIconID.Enabled = false;
             groupBoxCustomIconID.Location = new Point(471, 347);
             groupBoxCustomIconID.Name = "groupBoxCustomIconID";
             groupBoxCustomIconID.Size = new Size(183, 102);
@@ -633,7 +636,7 @@
         private RadioButton rbBarColorYellow;
         private RadioButton rbBarColorGray;
         private RadioButton rbBarColorBlue;
-        private RadioButton rbBarColorNone;
+        private RadioButton rbBarColorDefault;
         private RadioButton rbBarColorGreen;
         private RadioButton rbIconCustomID;
         private GroupBox groupBoxCustomIconID;
