@@ -52,7 +52,7 @@ namespace Windows_Task_Dialog_Generator
             {
                 page.Verification = new TaskDialogVerificationCheckBox()
                 {
-                    Text = "Don't ask me this again",
+                    Text = textBoxVerification.Text,
                     Checked = false
                 };
             }

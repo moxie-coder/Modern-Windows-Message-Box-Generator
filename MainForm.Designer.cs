@@ -74,6 +74,7 @@
             textBoxCustomIconID = new TextBox();
             lblMessage = new Label();
             txtMessage = new TextBox();
+            textBoxVerification = new TextBox();
             gbButtons.SuspendLayout();
             gbIcon.SuspendLayout();
             groupBoxCustomIconFile.SuspendLayout();
@@ -398,12 +399,12 @@
             // chkVerification
             // 
             chkVerification.AutoSize = true;
-            chkVerification.Location = new Point(17, 555);
+            chkVerification.Location = new Point(17, 572);
             chkVerification.Margin = new Padding(4, 5, 4, 5);
             chkVerification.Name = "chkVerification";
-            chkVerification.Size = new Size(173, 29);
+            chkVerification.Size = new Size(177, 29);
             chkVerification.TabIndex = 10;
-            chkVerification.Text = "Show verification";
+            chkVerification.Text = "Show verification:";
             chkVerification.UseVisualStyleBackColor = true;
             // 
             // lblExpandedInfo
@@ -456,7 +457,7 @@
             // 
             // buttonTest
             // 
-            buttonTest.Location = new Point(22, 630);
+            buttonTest.Location = new Point(995, 722);
             buttonTest.Name = "buttonTest";
             buttonTest.Size = new Size(112, 34);
             buttonTest.TabIndex = 15;
@@ -589,11 +590,20 @@
             txtMessage.Size = new Size(427, 31);
             txtMessage.TabIndex = 19;
             // 
+            // textBoxVerification
+            // 
+            textBoxVerification.Location = new Point(194, 570);
+            textBoxVerification.Name = "textBoxVerification";
+            textBoxVerification.PlaceholderText = "Don't ask again";
+            textBoxVerification.Size = new Size(250, 31);
+            textBoxVerification.TabIndex = 20;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1120, 768);
+            Controls.Add(textBoxVerification);
             Controls.Add(lblMessage);
             Controls.Add(txtMessage);
             Controls.Add(groupBoxCustomIconID);
@@ -678,5 +688,6 @@
         private RadioButton rbBarColorNone;
         private Label lblMessage;
         private TextBox txtMessage;
+        private TextBox textBoxVerification;
     }
 }
