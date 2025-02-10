@@ -350,7 +350,7 @@
             // 
             // btnShowDialog
             // 
-            btnShowDialog.Location = new Point(33, 699);
+            btnShowDialog.Location = new Point(22, 690);
             btnShowDialog.Margin = new Padding(4, 5, 4, 5);
             btnShowDialog.Name = "btnShowDialog";
             btnShowDialog.Size = new Size(173, 55);

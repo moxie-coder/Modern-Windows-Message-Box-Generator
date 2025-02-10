@@ -128,34 +128,15 @@ namespace Windows_Task_Dialog_Generator
                     initialIcon = TaskDialogIcon.ShieldErrorRedBar;
                 else if ( rbBarColorYellow.Checked )
                     initialIcon = TaskDialogIcon.ShieldWarningYellowBar;
-                else
-                    initialIcon = null;
 
                 // Use the initial icon for the main icon to get the colored bar
                 page.Icon = initialIcon;
 
-                // Then define what we will change the icon to when the dialog is shown after we get the colored bar to show
-                mainIconInt = DetermineMainIconInt();
-            }
-            
-
-            if ( initialIcon != null )
-            {
-                // Show the Task Dialog and get the result (as DialogResult)
-                //TaskDialogButton result = TaskDialog.ShowDialog(page);
-                page.Created += (sender, args) =>
+                if ( initialIcon != null )
                 {
-                    // This is called when the dialog is shown
-                    // You can update the dialog here
-                    TaskDialogPage? dialogPage = sender as TaskDialogPage;
-                    TaskDialog? dialog = dialogPage?.BoundDialog;
-
-                    if ( dialog != null )
-                    {
-                        IntPtr hwnd = dialog.Handle;
-                        SendMessage(hwnd, (int)WinEnums.TDM.UPDATE_ICON, IntPtr.Zero, new IntPtr((int)mainIconInt));
-                    }
-                };
+                    // This will fire after the dialog is created
+                    page.Created += UpdateIcon_OnCreated;
+                }
             }
 
             TaskDialogButton result = TaskDialog.ShowDialog(page);
@@ -166,6 +147,19 @@ namespace Windows_Task_Dialog_Generator
                 // The user checked the verification checkbox.  Store this preference!
                 // (e.g., in application settings, a config file, etc.)
                 Console.WriteLine("Verification was checked!"); // Replace with your persistence logic
+            }
+        }
+
+        private void UpdateIcon_OnCreated(object? sender, EventArgs e)
+        {
+            // This is called when the dialog is shown
+            // You can update the dialog here
+            TaskDialogPage? dialogPage = sender as TaskDialogPage;
+            TaskDialog? dialog = dialogPage?.BoundDialog;
+            if ( dialog != null )
+            {
+                IntPtr hwnd = dialog.Handle;
+                SendMessage(hwnd, (int)WinEnums.TDM.UPDATE_ICON, IntPtr.Zero, new IntPtr(DetermineMainIconInt()));
             }
         }
 
