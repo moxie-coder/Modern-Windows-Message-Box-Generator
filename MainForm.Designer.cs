@@ -344,6 +344,7 @@
             // rbIconInformation
             // 
             rbIconInformation.AutoSize = true;
+            rbIconInformation.ImageAlign = ContentAlignment.MiddleLeft;
             rbIconInformation.Location = new Point(21, 60);
             rbIconInformation.Margin = new Padding(4, 5, 4, 5);
             rbIconInformation.Name = "rbIconInformation";
@@ -426,9 +427,9 @@
             // 
             // textBoxCustomIconPath
             // 
-            textBoxCustomIconPath.Location = new Point(66, 39);
+            textBoxCustomIconPath.Location = new Point(15, 39);
             textBoxCustomIconPath.Name = "textBoxCustomIconPath";
-            textBoxCustomIconPath.Size = new Size(268, 31);
+            textBoxCustomIconPath.Size = new Size(319, 31);
             textBoxCustomIconPath.TabIndex = 12;
             // 
             // buttonBrowseCustomIcon
@@ -446,7 +447,7 @@
             groupBoxCustomIconFile.Controls.Add(textBoxCustomIconPath);
             groupBoxCustomIconFile.Controls.Add(buttonBrowseCustomIcon);
             groupBoxCustomIconFile.Enabled = false;
-            groupBoxCustomIconFile.Location = new Point(672, 467);
+            groupBoxCustomIconFile.Location = new Point(672, 488);
             groupBoxCustomIconFile.Name = "groupBoxCustomIconFile";
             groupBoxCustomIconFile.Size = new Size(472, 89);
             groupBoxCustomIconFile.TabIndex = 14;
@@ -455,7 +456,7 @@
             // 
             // buttonTest
             // 
-            buttonTest.Location = new Point(1032, 722);
+            buttonTest.Location = new Point(216, 700);
             buttonTest.Name = "buttonTest";
             buttonTest.Size = new Size(112, 34);
             buttonTest.TabIndex = 15;
@@ -473,7 +474,7 @@
             groupBoxBarColor.Controls.Add(rbBarColorYellow);
             groupBoxBarColor.Controls.Add(rbBarColorGray);
             groupBoxBarColor.Controls.Add(rbBarColorBlue);
-            groupBoxBarColor.Location = new Point(670, 572);
+            groupBoxBarColor.Location = new Point(670, 602);
             groupBoxBarColor.Name = "groupBoxBarColor";
             groupBoxBarColor.Size = new Size(474, 132);
             groupBoxBarColor.TabIndex = 16;
@@ -556,7 +557,7 @@
             // 
             groupBoxCustomIconID.Controls.Add(textBoxCustomIconID);
             groupBoxCustomIconID.Enabled = false;
-            groupBoxCustomIconID.Location = new Point(476, 572);
+            groupBoxCustomIconID.Location = new Point(476, 602);
             groupBoxCustomIconID.Name = "groupBoxCustomIconID";
             groupBoxCustomIconID.Size = new Size(172, 91);
             groupBoxCustomIconID.TabIndex = 17;
@@ -624,6 +625,7 @@
             MaximizeBox = false;
             Name = "MainForm";
             Text = "Task Dialog Generator";
+            Load += MainForm_Load;
             gbButtons.ResumeLayout(false);
             gbButtons.PerformLayout();
             gbIcon.ResumeLayout(false);

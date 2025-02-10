@@ -256,6 +256,72 @@ namespace Windows_Task_Dialog_Generator
             }
         }
 
+        private Icon? GetIconFromImageRes(int id)
+        {
+            string winPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
+            string imageresPath = Path.Combine(winPath, "imageres.dll");
+            try
+            {
+                Icon? icon = System.Drawing.Icon.ExtractIcon(imageresPath, id);
+                return icon;
+            }
+            catch ( Exception ex )
+            {
+                Console.WriteLine("Error loading icon: " + ex.Message);
+                return null;
+            }
+        }
+
+        private Bitmap? GetResizedIconFromImageRes(int id, int width, int height)
+        {
+            Icon? icon = GetIconFromImageRes(id);
+            if ( icon == null )
+            {
+                return null;
+            }
+
+            Bitmap resizedBitmap = new Bitmap(width, height);
+            using ( Graphics g = Graphics.FromImage(resizedBitmap) )
+            {
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                g.DrawImage(icon.ToBitmap(), new Rectangle(0, 0, width, height));
+            }
+
+            return resizedBitmap;
+        }
+
+        // Set the icons on the radio buttons to the actual icons
+        private void SetRadioIcons()
+        {
+            // Icon IDs aren't necessarily the same as the enum values, so we need to get the actual icon from the imageres.dll file
+            List<(RadioButton, int, int)> radioButtonsWithIcons = new List<(RadioButton, int, int)>
+            {
+                (rbIconInformation,           -81,  22), //Slightly smaller to not be cut off
+                (rbIconWarning,               -84,  24),
+                (rbIconError,                 -98,  22), //Slightly smaller to not be cut off
+                (rbIconShield,                -78,  24),
+                (rbIconShieldBlueBar,         -78,  24),
+                (rbIconShieldGrayBar,         -78,  24),
+                (rbIconShieldWarningYellowBar,-107, 24),
+                (rbIconShieldErrorRedBar,     -105, 24),
+                (rbIconShieldSuccessGreenBar, -106, 24)
+            };
+
+            foreach ( (RadioButton radioButton, int iconID, int size) in radioButtonsWithIcons )
+            {
+                radioButton.Image = GetResizedIconFromImageRes(iconID, size, size);
+                radioButton.ImageAlign = ContentAlignment.MiddleLeft;
+                radioButton.TextImageRelation = TextImageRelation.ImageBeforeText;
+
+            }
+
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            SetRadioIcons();
+        }
+
         private TaskDialogIcon DetermineChosenIconFromSelection()
         {
             TaskDialogIcon chosenIcon = TaskDialogIcon.None;
