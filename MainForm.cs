@@ -318,6 +318,7 @@ namespace Windows_Task_Dialog_Generator
             using ( Graphics g = Graphics.FromImage(resizedBitmap) )
             {
                 g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half; // Fixes edges being cut off. See: https://stackoverflow.com/questions/4481947/why-is-gdi-cutting-off-scaled-images
                 g.DrawImage(icon.ToBitmap(), new Rectangle(0, 0, width, height));
             }
 
@@ -335,9 +336,9 @@ namespace Windows_Task_Dialog_Generator
             // Icon IDs aren't necessarily the same as the enum values, so we need to get the actual icon from the imageres.dll file
             List<(RadioButton, int, int)> radioButtonsWithIcons =
             [
-                (rbIconInformation,            81,  15), //Slightly smaller to not be cut off
+                (rbIconInformation,            81,  16), //Slightly smaller to not be cut off
                 (rbIconWarning,                84,  16),
-                (rbIconError,                  98,  15), //Slightly smaller to not be cut off
+                (rbIconError,                  98,  16), //Slightly smaller to not be cut off
                 (rbIconShield,                 78,  16),
                 (rbIconShieldBlueBar,          78,  16),
                 (rbIconShieldGrayBar,          78,  16),
