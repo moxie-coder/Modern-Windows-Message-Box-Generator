@@ -26,6 +26,9 @@ namespace Windows_Task_Dialog_Generator
                     rb.CheckedChanged += EnableDisableNecessaryControls;
                 }
             }
+
+            // Don't allow resize
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
         }
 
         private void btnShowDialog_Click(object sender, EventArgs e)
@@ -304,26 +307,31 @@ namespace Windows_Task_Dialog_Generator
         // Set the icons on the radio buttons to the actual icons
         private void SetRadioIcons()
         {
+            // Get display DPI
+            float dpiX = CreateGraphics().DpiX;
+            float dpiScale = dpiX / 96f;
+
+
             // Icon IDs aren't necessarily the same as the enum values, so we need to get the actual icon from the imageres.dll file
             List<(RadioButton, int, int)> radioButtonsWithIcons =
             [
-                (rbIconInformation,            81,  22), //Slightly smaller to not be cut off
-                (rbIconWarning,                84,  24),
-                (rbIconError,                  98,  22), //Slightly smaller to not be cut off
-                (rbIconShield,                 78,  24),
-                (rbIconShieldBlueBar,          78,  24),
-                (rbIconShieldGrayBar,          78,  24),
-                (rbIconShieldWarningYellowBar, 107, 24),
-                (rbIconShieldErrorRedBar,      105, 24),
-                (rbIconShieldSuccessGreenBar,  106, 24)
+                (rbIconInformation,            81,  15), //Slightly smaller to not be cut off
+                (rbIconWarning,                84,  16),
+                (rbIconError,                  98,  15), //Slightly smaller to not be cut off
+                (rbIconShield,                 78,  16),
+                (rbIconShieldBlueBar,          78,  16),
+                (rbIconShieldGrayBar,          78,  16),
+                (rbIconShieldWarningYellowBar, 107, 16),
+                (rbIconShieldErrorRedBar,      105, 16),
+                (rbIconShieldSuccessGreenBar,  106, 16)
             ];
 
             foreach ( (var radioButton, int iconID, int size) in radioButtonsWithIcons )
             {
-                radioButton.Image = GetResizedIconFromImageRes(iconID, size, size);
+                int ScaledSize = (int)(size * dpiScale);
+                radioButton.Image = GetResizedIconFromImageRes(iconID, ScaledSize, ScaledSize);
                 radioButton.ImageAlign = ContentAlignment.MiddleLeft;
                 radioButton.TextImageRelation = TextImageRelation.ImageBeforeText;
-
             }
 
         }

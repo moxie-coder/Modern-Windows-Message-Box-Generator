@@ -29,18 +29,20 @@
             flowLayoutPanelMain.AutoScroll = true;
             flowLayoutPanelMain.Dock = DockStyle.Fill;
             flowLayoutPanelMain.Location = new Point(0, 0);
+            flowLayoutPanelMain.Margin = new Padding(2);
             flowLayoutPanelMain.Name = "flowLayoutPanelMain";
-            flowLayoutPanelMain.Size = new Size(1157, 750);
+            flowLayoutPanelMain.Size = new Size(810, 450);
             flowLayoutPanelMain.TabIndex = 0;
             // 
             // Imageres_Icons
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1157, 750);
+            ClientSize = new Size(810, 450);
             Controls.Add(flowLayoutPanelMain);
+            Margin = new Padding(2);
             Name = "Imageres_Icons";
-            Text = "Imageres_Icons";
+            Text = "Imageres Icons Preview";
             ResumeLayout(false);
 
         }

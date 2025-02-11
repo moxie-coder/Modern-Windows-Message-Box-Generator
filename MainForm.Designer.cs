@@ -41,18 +41,19 @@
             rbOkCancel = new RadioButton();
             rbOk = new RadioButton();
             gbIcon = new GroupBox();
-            rbIconCustomID = new RadioButton();
-            rbIconCustomFile = new RadioButton();
-            rbIconShieldSuccessGreenBar = new RadioButton();
-            rbIconShieldWarningYellowBar = new RadioButton();
-            rbIconShieldErrorRedBar = new RadioButton();
-            rbIconShieldGrayBar = new RadioButton();
-            rbIconShieldBlueBar = new RadioButton();
-            rbIconError = new RadioButton();
-            rbIconShield = new RadioButton();
-            rbIconWarning = new RadioButton();
-            rbIconInformation = new RadioButton();
+            flowIconSelect = new FlowLayoutPanel();
             rbIconNone = new RadioButton();
+            rbIconInformation = new RadioButton();
+            rbIconWarning = new RadioButton();
+            rbIconShield = new RadioButton();
+            rbIconError = new RadioButton();
+            rbIconShieldBlueBar = new RadioButton();
+            rbIconShieldGrayBar = new RadioButton();
+            rbIconShieldErrorRedBar = new RadioButton();
+            rbIconShieldWarningYellowBar = new RadioButton();
+            rbIconShieldSuccessGreenBar = new RadioButton();
+            rbIconCustomFile = new RadioButton();
+            rbIconCustomID = new RadioButton();
             btnShowDialog = new Button();
             lblFooter = new Label();
             txtFooter = new TextBox();
@@ -77,46 +78,49 @@
             txtMessage = new TextBox();
             textBoxVerification = new TextBox();
             buttonImageResIcons = new Button();
+            flowLayoutPanel1 = new FlowLayoutPanel();
             gbButtons.SuspendLayout();
             gbIcon.SuspendLayout();
+            flowIconSelect.SuspendLayout();
             groupBoxCustomIconFile.SuspendLayout();
             groupBoxBarColor.SuspendLayout();
             groupBoxCustomIconID.SuspendLayout();
+            flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // txtTitle
             // 
-            txtTitle.Location = new Point(17, 52);
-            txtTitle.Margin = new Padding(4, 5, 4, 5);
+            txtTitle.Location = new Point(5, 24);
+            txtTitle.Margin = new Padding(5, 2, 5, 5);
             txtTitle.Name = "txtTitle";
-            txtTitle.Size = new Size(427, 31);
+            txtTitle.Size = new Size(300, 23);
             txtTitle.TabIndex = 1;
             // 
             // txtHeading
             // 
-            txtHeading.Location = new Point(17, 123);
-            txtHeading.Margin = new Padding(4, 5, 4, 5);
+            txtHeading.Location = new Point(5, 76);
+            txtHeading.Margin = new Padding(5, 2, 5, 5);
             txtHeading.Name = "txtHeading";
-            txtHeading.Size = new Size(427, 31);
+            txtHeading.Size = new Size(300, 23);
             txtHeading.TabIndex = 3;
             // 
             // lblTitle
             // 
             lblTitle.AutoSize = true;
-            lblTitle.Location = new Point(17, 22);
-            lblTitle.Margin = new Padding(4, 0, 4, 0);
+            lblTitle.Location = new Point(5, 5);
+            lblTitle.Margin = new Padding(5, 5, 5, 2);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(48, 25);
+            lblTitle.Size = new Size(33, 15);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Title:";
             // 
             // lblHeading
             // 
             lblHeading.AutoSize = true;
-            lblHeading.Location = new Point(17, 93);
-            lblHeading.Margin = new Padding(4, 0, 4, 0);
+            lblHeading.Location = new Point(5, 57);
+            lblHeading.Margin = new Padding(5, 5, 5, 2);
             lblHeading.Name = "lblHeading";
-            lblHeading.Size = new Size(83, 25);
+            lblHeading.Size = new Size(55, 15);
             lblHeading.TabIndex = 2;
             lblHeading.Text = "Heading:";
             // 
@@ -128,11 +132,9 @@
             gbButtons.Controls.Add(rbYesNo);
             gbButtons.Controls.Add(rbOkCancel);
             gbButtons.Controls.Add(rbOk);
-            gbButtons.Location = new Point(476, 22);
-            gbButtons.Margin = new Padding(4, 5, 4, 5);
+            gbButtons.Location = new Point(333, 13);
             gbButtons.Name = "gbButtons";
-            gbButtons.Padding = new Padding(4, 5, 4, 5);
-            gbButtons.Size = new Size(318, 292);
+            gbButtons.Size = new Size(223, 175);
             gbButtons.TabIndex = 6;
             gbButtons.TabStop = false;
             gbButtons.Text = "Buttons";
@@ -140,10 +142,9 @@
             // rbRetryCancel
             // 
             rbRetryCancel.AutoSize = true;
-            rbRetryCancel.Location = new Point(21, 237);
-            rbRetryCancel.Margin = new Padding(4, 5, 4, 5);
+            rbRetryCancel.Location = new Point(15, 142);
             rbRetryCancel.Name = "rbRetryCancel";
-            rbRetryCancel.Size = new Size(135, 29);
+            rbRetryCancel.Size = new Size(93, 19);
             rbRetryCancel.TabIndex = 5;
             rbRetryCancel.TabStop = true;
             rbRetryCancel.Text = "Retry/Cancel";
@@ -152,10 +153,9 @@
             // rbAbortRetryIgnore
             // 
             rbAbortRetryIgnore.AutoSize = true;
-            rbAbortRetryIgnore.Location = new Point(21, 195);
-            rbAbortRetryIgnore.Margin = new Padding(4, 5, 4, 5);
+            rbAbortRetryIgnore.Location = new Point(15, 117);
             rbAbortRetryIgnore.Name = "rbAbortRetryIgnore";
-            rbAbortRetryIgnore.Size = new Size(189, 29);
+            rbAbortRetryIgnore.Size = new Size(126, 19);
             rbAbortRetryIgnore.TabIndex = 4;
             rbAbortRetryIgnore.TabStop = true;
             rbAbortRetryIgnore.Text = "Abort/Retry/Ignore";
@@ -164,10 +164,9 @@
             // rbYesNoCancel
             // 
             rbYesNoCancel.AutoSize = true;
-            rbYesNoCancel.Location = new Point(21, 153);
-            rbYesNoCancel.Margin = new Padding(4, 5, 4, 5);
+            rbYesNoCancel.Location = new Point(15, 92);
             rbYesNoCancel.Name = "rbYesNoCancel";
-            rbYesNoCancel.Size = new Size(151, 29);
+            rbYesNoCancel.Size = new Size(104, 19);
             rbYesNoCancel.TabIndex = 3;
             rbYesNoCancel.TabStop = true;
             rbYesNoCancel.Text = "Yes/No/Cancel";
@@ -176,10 +175,9 @@
             // rbYesNo
             // 
             rbYesNo.AutoSize = true;
-            rbYesNo.Location = new Point(21, 112);
-            rbYesNo.Margin = new Padding(4, 5, 4, 5);
+            rbYesNo.Location = new Point(15, 67);
             rbYesNo.Name = "rbYesNo";
-            rbYesNo.Size = new Size(93, 29);
+            rbYesNo.Size = new Size(63, 19);
             rbYesNo.TabIndex = 2;
             rbYesNo.TabStop = true;
             rbYesNo.Text = "Yes/No";
@@ -188,10 +186,9 @@
             // rbOkCancel
             // 
             rbOkCancel.AutoSize = true;
-            rbOkCancel.Location = new Point(21, 70);
-            rbOkCancel.Margin = new Padding(4, 5, 4, 5);
+            rbOkCancel.Location = new Point(15, 42);
             rbOkCancel.Name = "rbOkCancel";
-            rbOkCancel.Size = new Size(119, 29);
+            rbOkCancel.Size = new Size(82, 19);
             rbOkCancel.TabIndex = 1;
             rbOkCancel.TabStop = true;
             rbOkCancel.Text = "OK/Cancel";
@@ -201,10 +198,9 @@
             // 
             rbOk.AutoSize = true;
             rbOk.Checked = true;
-            rbOk.Location = new Point(21, 28);
-            rbOk.Margin = new Padding(4, 5, 4, 5);
+            rbOk.Location = new Point(15, 17);
             rbOk.Name = "rbOk";
-            rbOk.Size = new Size(61, 29);
+            rbOk.Size = new Size(41, 19);
             rbOk.TabIndex = 0;
             rbOk.TabStop = true;
             rbOk.Text = "OK";
@@ -212,168 +208,188 @@
             // 
             // gbIcon
             // 
-            gbIcon.Controls.Add(rbIconCustomID);
-            gbIcon.Controls.Add(rbIconCustomFile);
-            gbIcon.Controls.Add(rbIconShieldSuccessGreenBar);
-            gbIcon.Controls.Add(rbIconShieldWarningYellowBar);
-            gbIcon.Controls.Add(rbIconShieldErrorRedBar);
-            gbIcon.Controls.Add(rbIconShieldGrayBar);
-            gbIcon.Controls.Add(rbIconShieldBlueBar);
-            gbIcon.Controls.Add(rbIconError);
-            gbIcon.Controls.Add(rbIconShield);
-            gbIcon.Controls.Add(rbIconWarning);
-            gbIcon.Controls.Add(rbIconInformation);
-            gbIcon.Controls.Add(rbIconNone);
-            gbIcon.Location = new Point(823, 22);
-            gbIcon.Margin = new Padding(4, 5, 4, 5);
+            gbIcon.Controls.Add(flowIconSelect);
+            gbIcon.Location = new Point(576, 13);
             gbIcon.Name = "gbIcon";
-            gbIcon.Padding = new Padding(4, 5, 4, 5);
-            gbIcon.Size = new Size(321, 437);
+            gbIcon.Size = new Size(225, 335);
             gbIcon.TabIndex = 7;
             gbIcon.TabStop = false;
             gbIcon.Text = "Icon";
             // 
-            // rbIconCustomID
+            // flowIconSelect
             // 
-            rbIconCustomID.AutoSize = true;
-            rbIconCustomID.Location = new Point(21, 398);
-            rbIconCustomID.Margin = new Padding(4, 5, 4, 5);
-            rbIconCustomID.Name = "rbIconCustomID";
-            rbIconCustomID.Size = new Size(232, 29);
-            rbIconCustomID.TabIndex = 11;
-            rbIconCustomID.Text = "Custom (imageres.dll ID)";
-            rbIconCustomID.UseVisualStyleBackColor = true;
-            // 
-            // rbIconCustomFile
-            // 
-            rbIconCustomFile.AutoSize = true;
-            rbIconCustomFile.Location = new Point(21, 370);
-            rbIconCustomFile.Margin = new Padding(4, 5, 4, 5);
-            rbIconCustomFile.Name = "rbIconCustomFile";
-            rbIconCustomFile.Size = new Size(140, 29);
-            rbIconCustomFile.TabIndex = 10;
-            rbIconCustomFile.Text = "Custom (File)";
-            rbIconCustomFile.UseVisualStyleBackColor = true;
-            // 
-            // rbIconShieldSuccessGreenBar
-            // 
-            rbIconShieldSuccessGreenBar.AutoSize = true;
-            rbIconShieldSuccessGreenBar.Location = new Point(21, 320);
-            rbIconShieldSuccessGreenBar.Margin = new Padding(4, 5, 4, 5);
-            rbIconShieldSuccessGreenBar.Name = "rbIconShieldSuccessGreenBar";
-            rbIconShieldSuccessGreenBar.Size = new Size(151, 29);
-            rbIconShieldSuccessGreenBar.TabIndex = 9;
-            rbIconShieldSuccessGreenBar.Text = "Shield Success";
-            rbIconShieldSuccessGreenBar.UseVisualStyleBackColor = true;
-            // 
-            // rbIconShieldWarningYellowBar
-            // 
-            rbIconShieldWarningYellowBar.AutoSize = true;
-            rbIconShieldWarningYellowBar.Location = new Point(21, 260);
-            rbIconShieldWarningYellowBar.Margin = new Padding(4, 5, 4, 5);
-            rbIconShieldWarningYellowBar.Name = "rbIconShieldWarningYellowBar";
-            rbIconShieldWarningYellowBar.Size = new Size(156, 29);
-            rbIconShieldWarningYellowBar.TabIndex = 8;
-            rbIconShieldWarningYellowBar.Text = "Shield Warning";
-            rbIconShieldWarningYellowBar.UseVisualStyleBackColor = true;
-            // 
-            // rbIconShieldErrorRedBar
-            // 
-            rbIconShieldErrorRedBar.AutoSize = true;
-            rbIconShieldErrorRedBar.Location = new Point(21, 290);
-            rbIconShieldErrorRedBar.Margin = new Padding(4, 5, 4, 5);
-            rbIconShieldErrorRedBar.Name = "rbIconShieldErrorRedBar";
-            rbIconShieldErrorRedBar.Size = new Size(128, 29);
-            rbIconShieldErrorRedBar.TabIndex = 7;
-            rbIconShieldErrorRedBar.Text = "Shield Error";
-            rbIconShieldErrorRedBar.UseVisualStyleBackColor = true;
-            // 
-            // rbIconShieldGrayBar
-            // 
-            rbIconShieldGrayBar.AutoSize = true;
-            rbIconShieldGrayBar.Location = new Point(21, 230);
-            rbIconShieldGrayBar.Margin = new Padding(4, 5, 4, 5);
-            rbIconShieldGrayBar.Name = "rbIconShieldGrayBar";
-            rbIconShieldGrayBar.Size = new Size(168, 29);
-            rbIconShieldGrayBar.TabIndex = 6;
-            rbIconShieldGrayBar.Text = "Shield - Gray Bar";
-            rbIconShieldGrayBar.UseVisualStyleBackColor = true;
-            // 
-            // rbIconShieldBlueBar
-            // 
-            rbIconShieldBlueBar.AutoSize = true;
-            rbIconShieldBlueBar.Location = new Point(21, 200);
-            rbIconShieldBlueBar.Margin = new Padding(4, 5, 4, 5);
-            rbIconShieldBlueBar.Name = "rbIconShieldBlueBar";
-            rbIconShieldBlueBar.Size = new Size(165, 29);
-            rbIconShieldBlueBar.TabIndex = 5;
-            rbIconShieldBlueBar.Text = "Shield - Blue Bar";
-            rbIconShieldBlueBar.UseVisualStyleBackColor = true;
-            // 
-            // rbIconError
-            // 
-            rbIconError.AutoSize = true;
-            rbIconError.Location = new Point(21, 120);
-            rbIconError.Margin = new Padding(4, 5, 4, 5);
-            rbIconError.Name = "rbIconError";
-            rbIconError.Size = new Size(75, 29);
-            rbIconError.TabIndex = 4;
-            rbIconError.Text = "Error";
-            rbIconError.UseVisualStyleBackColor = true;
-            // 
-            // rbIconShield
-            // 
-            rbIconShield.AutoSize = true;
-            rbIconShield.Location = new Point(21, 170);
-            rbIconShield.Margin = new Padding(4, 5, 4, 5);
-            rbIconShield.Name = "rbIconShield";
-            rbIconShield.Size = new Size(85, 29);
-            rbIconShield.TabIndex = 3;
-            rbIconShield.Text = "Shield";
-            rbIconShield.UseVisualStyleBackColor = true;
-            // 
-            // rbIconWarning
-            // 
-            rbIconWarning.AutoSize = true;
-            rbIconWarning.Location = new Point(21, 90);
-            rbIconWarning.Margin = new Padding(4, 5, 4, 5);
-            rbIconWarning.Name = "rbIconWarning";
-            rbIconWarning.Size = new Size(103, 29);
-            rbIconWarning.TabIndex = 2;
-            rbIconWarning.Text = "Warning";
-            rbIconWarning.UseVisualStyleBackColor = true;
-            // 
-            // rbIconInformation
-            // 
-            rbIconInformation.AutoSize = true;
-            rbIconInformation.ImageAlign = ContentAlignment.MiddleLeft;
-            rbIconInformation.Location = new Point(21, 60);
-            rbIconInformation.Margin = new Padding(4, 5, 4, 5);
-            rbIconInformation.Name = "rbIconInformation";
-            rbIconInformation.Size = new Size(131, 29);
-            rbIconInformation.TabIndex = 1;
-            rbIconInformation.Text = "Information";
-            rbIconInformation.UseVisualStyleBackColor = true;
+            flowIconSelect.Controls.Add(rbIconNone);
+            flowIconSelect.Controls.Add(rbIconInformation);
+            flowIconSelect.Controls.Add(rbIconWarning);
+            flowIconSelect.Controls.Add(rbIconShield);
+            flowIconSelect.Controls.Add(rbIconError);
+            flowIconSelect.Controls.Add(rbIconShieldBlueBar);
+            flowIconSelect.Controls.Add(rbIconShieldGrayBar);
+            flowIconSelect.Controls.Add(rbIconShieldErrorRedBar);
+            flowIconSelect.Controls.Add(rbIconShieldWarningYellowBar);
+            flowIconSelect.Controls.Add(rbIconShieldSuccessGreenBar);
+            flowIconSelect.Controls.Add(rbIconCustomFile);
+            flowIconSelect.Controls.Add(rbIconCustomID);
+            flowIconSelect.Dock = DockStyle.Fill;
+            flowIconSelect.FlowDirection = FlowDirection.TopDown;
+            flowIconSelect.Location = new Point(3, 19);
+            flowIconSelect.Name = "flowIconSelect";
+            flowIconSelect.Padding = new Padding(4);
+            flowIconSelect.Size = new Size(219, 313);
+            flowIconSelect.TabIndex = 22;
             // 
             // rbIconNone
             // 
-            rbIconNone.AutoSize = true;
             rbIconNone.Checked = true;
-            rbIconNone.Location = new Point(21, 30);
-            rbIconNone.Margin = new Padding(4, 5, 4, 5);
+            rbIconNone.ImageAlign = ContentAlignment.MiddleLeft;
+            rbIconNone.Location = new Point(4, 4);
+            rbIconNone.Margin = new Padding(0);
             rbIconNone.Name = "rbIconNone";
-            rbIconNone.Size = new Size(80, 29);
+            rbIconNone.Size = new Size(210, 24);
             rbIconNone.TabIndex = 0;
             rbIconNone.TabStop = true;
             rbIconNone.Text = "None";
+            rbIconNone.TextImageRelation = TextImageRelation.ImageBeforeText;
             rbIconNone.UseVisualStyleBackColor = true;
+            // 
+            // rbIconInformation
+            // 
+            rbIconInformation.ImageAlign = ContentAlignment.MiddleLeft;
+            rbIconInformation.Location = new Point(4, 28);
+            rbIconInformation.Margin = new Padding(0);
+            rbIconInformation.Name = "rbIconInformation";
+            rbIconInformation.Size = new Size(210, 24);
+            rbIconInformation.TabIndex = 1;
+            rbIconInformation.Text = "Information";
+            rbIconInformation.TextImageRelation = TextImageRelation.ImageBeforeText;
+            rbIconInformation.UseVisualStyleBackColor = true;
+            // 
+            // rbIconWarning
+            // 
+            rbIconWarning.ImageAlign = ContentAlignment.MiddleLeft;
+            rbIconWarning.Location = new Point(4, 52);
+            rbIconWarning.Margin = new Padding(0);
+            rbIconWarning.Name = "rbIconWarning";
+            rbIconWarning.Size = new Size(210, 24);
+            rbIconWarning.TabIndex = 2;
+            rbIconWarning.Text = "Warning";
+            rbIconWarning.TextImageRelation = TextImageRelation.ImageBeforeText;
+            rbIconWarning.UseVisualStyleBackColor = true;
+            // 
+            // rbIconShield
+            // 
+            rbIconShield.ImageAlign = ContentAlignment.MiddleLeft;
+            rbIconShield.Location = new Point(4, 76);
+            rbIconShield.Margin = new Padding(0);
+            rbIconShield.Name = "rbIconShield";
+            rbIconShield.Size = new Size(210, 24);
+            rbIconShield.TabIndex = 3;
+            rbIconShield.Text = "Shield";
+            rbIconShield.TextImageRelation = TextImageRelation.ImageBeforeText;
+            rbIconShield.UseVisualStyleBackColor = true;
+            // 
+            // rbIconError
+            // 
+            rbIconError.ImageAlign = ContentAlignment.MiddleLeft;
+            rbIconError.Location = new Point(4, 100);
+            rbIconError.Margin = new Padding(0);
+            rbIconError.Name = "rbIconError";
+            rbIconError.Size = new Size(210, 24);
+            rbIconError.TabIndex = 4;
+            rbIconError.Text = "Error";
+            rbIconError.TextImageRelation = TextImageRelation.ImageBeforeText;
+            rbIconError.UseVisualStyleBackColor = true;
+            // 
+            // rbIconShieldBlueBar
+            // 
+            rbIconShieldBlueBar.ImageAlign = ContentAlignment.MiddleLeft;
+            rbIconShieldBlueBar.Location = new Point(4, 132);
+            rbIconShieldBlueBar.Margin = new Padding(0, 8, 0, 0);
+            rbIconShieldBlueBar.Name = "rbIconShieldBlueBar";
+            rbIconShieldBlueBar.Size = new Size(210, 24);
+            rbIconShieldBlueBar.TabIndex = 5;
+            rbIconShieldBlueBar.Text = "Shield - Blue Bar";
+            rbIconShieldBlueBar.TextImageRelation = TextImageRelation.ImageBeforeText;
+            rbIconShieldBlueBar.UseVisualStyleBackColor = true;
+            // 
+            // rbIconShieldGrayBar
+            // 
+            rbIconShieldGrayBar.ImageAlign = ContentAlignment.MiddleLeft;
+            rbIconShieldGrayBar.Location = new Point(4, 156);
+            rbIconShieldGrayBar.Margin = new Padding(0);
+            rbIconShieldGrayBar.Name = "rbIconShieldGrayBar";
+            rbIconShieldGrayBar.Size = new Size(210, 24);
+            rbIconShieldGrayBar.TabIndex = 6;
+            rbIconShieldGrayBar.Text = "Shield - Gray Bar";
+            rbIconShieldGrayBar.TextImageRelation = TextImageRelation.ImageBeforeText;
+            rbIconShieldGrayBar.UseVisualStyleBackColor = true;
+            // 
+            // rbIconShieldErrorRedBar
+            // 
+            rbIconShieldErrorRedBar.ImageAlign = ContentAlignment.MiddleLeft;
+            rbIconShieldErrorRedBar.Location = new Point(4, 180);
+            rbIconShieldErrorRedBar.Margin = new Padding(0);
+            rbIconShieldErrorRedBar.Name = "rbIconShieldErrorRedBar";
+            rbIconShieldErrorRedBar.Size = new Size(210, 24);
+            rbIconShieldErrorRedBar.TabIndex = 7;
+            rbIconShieldErrorRedBar.Text = "Shield Error";
+            rbIconShieldErrorRedBar.TextImageRelation = TextImageRelation.ImageBeforeText;
+            rbIconShieldErrorRedBar.UseVisualStyleBackColor = true;
+            // 
+            // rbIconShieldWarningYellowBar
+            // 
+            rbIconShieldWarningYellowBar.ImageAlign = ContentAlignment.MiddleLeft;
+            rbIconShieldWarningYellowBar.Location = new Point(4, 204);
+            rbIconShieldWarningYellowBar.Margin = new Padding(0);
+            rbIconShieldWarningYellowBar.Name = "rbIconShieldWarningYellowBar";
+            rbIconShieldWarningYellowBar.Size = new Size(210, 24);
+            rbIconShieldWarningYellowBar.TabIndex = 8;
+            rbIconShieldWarningYellowBar.Text = "Shield Warning";
+            rbIconShieldWarningYellowBar.TextImageRelation = TextImageRelation.ImageBeforeText;
+            rbIconShieldWarningYellowBar.UseVisualStyleBackColor = true;
+            // 
+            // rbIconShieldSuccessGreenBar
+            // 
+            rbIconShieldSuccessGreenBar.ImageAlign = ContentAlignment.MiddleLeft;
+            rbIconShieldSuccessGreenBar.Location = new Point(4, 228);
+            rbIconShieldSuccessGreenBar.Margin = new Padding(0);
+            rbIconShieldSuccessGreenBar.Name = "rbIconShieldSuccessGreenBar";
+            rbIconShieldSuccessGreenBar.Size = new Size(210, 24);
+            rbIconShieldSuccessGreenBar.TabIndex = 9;
+            rbIconShieldSuccessGreenBar.Text = "Shield Success";
+            rbIconShieldSuccessGreenBar.TextImageRelation = TextImageRelation.ImageBeforeText;
+            rbIconShieldSuccessGreenBar.UseVisualStyleBackColor = true;
+            // 
+            // rbIconCustomFile
+            // 
+            rbIconCustomFile.ImageAlign = ContentAlignment.MiddleLeft;
+            rbIconCustomFile.Location = new Point(4, 260);
+            rbIconCustomFile.Margin = new Padding(0, 8, 0, 0);
+            rbIconCustomFile.Name = "rbIconCustomFile";
+            rbIconCustomFile.Size = new Size(210, 24);
+            rbIconCustomFile.TabIndex = 10;
+            rbIconCustomFile.Text = "Custom (File)";
+            rbIconCustomFile.TextImageRelation = TextImageRelation.ImageBeforeText;
+            rbIconCustomFile.UseVisualStyleBackColor = true;
+            // 
+            // rbIconCustomID
+            // 
+            rbIconCustomID.ImageAlign = ContentAlignment.MiddleLeft;
+            rbIconCustomID.Location = new Point(4, 284);
+            rbIconCustomID.Margin = new Padding(0);
+            rbIconCustomID.Name = "rbIconCustomID";
+            rbIconCustomID.Size = new Size(210, 24);
+            rbIconCustomID.TabIndex = 11;
+            rbIconCustomID.Text = "Custom (imageres.dll ID)";
+            rbIconCustomID.TextImageRelation = TextImageRelation.ImageBeforeText;
+            rbIconCustomID.UseVisualStyleBackColor = true;
             // 
             // btnShowDialog
             // 
-            btnShowDialog.Location = new Point(22, 690);
-            btnShowDialog.Margin = new Padding(4, 5, 4, 5);
+            btnShowDialog.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnShowDialog.Location = new Point(20, 459);
             btnShowDialog.Name = "btnShowDialog";
-            btnShowDialog.Size = new Size(173, 55);
+            btnShowDialog.Size = new Size(133, 42);
             btnShowDialog.TabIndex = 11;
             btnShowDialog.Text = "Show Dialog";
             btnShowDialog.UseVisualStyleBackColor = true;
@@ -382,28 +398,27 @@
             // lblFooter
             // 
             lblFooter.AutoSize = true;
-            lblFooter.Location = new Point(17, 234);
-            lblFooter.Margin = new Padding(4, 0, 4, 0);
+            lblFooter.Location = new Point(5, 161);
+            lblFooter.Margin = new Padding(5, 5, 5, 2);
             lblFooter.Name = "lblFooter";
-            lblFooter.Size = new Size(68, 25);
+            lblFooter.Size = new Size(44, 15);
             lblFooter.TabIndex = 4;
             lblFooter.Text = "Footer:";
             // 
             // txtFooter
             // 
-            txtFooter.Location = new Point(17, 264);
-            txtFooter.Margin = new Padding(4, 5, 4, 5);
+            txtFooter.Location = new Point(5, 180);
+            txtFooter.Margin = new Padding(5, 2, 5, 5);
             txtFooter.Name = "txtFooter";
-            txtFooter.Size = new Size(427, 31);
+            txtFooter.Size = new Size(300, 23);
             txtFooter.TabIndex = 5;
             // 
             // chkVerification
             // 
             chkVerification.AutoSize = true;
-            chkVerification.Location = new Point(17, 572);
-            chkVerification.Margin = new Padding(4, 5, 4, 5);
+            chkVerification.Location = new Point(12, 358);
             chkVerification.Name = "chkVerification";
-            chkVerification.Size = new Size(177, 29);
+            chkVerification.Size = new Size(120, 19);
             chkVerification.TabIndex = 10;
             chkVerification.Text = "Show verification:";
             chkVerification.UseVisualStyleBackColor = true;
@@ -411,34 +426,36 @@
             // lblExpandedInfo
             // 
             lblExpandedInfo.AutoSize = true;
-            lblExpandedInfo.Location = new Point(17, 328);
-            lblExpandedInfo.Margin = new Padding(4, 0, 4, 0);
+            lblExpandedInfo.Location = new Point(5, 213);
+            lblExpandedInfo.Margin = new Padding(5, 5, 5, 2);
             lblExpandedInfo.Name = "lblExpandedInfo";
-            lblExpandedInfo.Size = new Size(189, 25);
+            lblExpandedInfo.Size = new Size(124, 15);
             lblExpandedInfo.TabIndex = 8;
             lblExpandedInfo.Text = "Expanded Information";
             // 
             // txtExpandedInfo
             // 
-            txtExpandedInfo.Location = new Point(17, 358);
-            txtExpandedInfo.Margin = new Padding(4, 5, 4, 5);
+            txtExpandedInfo.Location = new Point(5, 232);
+            txtExpandedInfo.Margin = new Padding(5, 2, 5, 5);
             txtExpandedInfo.Multiline = true;
             txtExpandedInfo.Name = "txtExpandedInfo";
-            txtExpandedInfo.Size = new Size(427, 187);
+            txtExpandedInfo.Size = new Size(300, 92);
             txtExpandedInfo.TabIndex = 9;
             // 
             // textBoxCustomIconPath
             // 
-            textBoxCustomIconPath.Location = new Point(15, 39);
+            textBoxCustomIconPath.Location = new Point(10, 23);
+            textBoxCustomIconPath.Margin = new Padding(2);
             textBoxCustomIconPath.Name = "textBoxCustomIconPath";
-            textBoxCustomIconPath.Size = new Size(319, 31);
+            textBoxCustomIconPath.Size = new Size(224, 23);
             textBoxCustomIconPath.TabIndex = 12;
             // 
             // buttonBrowseCustomIcon
             // 
-            buttonBrowseCustomIcon.Location = new Point(340, 37);
+            buttonBrowseCustomIcon.Location = new Point(238, 23);
+            buttonBrowseCustomIcon.Margin = new Padding(2);
             buttonBrowseCustomIcon.Name = "buttonBrowseCustomIcon";
-            buttonBrowseCustomIcon.Size = new Size(112, 34);
+            buttonBrowseCustomIcon.Size = new Size(78, 26);
             buttonBrowseCustomIcon.TabIndex = 13;
             buttonBrowseCustomIcon.Text = "Browse";
             buttonBrowseCustomIcon.UseVisualStyleBackColor = true;
@@ -449,18 +466,21 @@
             groupBoxCustomIconFile.Controls.Add(textBoxCustomIconPath);
             groupBoxCustomIconFile.Controls.Add(buttonBrowseCustomIcon);
             groupBoxCustomIconFile.Enabled = false;
-            groupBoxCustomIconFile.Location = new Point(672, 488);
+            groupBoxCustomIconFile.Location = new Point(471, 357);
+            groupBoxCustomIconFile.Margin = new Padding(2);
             groupBoxCustomIconFile.Name = "groupBoxCustomIconFile";
-            groupBoxCustomIconFile.Size = new Size(472, 89);
+            groupBoxCustomIconFile.Padding = new Padding(2);
+            groupBoxCustomIconFile.Size = new Size(330, 59);
             groupBoxCustomIconFile.TabIndex = 14;
             groupBoxCustomIconFile.TabStop = false;
             groupBoxCustomIconFile.Text = "Custom Icon (File)";
             // 
             // buttonTest
             // 
-            buttonTest.Location = new Point(265, 700);
+            buttonTest.Location = new Point(183, 432);
+            buttonTest.Margin = new Padding(2);
             buttonTest.Name = "buttonTest";
-            buttonTest.Size = new Size(112, 34);
+            buttonTest.Size = new Size(78, 25);
             buttonTest.TabIndex = 15;
             buttonTest.Text = "Test";
             buttonTest.UseVisualStyleBackColor = true;
@@ -476,9 +496,11 @@
             groupBoxBarColor.Controls.Add(rbBarColorYellow);
             groupBoxBarColor.Controls.Add(rbBarColorGray);
             groupBoxBarColor.Controls.Add(rbBarColorBlue);
-            groupBoxBarColor.Location = new Point(670, 602);
+            groupBoxBarColor.Location = new Point(470, 420);
+            groupBoxBarColor.Margin = new Padding(2);
             groupBoxBarColor.Name = "groupBoxBarColor";
-            groupBoxBarColor.Size = new Size(474, 132);
+            groupBoxBarColor.Padding = new Padding(2);
+            groupBoxBarColor.Size = new Size(332, 86);
             groupBoxBarColor.TabIndex = 16;
             groupBoxBarColor.TabStop = false;
             groupBoxBarColor.Text = "Bar Color";
@@ -486,9 +508,10 @@
             // rbBarColorNone
             // 
             rbBarColorNone.AutoSize = true;
-            rbBarColorNone.Location = new Point(324, 45);
+            rbBarColorNone.Location = new Point(227, 27);
+            rbBarColorNone.Margin = new Padding(2);
             rbBarColorNone.Name = "rbBarColorNone";
-            rbBarColorNone.Size = new Size(128, 29);
+            rbBarColorNone.Size = new Size(86, 19);
             rbBarColorNone.TabIndex = 6;
             rbBarColorNone.Text = "Force None";
             rbBarColorNone.UseVisualStyleBackColor = true;
@@ -497,9 +520,10 @@
             // 
             rbBarColorDefault.AutoSize = true;
             rbBarColorDefault.Checked = true;
-            rbBarColorDefault.Location = new Point(39, 45);
+            rbBarColorDefault.Location = new Point(27, 27);
+            rbBarColorDefault.Margin = new Padding(2);
             rbBarColorDefault.Name = "rbBarColorDefault";
-            rbBarColorDefault.Size = new Size(94, 29);
+            rbBarColorDefault.Size = new Size(63, 19);
             rbBarColorDefault.TabIndex = 5;
             rbBarColorDefault.TabStop = true;
             rbBarColorDefault.Text = "Default";
@@ -508,9 +532,10 @@
             // rbBarColorGreen
             // 
             rbBarColorGreen.AutoSize = true;
-            rbBarColorGreen.Location = new Point(138, 45);
+            rbBarColorGreen.Location = new Point(97, 27);
+            rbBarColorGreen.Margin = new Padding(2);
             rbBarColorGreen.Name = "rbBarColorGreen";
-            rbBarColorGreen.Size = new Size(83, 29);
+            rbBarColorGreen.Size = new Size(56, 19);
             rbBarColorGreen.TabIndex = 4;
             rbBarColorGreen.Text = "Green";
             rbBarColorGreen.UseVisualStyleBackColor = true;
@@ -518,9 +543,10 @@
             // rbBarColorRed
             // 
             rbBarColorRed.AutoSize = true;
-            rbBarColorRed.Location = new Point(233, 45);
+            rbBarColorRed.Location = new Point(163, 27);
+            rbBarColorRed.Margin = new Padding(2);
             rbBarColorRed.Name = "rbBarColorRed";
-            rbBarColorRed.Size = new Size(67, 29);
+            rbBarColorRed.Size = new Size(45, 19);
             rbBarColorRed.TabIndex = 3;
             rbBarColorRed.Text = "Red";
             rbBarColorRed.UseVisualStyleBackColor = true;
@@ -528,9 +554,10 @@
             // rbBarColorYellow
             // 
             rbBarColorYellow.AutoSize = true;
-            rbBarColorYellow.Location = new Point(138, 80);
+            rbBarColorYellow.Location = new Point(97, 48);
+            rbBarColorYellow.Margin = new Padding(2);
             rbBarColorYellow.Name = "rbBarColorYellow";
-            rbBarColorYellow.Size = new Size(86, 29);
+            rbBarColorYellow.Size = new Size(59, 19);
             rbBarColorYellow.TabIndex = 2;
             rbBarColorYellow.Text = "Yellow";
             rbBarColorYellow.UseVisualStyleBackColor = true;
@@ -538,9 +565,10 @@
             // rbBarColorGray
             // 
             rbBarColorGray.AutoSize = true;
-            rbBarColorGray.Location = new Point(39, 80);
+            rbBarColorGray.Location = new Point(27, 48);
+            rbBarColorGray.Margin = new Padding(2);
             rbBarColorGray.Name = "rbBarColorGray";
-            rbBarColorGray.Size = new Size(73, 29);
+            rbBarColorGray.Size = new Size(49, 19);
             rbBarColorGray.TabIndex = 1;
             rbBarColorGray.Text = "Gray";
             rbBarColorGray.UseVisualStyleBackColor = true;
@@ -548,9 +576,10 @@
             // rbBarColorBlue
             // 
             rbBarColorBlue.AutoSize = true;
-            rbBarColorBlue.Location = new Point(233, 80);
+            rbBarColorBlue.Location = new Point(163, 48);
+            rbBarColorBlue.Margin = new Padding(2);
             rbBarColorBlue.Name = "rbBarColorBlue";
-            rbBarColorBlue.Size = new Size(70, 29);
+            rbBarColorBlue.Size = new Size(48, 19);
             rbBarColorBlue.TabIndex = 0;
             rbBarColorBlue.Text = "Blue";
             rbBarColorBlue.UseVisualStyleBackColor = true;
@@ -559,83 +588,97 @@
             // 
             groupBoxCustomIconID.Controls.Add(textBoxCustomIconID);
             groupBoxCustomIconID.Enabled = false;
-            groupBoxCustomIconID.Location = new Point(476, 602);
+            groupBoxCustomIconID.Location = new Point(334, 420);
+            groupBoxCustomIconID.Margin = new Padding(2);
             groupBoxCustomIconID.Name = "groupBoxCustomIconID";
-            groupBoxCustomIconID.Size = new Size(172, 91);
+            groupBoxCustomIconID.Padding = new Padding(2);
+            groupBoxCustomIconID.Size = new Size(120, 55);
             groupBoxCustomIconID.TabIndex = 17;
             groupBoxCustomIconID.TabStop = false;
             groupBoxCustomIconID.Text = "Custom Icon (ID)";
             // 
             // textBoxCustomIconID
             // 
-            textBoxCustomIconID.Location = new Point(21, 39);
+            textBoxCustomIconID.Location = new Point(15, 23);
+            textBoxCustomIconID.Margin = new Padding(2);
             textBoxCustomIconID.Name = "textBoxCustomIconID";
-            textBoxCustomIconID.Size = new Size(135, 31);
+            textBoxCustomIconID.Size = new Size(96, 23);
             textBoxCustomIconID.TabIndex = 14;
             // 
             // lblMessage
             // 
             lblMessage.AutoSize = true;
-            lblMessage.Location = new Point(17, 160);
-            lblMessage.Margin = new Padding(4, 0, 4, 0);
+            lblMessage.Location = new Point(5, 109);
+            lblMessage.Margin = new Padding(5, 5, 5, 2);
             lblMessage.Name = "lblMessage";
-            lblMessage.Size = new Size(86, 25);
+            lblMessage.Size = new Size(56, 15);
             lblMessage.TabIndex = 18;
             lblMessage.Text = "Message:";
             // 
             // txtMessage
             // 
-            txtMessage.Location = new Point(17, 190);
-            txtMessage.Margin = new Padding(4, 5, 4, 5);
+            txtMessage.Location = new Point(5, 128);
+            txtMessage.Margin = new Padding(5, 2, 5, 5);
             txtMessage.Name = "txtMessage";
-            txtMessage.Size = new Size(427, 31);
+            txtMessage.Size = new Size(300, 23);
             txtMessage.TabIndex = 19;
             // 
             // textBoxVerification
             // 
-            textBoxVerification.Location = new Point(194, 570);
+            textBoxVerification.Location = new Point(136, 357);
+            textBoxVerification.Margin = new Padding(2);
             textBoxVerification.Name = "textBoxVerification";
             textBoxVerification.PlaceholderText = "Don't ask again";
-            textBoxVerification.Size = new Size(250, 31);
+            textBoxVerification.Size = new Size(176, 23);
             textBoxVerification.TabIndex = 20;
             // 
             // buttonImageResIcons
             // 
-            buttonImageResIcons.Location = new Point(476, 700);
+            buttonImageResIcons.Location = new Point(334, 479);
+            buttonImageResIcons.Margin = new Padding(2);
             buttonImageResIcons.Name = "buttonImageResIcons";
-            buttonImageResIcons.Size = new Size(172, 34);
+            buttonImageResIcons.Size = new Size(120, 27);
             buttonImageResIcons.TabIndex = 21;
             buttonImageResIcons.Text = "View Icon IDs";
             buttonImageResIcons.UseVisualStyleBackColor = true;
             buttonImageResIcons.Click += buttonImageResIcons_Click;
             // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.Controls.Add(lblTitle);
+            flowLayoutPanel1.Controls.Add(txtTitle);
+            flowLayoutPanel1.Controls.Add(lblHeading);
+            flowLayoutPanel1.Controls.Add(txtHeading);
+            flowLayoutPanel1.Controls.Add(lblMessage);
+            flowLayoutPanel1.Controls.Add(txtMessage);
+            flowLayoutPanel1.Controls.Add(lblFooter);
+            flowLayoutPanel1.Controls.Add(txtFooter);
+            flowLayoutPanel1.Controls.Add(lblExpandedInfo);
+            flowLayoutPanel1.Controls.Add(txtExpandedInfo);
+            flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
+            flowLayoutPanel1.Location = new Point(12, 13);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(317, 335);
+            flowLayoutPanel1.TabIndex = 22;
+            // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1157, 768);
+            ClientSize = new Size(815, 517);
+            Controls.Add(flowLayoutPanel1);
             Controls.Add(buttonImageResIcons);
             Controls.Add(textBoxVerification);
-            Controls.Add(lblMessage);
-            Controls.Add(txtMessage);
             Controls.Add(groupBoxCustomIconID);
             Controls.Add(groupBoxBarColor);
             Controls.Add(buttonTest);
             Controls.Add(groupBoxCustomIconFile);
-            Controls.Add(txtExpandedInfo);
-            Controls.Add(lblExpandedInfo);
             Controls.Add(chkVerification);
-            Controls.Add(txtFooter);
-            Controls.Add(lblFooter);
             Controls.Add(btnShowDialog);
             Controls.Add(gbIcon);
             Controls.Add(gbButtons);
-            Controls.Add(lblHeading);
-            Controls.Add(lblTitle);
-            Controls.Add(txtHeading);
-            Controls.Add(txtTitle);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(4, 5, 4, 5);
             MaximizeBox = false;
             Name = "MainForm";
             Text = "Task Dialog Generator";
@@ -643,13 +686,15 @@
             gbButtons.ResumeLayout(false);
             gbButtons.PerformLayout();
             gbIcon.ResumeLayout(false);
-            gbIcon.PerformLayout();
+            flowIconSelect.ResumeLayout(false);
             groupBoxCustomIconFile.ResumeLayout(false);
             groupBoxCustomIconFile.PerformLayout();
             groupBoxBarColor.ResumeLayout(false);
             groupBoxBarColor.PerformLayout();
             groupBoxCustomIconID.ResumeLayout(false);
             groupBoxCustomIconID.PerformLayout();
+            flowLayoutPanel1.ResumeLayout(false);
+            flowLayoutPanel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -704,5 +749,7 @@
         private TextBox txtMessage;
         private TextBox textBoxVerification;
         private Button buttonImageResIcons;
+        private FlowLayoutPanel flowIconSelect;
+        private FlowLayoutPanel flowLayoutPanel1;
     }
 }
