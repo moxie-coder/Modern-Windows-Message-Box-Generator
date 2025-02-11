@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ManualTaskDialog.cs" />
     <Compile Remove="TaskDialogIconExtractor.cs" />
   </ItemGroup>
 
