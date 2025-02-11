@@ -11,6 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="TaskDialogIconExtractor.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Icon.ico" />
   </ItemGroup>
 

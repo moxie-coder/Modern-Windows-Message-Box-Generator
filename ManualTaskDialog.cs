@@ -81,9 +81,6 @@ namespace Windows_Task_Dialog_Generator
         // Constants for TaskDialog messages
         private const int TDM_UPDATE_ICON = 0x0414;
 
-        private static int initialIcon;
-        private static int updatedIcon;
-
         public static void ShowCustomTaskDialog(string title, string mainInstruction, string content, int standardIcon)
         {
             // For storing the dialog window handle

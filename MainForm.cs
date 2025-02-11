@@ -6,8 +6,6 @@ namespace Windows_Task_Dialog_Generator
 {
     public partial class MainForm : Form
     {
-        FlowLayoutPanel? storedFlowLayoutPanel = null;
-
         public MainForm()
         {
             InitializeComponent();
