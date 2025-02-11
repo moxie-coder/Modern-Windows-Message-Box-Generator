@@ -12,26 +12,12 @@ namespace Windows_Task_Dialog_Generator
         private MainForm mainForm;
         private FlowLayoutPanel? previousPanelSelection = null;
 
-        // P/Invoke declaration for ExtractIconEx
-        [DllImport("shell32.dll", CharSet = CharSet.Auto)]
-        private static extern int ExtractIconEx(
-            string lpszFile,
-            int nIconIndex,
-            IntPtr[] phIconLarge,
-            IntPtr[] phIconSmall,
-            int nIcons);
-
-        // P/Invoke for DestroyIcon to clean up unmanaged HICONs
         [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
         private static extern bool DestroyIcon(IntPtr handle);
 
         // P/Invoke for EnumResourceNames to enumerate resource names
         [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
         private static extern bool EnumResourceNames(IntPtr hModule, IntPtr lpszType, EnumResNameProc lpEnumFunc, IntPtr lParam);
-
-        // P/Invoke for LoadIcon to load an icon resource by its ID
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        private static extern IntPtr LoadIcon(IntPtr hInstance, IntPtr lpIconName);
 
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         private static extern IntPtr LoadImage(IntPtr hinst, IntPtr lpszName, uint uType, int cxDesired, int cyDesired, uint fuLoad);
@@ -44,13 +30,6 @@ namespace Windows_Task_Dialog_Generator
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern IntPtr LockResource(IntPtr hResData);
-
-        [DllImport("shell32.dll", CharSet = CharSet.Auto)]
-        private static extern IntPtr ExtractIcon(IntPtr hInst, string lpszExeFileName, int nIconIndex);
-
-        //[DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        //private static extern IntPtr LoadImage(IntPtr hinst, IntPtr lpszName, uint uType, int cxDesired, int cyDesired, uint fuLoad);
-
 
 
         // Delegate for EnumResourceNames callback
@@ -113,7 +92,8 @@ namespace Windows_Task_Dialog_Generator
                 return;
 
             // Use LoadImage instead of ExtractIcon
-            IntPtr hIcon = LoadImage(hModule, new IntPtr(groupId), 1, // IMAGE_ICON
+            IntPtr hIcon = LoadImage(hModule, new IntPtr(groupId), 
+                    1, // IMAGE_ICON
                     0, 0, // Use actual size
                     0x00000040); // LR_DEFAULTSIZE
 

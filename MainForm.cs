@@ -186,8 +186,17 @@ namespace Windows_Task_Dialog_Generator
             if ( dialog != null )
             {
                 IntPtr hwnd = dialog.Handle;
-                // We can update the icon using a SendMessage call. But we must specify the icon via ID, not an object or hIcon handle
-                SendMessage(hwnd, (int)WinEnums.TDM.UPDATE_ICON, IntPtr.Zero, new IntPtr(chosenIconID));
+                try
+                {
+                    // We can update the icon using a SendMessage call. But we must specify the icon via ID, not an object or hIcon handle
+                    // We do NOT use the negative of the ID, since the API is doing other stuff with the ID and handles it automatically
+                    SendMessage(hwnd, (int)WinEnums.TDM.UPDATE_ICON, IntPtr.Zero, new IntPtr(chosenIconID));
+                }
+                catch ( Exception ex )
+                {
+                    MessageBox.Show("Error updating icon: " + ex.Message);
+                }
+
             }
         }
 
@@ -205,9 +214,9 @@ namespace Windows_Task_Dialog_Generator
             }
 
             // Ensure the absolute value of the ID is within the valid range, since it can be negative
-            if ( Math.Abs(id) > ushort.MaxValue )
+            if ( id < 0 || id > ushort.MaxValue )
             {
-                MessageBox.Show("Invalid icon ID. Valid values are from -65535 to 65535.");
+                MessageBox.Show("Invalid icon ID. Valid values are from 0 to 65535.");
                 return null;
             }
 
@@ -227,9 +236,9 @@ namespace Windows_Task_Dialog_Generator
             // Get System.Drawing.Icon from the imageres.dll file of the given ID, then convert to TaskDialogIcon
             TaskDialogIcon extractedIcon;
 
-            if ( Math.Abs(id) > ushort.MaxValue )
+            if ( id < 0 || id > ushort.MaxValue )
             {
-                MessageBox.Show("Invalid icon ID. Valid values are from -65535 to 65535.");
+                MessageBox.Show("Invalid icon ID. Valid values are from 0 to 65535.");
                 return null;
             }
             else
@@ -237,13 +246,8 @@ namespace Windows_Task_Dialog_Generator
                 string winPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
                 string imageresPath = Path.Combine(winPath, "imageres.dll");
 
-                Icon? imageresIcon = System.Drawing.Icon.ExtractIcon(imageresPath, id);
-
-                // If it's null, try the negative of the id
-                if (imageresIcon == null )
-                {
-                    imageresIcon = System.Drawing.Icon.ExtractIcon(imageresPath, -1 * id);
-                }
+                // When extracting icons from imageres.dll, we need to use the negative of the ID
+                Icon? imageresIcon = System.Drawing.Icon.ExtractIcon(imageresPath, -1 * id);
 
                 if ( imageresIcon != null )
                 {
@@ -251,7 +255,7 @@ namespace Windows_Task_Dialog_Generator
                 }
                 else
                 {
-                    MessageBox.Show($"No icon found in imageres.dll with ID either {id} or {-1 * id}");
+                    MessageBox.Show($"No icon found in imageres.dll with ID {id}");
                     return null;
                 }
 
@@ -273,13 +277,7 @@ namespace Windows_Task_Dialog_Generator
             string imageresPath = Path.Combine(winPath, "imageres.dll");
             try
             {
-                Icon? icon = System.Drawing.Icon.ExtractIcon(imageresPath, id);
-
-                if ( icon == null )
-                {
-                    icon = System.Drawing.Icon.ExtractIcon(imageresPath, -1 * id);
-                }
-
+                Icon? icon = System.Drawing.Icon.ExtractIcon(imageresPath, -1 * id); // Negative ID to extract from imageres.dll
                 return icon;
             }
             catch ( Exception ex )
@@ -313,15 +311,15 @@ namespace Windows_Task_Dialog_Generator
             // Icon IDs aren't necessarily the same as the enum values, so we need to get the actual icon from the imageres.dll file
             List<(RadioButton, int, int)> radioButtonsWithIcons = new List<(RadioButton, int, int)>
             {
-                (rbIconInformation,           -81,  22), //Slightly smaller to not be cut off
-                (rbIconWarning,               -84,  24),
-                (rbIconError,                 -98,  22), //Slightly smaller to not be cut off
-                (rbIconShield,                -78,  24),
-                (rbIconShieldBlueBar,         -78,  24),
-                (rbIconShieldGrayBar,         -78,  24),
-                (rbIconShieldWarningYellowBar,-107, 24),
-                (rbIconShieldErrorRedBar,     -105, 24),
-                (rbIconShieldSuccessGreenBar, -106, 24)
+                (rbIconInformation,            81,  22), //Slightly smaller to not be cut off
+                (rbIconWarning,                84,  24),
+                (rbIconError,                  98,  22), //Slightly smaller to not be cut off
+                (rbIconShield,                 78,  24),
+                (rbIconShieldBlueBar,          78,  24),
+                (rbIconShieldGrayBar,          78,  24),
+                (rbIconShieldWarningYellowBar, 107, 24),
+                (rbIconShieldErrorRedBar,      105, 24),
+                (rbIconShieldSuccessGreenBar,  106, 24)
             };
 
             foreach ( (RadioButton radioButton, int iconID, int size) in radioButtonsWithIcons )
