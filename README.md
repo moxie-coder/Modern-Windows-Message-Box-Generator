@@ -12,6 +12,10 @@ Generates a customizable "Task Dialog" box - a more modern version of the old Wi
 - **Icon Selection Helper:** Click the "View Icon IDs" button to see icons from `imageres.dll`. Click any of them to automatically set it as the selected icon.
 - **Icon Background Colored Bars:** Choose from various colors for the icon background bar, including green, blue, gray, red, yellow, or none.
 
+## More Features:
+- **No Installation Required:** The program is a single file and doesn't need to be installed
+- **Signed:** The exe is signed with a trusted certificate so you won't get a pop up from Windows security
+
 ## Examples 
 <p align="center">
 <img width="450" alt="Example Message Box Go Touch Grass" src="https://github.com/user-attachments/assets/914b978e-3f52-4e9a-b813-cdc0cf552ea4">
