@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             txtTitle = new TextBox();
             txtHeading = new TextBox();
             lblTitle = new Label();
@@ -457,7 +458,7 @@
             // 
             // buttonTest
             // 
-            buttonTest.Location = new Point(216, 700);
+            buttonTest.Location = new Point(265, 700);
             buttonTest.Name = "buttonTest";
             buttonTest.Size = new Size(112, 34);
             buttonTest.TabIndex = 15;
@@ -600,11 +601,11 @@
             // 
             // buttonImageResIcons
             // 
-            buttonImageResIcons.Location = new Point(360, 701);
+            buttonImageResIcons.Location = new Point(476, 700);
             buttonImageResIcons.Name = "buttonImageResIcons";
-            buttonImageResIcons.Size = new Size(181, 34);
+            buttonImageResIcons.Size = new Size(172, 34);
             buttonImageResIcons.TabIndex = 21;
-            buttonImageResIcons.Text = "View Icon Options";
+            buttonImageResIcons.Text = "View Icon IDs";
             buttonImageResIcons.UseVisualStyleBackColor = true;
             buttonImageResIcons.Click += buttonImageResIcons_Click;
             // 
@@ -633,6 +634,7 @@
             Controls.Add(lblTitle);
             Controls.Add(txtHeading);
             Controls.Add(txtTitle);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4, 5, 4, 5);
             MaximizeBox = false;
             Name = "MainForm";
