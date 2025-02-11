@@ -7,6 +7,9 @@ namespace Windows_Task_Dialog_Generator
 {
     public partial class MainForm : Form
     {
+        [LibraryImport("user32.dll", EntryPoint = "SendMessageW")]
+        private static partial IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
+
         public MainForm()
         {
             InitializeComponent();
@@ -24,9 +27,6 @@ namespace Windows_Task_Dialog_Generator
                 }
             }
         }
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
 
         private void btnShowDialog_Click(object sender, EventArgs e)
         {

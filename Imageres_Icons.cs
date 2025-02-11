@@ -8,24 +8,33 @@ namespace Windows_Task_Dialog_Generator
         private readonly MainForm mainForm;
         private FlowLayoutPanel? previousPanelSelection = null;
 
-        [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
-        private static extern bool DestroyIcon(IntPtr handle);
+        [LibraryImport("user32.dll", EntryPoint = "DestroyIcon")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static partial bool DestroyIcon(IntPtr handle);
 
         // P/Invoke for EnumResourceNames to enumerate resource names
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-        private static extern bool EnumResourceNames(IntPtr hModule, IntPtr lpszType, EnumResNameProc lpEnumFunc, IntPtr lParam);
+        [LibraryImport("kernel32.dll", EntryPoint = "EnumResourceNamesW")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static partial bool EnumResourceNames(IntPtr hModule, IntPtr lpszType, EnumResNameProc lpEnumFunc, IntPtr lParam);
 
-        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        private static extern IntPtr LoadImage(IntPtr hinst, IntPtr lpszName, uint uType, int cxDesired, int cyDesired, uint fuLoad);
+        [LibraryImport("user32.dll", EntryPoint = "LoadImageW", SetLastError = true)]
+        private static partial IntPtr LoadImage(IntPtr hinst, IntPtr lpszName, uint uType, int cxDesired, int cyDesired, uint fuLoad);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern IntPtr FindResource(IntPtr hModule, IntPtr lpName, IntPtr lpType);
+        [LibraryImport("kernel32.dll", EntryPoint = "FindResourceW", SetLastError = true)]
+        private static partial IntPtr FindResource(IntPtr hModule, IntPtr lpName, IntPtr lpType);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern IntPtr LoadResource(IntPtr hModule, IntPtr hResInfo);
+        [LibraryImport("kernel32.dll", EntryPoint = "LoadResource", SetLastError = true)]
+        private static partial IntPtr LoadResource(IntPtr hModule, IntPtr hResInfo);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern IntPtr LockResource(IntPtr hResData);
+        [LibraryImport("kernel32.dll", EntryPoint = "LockResource", SetLastError = true)]
+        private static partial IntPtr LockResource(IntPtr hResData);
+
+        [LibraryImport("kernel32.dll", EntryPoint = "LoadLibraryW", StringMarshalling = StringMarshalling.Utf16)]
+        private static partial IntPtr LoadLibrary(string lpFileName);
+
+        [LibraryImport("kernel32.dll", EntryPoint = "FreeLibrary")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static partial bool FreeLibrary(IntPtr hModule);
 
 
         // Delegate for EnumResourceNames callback
@@ -180,11 +189,5 @@ namespace Windows_Task_Dialog_Generator
             this.Hide();
         }
 
-        // P/Invoke for LoadLibrary and FreeLibrary
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-        private static extern IntPtr LoadLibrary(string lpFileName);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-        private static extern bool FreeLibrary(IntPtr hModule);
     }
 }
