@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 #nullable enable
@@ -10,16 +11,21 @@ namespace Windows_Task_Dialog_Generator
         [LibraryImport("user32.dll", EntryPoint = "SendMessageW")]
         private static partial IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
 
+        public static string VERSION = "Error getting version";
+
         public MainForm()
         {
             InitializeComponent();
+
+            VERSION = DetermineVersion();
+            labelVersion.Text = "Version: " + VERSION;
 
             #if DEBUG
             buttonTest.Visible = true;
             #endif
 
             // Attach event handler to all radio buttons in the gbIcon group to enable/disable necessary controls when the radio button selection changes
-            foreach ( Control control in gbIcon.Controls )
+            foreach ( Control control in flowIconSelect.Controls )
             {
                 if ( control is RadioButton rb )
                 {
@@ -34,6 +40,20 @@ namespace Windows_Task_Dialog_Generator
         private void btnShowDialog_Click(object sender, EventArgs e)
         {
             CreateAndShowDialog();
+        }
+
+        private string DetermineVersion()
+        {
+            string version = string.Empty;
+            version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "Unknown Version";
+
+            // If the last digit is zero, remove it
+            if ( version.EndsWith(".0") )
+            {
+                version = version.Substring(0, version.Length - 2);
+            }
+
+            return version;
         }
 
         private TaskDialogPage AssembleTaskDialogPage()

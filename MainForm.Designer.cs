@@ -79,6 +79,7 @@
             textBoxVerification = new TextBox();
             buttonImageResIcons = new Button();
             flowLayoutPanel1 = new FlowLayoutPanel();
+            labelVersion = new Label();
             gbButtons.SuspendLayout();
             gbIcon.SuspendLayout();
             flowIconSelect.SuspendLayout();
@@ -387,9 +388,9 @@
             // btnShowDialog
             // 
             btnShowDialog.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnShowDialog.Location = new Point(20, 459);
+            btnShowDialog.Location = new Point(8, 464);
             btnShowDialog.Name = "btnShowDialog";
-            btnShowDialog.Size = new Size(133, 42);
+            btnShowDialog.Size = new Size(140, 42);
             btnShowDialog.TabIndex = 11;
             btnShowDialog.Text = "Show Dialog";
             btnShowDialog.UseVisualStyleBackColor = true;
@@ -661,11 +662,22 @@
             flowLayoutPanel1.Size = new Size(317, 335);
             flowLayoutPanel1.TabIndex = 22;
             // 
+            // labelVersion
+            // 
+            labelVersion.AutoSize = true;
+            labelVersion.ForeColor = SystemColors.WindowFrame;
+            labelVersion.Location = new Point(12, 443);
+            labelVersion.Name = "labelVersion";
+            labelVersion.Size = new Size(51, 15);
+            labelVersion.TabIndex = 23;
+            labelVersion.Text = "Version: ";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(815, 517);
+            Controls.Add(labelVersion);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(buttonImageResIcons);
             Controls.Add(textBoxVerification);
@@ -751,5 +763,6 @@
         private Button buttonImageResIcons;
         private FlowLayoutPanel flowIconSelect;
         private FlowLayoutPanel flowLayoutPanel1;
+        private Label labelVersion;
     }
 }
