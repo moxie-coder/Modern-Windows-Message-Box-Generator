@@ -5,7 +5,7 @@ namespace Windows_Task_Dialog_Generator
 {
     public partial class Imageres_Icons : Form
     {
-        private MainForm mainForm;
+        private readonly MainForm mainForm;
         private FlowLayoutPanel? previousPanelSelection = null;
 
         [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
@@ -55,7 +55,7 @@ namespace Windows_Task_Dialog_Generator
                 return;
             }
 
-            List<int> iconGroupIds = new List<int>();
+            List<int> iconGroupIds = [];
             EnumResourceNames(hModule, new IntPtr(14), (h, t, name, l) =>
             {
                 iconGroupIds.Add((int)name);
@@ -66,14 +66,14 @@ namespace Windows_Task_Dialog_Generator
             {
                 foreach ( int groupId in iconGroupIds )
                 {
-                    ExtractAndDisplayIcon(hModule, imageresPath, groupId);
+                    ExtractAndDisplayIcon(hModule, groupId);
                 }
             });
 
             FreeLibrary(hModule);
         }
 
-        private void ExtractAndDisplayIcon(IntPtr hModule, string imageresPath, int groupId)
+        private void ExtractAndDisplayIcon(IntPtr hModule, int groupId)
         {
             IntPtr hResInfo = FindResource(hModule, new IntPtr(groupId), new IntPtr(14)); // RT_GROUP_ICON
             if ( hResInfo == IntPtr.Zero )
@@ -100,54 +100,52 @@ namespace Windows_Task_Dialog_Generator
                 return;
             }
 
-            using ( Icon icon = Icon.FromHandle(hIcon) )
+            using Icon icon = Icon.FromHandle(hIcon);
+            Icon iconCopy = (Icon)icon.Clone();
+            DestroyIcon(hIcon);
+            Bitmap bitmap = iconCopy.ToBitmap();
+
+            FlowLayoutPanel containerPanel = new FlowLayoutPanel
             {
-                Icon iconCopy = (Icon)icon.Clone();
-                DestroyIcon(hIcon);
-                Bitmap bitmap = iconCopy.ToBitmap();
+                AutoSize = true,
+                Margin = new Padding(4),
+                FlowDirection = FlowDirection.TopDown,
+                WrapContents = false,
+                Size = new Size(56, 70),
+                Tag = groupId
+            };
 
-                FlowLayoutPanel containerPanel = new FlowLayoutPanel
-                {
-                    AutoSize = true,
-                    Margin = new Padding(4),
-                    FlowDirection = FlowDirection.TopDown,
-                    WrapContents = false,
-                    Size = new Size(56, 70),
-                    Tag = groupId
-                };
+            PictureBox pictureBox = new PictureBox
+            {
+                Image = bitmap,
+                Size = new Size(48, 48),
+                SizeMode = PictureBoxSizeMode.Zoom,
+                Margin = new Padding(0),
+                Tag = groupId
+            };
 
-                PictureBox pictureBox = new PictureBox
-                {
-                    Image = bitmap,
-                    Size = new Size(48, 48),
-                    SizeMode = PictureBoxSizeMode.Zoom,
-                    Margin = new Padding(0),
-                    Tag = groupId
-                };
+            Label iconLabel = new Label
+            {
+                Text = $"{groupId}",
+                AutoSize = true,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Margin = new Padding(0),
+                Width = pictureBox.Width
+            };
 
-                Label iconLabel = new Label
-                {
-                    Text = $"{groupId}",
-                    AutoSize = true,
-                    TextAlign = ContentAlignment.MiddleCenter,
-                    Margin = new Padding(0),
-                    Width = pictureBox.Width
-                };
+            pictureBox.Click += IconClickHandler;
+            iconLabel.Click += IconClickHandler;
 
-                pictureBox.Click += IconClickHandler;
-                iconLabel.Click += IconClickHandler;
+            containerPanel.Controls.Add(pictureBox);
+            containerPanel.Controls.Add(iconLabel);
 
-                containerPanel.Controls.Add(pictureBox);
-                containerPanel.Controls.Add(iconLabel);
-
-                this.Invoke(() =>
-                {
-                    flowLayoutPanelMain.Controls.Add(containerPanel);
-                });
-            }
+            this.Invoke(() =>
+            {
+                flowLayoutPanelMain.Controls.Add(containerPanel);
+            });
         }
 
-        private void OnPanelClick(object? sender, EventArgs e, int iconIndex)
+        private void OnPanelClick(object? sender, int iconIndex)
         {
             mainForm.SetCustomID(iconIndex);
 
@@ -171,7 +169,7 @@ namespace Windows_Task_Dialog_Generator
                 var containerPanel = control as FlowLayoutPanel ?? control.Parent as FlowLayoutPanel;
                 if ( containerPanel?.Tag is int iconIndex )
                 {
-                    OnPanelClick(containerPanel, e, iconIndex);
+                    OnPanelClick(containerPanel, iconIndex);
                 }
             }
         }
@@ -183,7 +181,7 @@ namespace Windows_Task_Dialog_Generator
         }
 
         // P/Invoke for LoadLibrary and FreeLibrary
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
         private static extern IntPtr LoadLibrary(string lpFileName);
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto)]

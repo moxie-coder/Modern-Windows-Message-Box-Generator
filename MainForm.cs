@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices;
 
 #nullable enable
+#pragma warning disable IDE1006
 
 namespace Windows_Task_Dialog_Generator
 {
@@ -141,7 +142,7 @@ namespace Windows_Task_Dialog_Generator
             }
 
             // Shows the actual dialog. Returns the button that was pressed
-            var result = TaskDialog.ShowDialog(page);
+            TaskDialog.ShowDialog(page);
         }
 
         private TaskDialogPage SetupIconUpdate(TaskDialogPage page)
@@ -169,12 +170,12 @@ namespace Windows_Task_Dialog_Generator
             int chosenIconInt = DetermineChosenIconFromSelection_Int();
 
             // This will fire after the dialog is created
-            page.Created += (sender, e) => UpdateIcon_OnCreated(sender, e, chosenIconInt);
+            page.Created += (sender, e) => UpdateIcon_OnCreated(sender, chosenIconInt);
 
             return page;
         }
 
-        private void UpdateIcon_OnCreated(object? sender, EventArgs e, int chosenIconID)
+        private static void UpdateIcon_OnCreated(object? sender, int chosenIconID)
         {
             TaskDialogPage? dialogPage = sender as TaskDialogPage;
             var dialog = dialogPage?.BoundDialog;
@@ -266,7 +267,7 @@ namespace Windows_Task_Dialog_Generator
             }
         }
 
-        private Icon? GetIconFromImageRes(int id)
+        private static Icon? GetIconFromImageRes(int id)
         {
             string winPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
             string imageresPath = Path.Combine(winPath, "imageres.dll");
@@ -282,7 +283,7 @@ namespace Windows_Task_Dialog_Generator
             }
         }
 
-        private Bitmap? GetResizedIconFromImageRes(int id, int width, int height)
+        private static Bitmap? GetResizedIconFromImageRes(int id, int width, int height)
         {
             var icon = GetIconFromImageRes(id);
             if ( icon == null )
@@ -304,8 +305,8 @@ namespace Windows_Task_Dialog_Generator
         private void SetRadioIcons()
         {
             // Icon IDs aren't necessarily the same as the enum values, so we need to get the actual icon from the imageres.dll file
-            List<(RadioButton, int, int)> radioButtonsWithIcons = new List<(RadioButton, int, int)>
-            {
+            List<(RadioButton, int, int)> radioButtonsWithIcons =
+            [
                 (rbIconInformation,            81,  22), //Slightly smaller to not be cut off
                 (rbIconWarning,                84,  24),
                 (rbIconError,                  98,  22), //Slightly smaller to not be cut off
@@ -315,7 +316,7 @@ namespace Windows_Task_Dialog_Generator
                 (rbIconShieldWarningYellowBar, 107, 24),
                 (rbIconShieldErrorRedBar,      105, 24),
                 (rbIconShieldSuccessGreenBar,  106, 24)
-            };
+            ];
 
             foreach ( (var radioButton, int iconID, int size) in radioButtonsWithIcons )
             {
@@ -387,8 +388,11 @@ namespace Windows_Task_Dialog_Generator
 
         private void buttonBrowseCustomIcon_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Image files (*.ico;*.bmp;*.gif;*.jpg;*.jpeg;*.png;*.tiff)|*.ico;*.bmp;*.gif;*.jpg;*.jpeg;*.png;*.tiff|Icon files (*.ico)|*.ico|Icon From Exe (*.exe)|*.exe|All files (*.*)|*.*";
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Image files (*.ico;*.bmp;*.gif;*.jpg;*.jpeg;*.png;*.tiff)|*.ico;*.bmp;*.gif;*.jpg;*.jpeg;*.png;*.tiff|Icon files (*.ico)|*.ico|Icon From Exe (*.exe)|*.exe|All files (*.*)|*.*"
+            };
+
             if ( openFileDialog.ShowDialog() == DialogResult.OK )
             {
                 textBoxCustomIconPath.Text = openFileDialog.FileName;
@@ -460,17 +464,15 @@ namespace Windows_Task_Dialog_Generator
             {
                 try
                 {
-                    using ( Image img = Image.FromFile(filePath) )
+                    using Image img = Image.FromFile(filePath);
+                    if ( img is Bitmap bitmap )
                     {
-                        if ( img is Bitmap bitmap )
-                        {
-                            taskDialogIcon = new TaskDialogIcon(bitmap);
-                        }
-                        else
-                        {
-                            MessageBox.Show("Unsupported image format.");
-                            return null;
-                        }
+                        taskDialogIcon = new TaskDialogIcon(bitmap);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Unsupported image format.");
+                        return null;
                     }
                 }
                 catch ( OutOfMemoryException )
