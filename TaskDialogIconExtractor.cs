@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
+﻿using System.Runtime.InteropServices;
 
 namespace Windows_Task_Dialog_Generator
 {
@@ -81,10 +79,10 @@ namespace Windows_Task_Dialog_Generator
         {
             //const int TD_SHIELD_GREEN_BAR = -4;  // MAKEINTRESOURCEW(-4)
             const int TD_SHIELD_GREEN_BAR = ushort.MaxValue - 7;
-            var callback = new TaskDialogCallback(CallbackProc);
-            var callbackPtr = Marshal.GetFunctionPointerForDelegate(callback);
+            TaskDialogCallback callback = new TaskDialogCallback(CallbackProc);
+            nint callbackPtr = Marshal.GetFunctionPointerForDelegate(callback);
 
-            var config = new TaskDialogConfig
+            TaskDialogConfig config = new TaskDialogConfig
             {
                 cbSize = (uint)Marshal.SizeOf(typeof(TaskDialogConfig)),
                 hwndParent = IntPtr.Zero,

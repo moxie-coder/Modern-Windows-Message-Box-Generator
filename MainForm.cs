@@ -1,7 +1,4 @@
-using System;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 #nullable enable
 
@@ -88,9 +85,9 @@ namespace Windows_Task_Dialog_Generator
             }
             else if ( rbAbortRetryIgnore.Checked )
             {
-                var abortButton = new TaskDialogButton("Abort");
-                var retryButton = new TaskDialogButton("Retry");
-                var ignoreButton = new TaskDialogButton("Ignore");
+                TaskDialogButton abortButton = new TaskDialogButton("Abort");
+                TaskDialogButton retryButton = new TaskDialogButton("Retry");
+                TaskDialogButton ignoreButton = new TaskDialogButton("Ignore");
 
                 page.Buttons.Add(abortButton);
                 page.Buttons.Add(retryButton);
@@ -108,12 +105,12 @@ namespace Windows_Task_Dialog_Generator
         private void CreateAndShowDialog()
         {
             // Create the initial dialog page by adding buttons, but not yet setting the icon
-            TaskDialogPage page = AssembleTaskDialogPage();
+            var page = AssembleTaskDialogPage();
 
             TaskDialogIcon chosenIcon;
             if ( rbIconCustomFile.Checked )
             {
-                TaskDialogIcon? customIcon = GetCustomIconFromPath();
+                var customIcon = GetCustomIconFromPath();
 
                 if ( customIcon != null )
                     chosenIcon = customIcon;
@@ -122,7 +119,7 @@ namespace Windows_Task_Dialog_Generator
             }
             else if ( rbIconCustomID.Checked )
             {
-                TaskDialogIcon? extractedIcon = GetCustomIconObjectFromID();
+                var extractedIcon = GetCustomIconObjectFromID();
 
                 if ( extractedIcon == null )
                     return; // If error / invalid custom icon, return without showing the dialog. Error will have been shown in GetCustomIconObjectFromID()
@@ -146,7 +143,7 @@ namespace Windows_Task_Dialog_Generator
             }
 
             // Shows the actual dialog. Returns the button that was pressed
-            TaskDialogButton result = TaskDialog.ShowDialog(page);
+            var result = TaskDialog.ShowDialog(page);
         }
 
         private TaskDialogPage SetupIconUpdate(TaskDialogPage page)
@@ -182,7 +179,7 @@ namespace Windows_Task_Dialog_Generator
         private void UpdateIcon_OnCreated(object? sender, EventArgs e, int chosenIconID)
         {
             TaskDialogPage? dialogPage = sender as TaskDialogPage;
-            TaskDialog? dialog = dialogPage?.BoundDialog;
+            var dialog = dialogPage?.BoundDialog;
             if ( dialog != null )
             {
                 IntPtr hwnd = dialog.Handle;
@@ -289,7 +286,7 @@ namespace Windows_Task_Dialog_Generator
 
         private Bitmap? GetResizedIconFromImageRes(int id, int width, int height)
         {
-            Icon? icon = GetIconFromImageRes(id);
+            var icon = GetIconFromImageRes(id);
             if ( icon == null )
             {
                 return null;
@@ -322,7 +319,7 @@ namespace Windows_Task_Dialog_Generator
                 (rbIconShieldSuccessGreenBar,  106, 24)
             };
 
-            foreach ( (RadioButton radioButton, int iconID, int size) in radioButtonsWithIcons )
+            foreach ( (var radioButton, int iconID, int size) in radioButtonsWithIcons )
             {
                 radioButton.Image = GetResizedIconFromImageRes(iconID, size, size);
                 radioButton.ImageAlign = ContentAlignment.MiddleLeft;
@@ -339,7 +336,7 @@ namespace Windows_Task_Dialog_Generator
 
         private TaskDialogIcon DetermineChosenIconFromSelection()
         {
-            TaskDialogIcon chosenIcon = TaskDialogIcon.None;
+            var chosenIcon = TaskDialogIcon.None;
 
             if ( rbIconNone.Checked ) chosenIcon = TaskDialogIcon.None;
             else if ( rbIconInformation.Checked ) chosenIcon = TaskDialogIcon.Information;
@@ -513,7 +510,7 @@ namespace Windows_Task_Dialog_Generator
 
         private void buttonTest_Click(object sender, EventArgs e)
         {
-            CustomTaskDialog.Test();
+            //CustomTaskDialog.Test();
             //TaskDialogIconExtractor.GetShieldSuccessGreenBarIcon();
             //TaskDialogIcon test = TaskDialogIcon.ShieldSuccessGreenBar;'
             //TaskDialogStandardIcon testIcon = TaskDialogStandardIcon.ShieldSuccessGreenBar;

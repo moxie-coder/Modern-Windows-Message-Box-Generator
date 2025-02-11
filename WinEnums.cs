@@ -1,11 +1,4 @@
-﻿using Microsoft.VisualBasic.ApplicationServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Windows_Task_Dialog_Generator
+﻿namespace Windows_Task_Dialog_Generator
 {
     class WinEnums
     {
@@ -95,7 +88,7 @@ namespace Windows_Task_Dialog_Generator
             SIZE_TO_CONTENT = 0x00000800,
         }
 
-        public enum ShieldIcons: int
+        public enum ShieldIcons : int
         {
             BlueBar = ushort.MaxValue - 4,
             YellowBar = ushort.MaxValue - 5,
@@ -105,7 +98,7 @@ namespace Windows_Task_Dialog_Generator
 
         }
 
-        public enum  StandardIcons: int 
+        public enum StandardIcons : int
         {
             None = 0,
             Warning = 65535,

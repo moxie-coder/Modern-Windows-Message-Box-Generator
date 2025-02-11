@@ -1,9 +1,5 @@
-﻿using System;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
+﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 
 namespace Windows_Task_Dialog_Generator
 {
@@ -92,7 +88,7 @@ namespace Windows_Task_Dialog_Generator
                 return;
 
             // Use LoadImage instead of ExtractIcon
-            IntPtr hIcon = LoadImage(hModule, new IntPtr(groupId), 
+            IntPtr hIcon = LoadImage(hModule, new IntPtr(groupId),
                     1, // IMAGE_ICON
                     0, 0, // Use actual size
                     0x00000040); // LR_DEFAULTSIZE
@@ -144,10 +140,10 @@ namespace Windows_Task_Dialog_Generator
                 containerPanel.Controls.Add(pictureBox);
                 containerPanel.Controls.Add(iconLabel);
 
-                this.Invoke((Action)(() =>
+                this.Invoke(() =>
                 {
                     flowLayoutPanelMain.Controls.Add(containerPanel);
-                }));
+                });
             }
         }
 

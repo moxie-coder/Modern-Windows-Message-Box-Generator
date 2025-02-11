@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.Intrinsics.Arm;
-using System.Windows.Forms;
+﻿using System.Runtime.InteropServices;
 
 namespace Windows_Task_Dialog_Generator
 {
@@ -14,11 +11,11 @@ namespace Windows_Task_Dialog_Generator
         private const int TD_SHIELD_ICON = 65532;
 
         // Constants for shield with bar icons (these are different from the standard shield!)
-        private const int TD_SHIELD_BLUE_BAR = ushort.MaxValue - 4;          
-        private const int TD_SHIELD_YELLOW_BAR = ushort.MaxValue - 5;        
-        private const int TD_SHIELD_RED_BAR = ushort.MaxValue - 6;           
-        private const int TD_SHIELD_GREEN_BAR = ushort.MaxValue - 7;         
-        private const int TD_SHIELD_GRAY_BAR = ushort.MaxValue - 8;          
+        private const int TD_SHIELD_BLUE_BAR = ushort.MaxValue - 4;
+        private const int TD_SHIELD_YELLOW_BAR = ushort.MaxValue - 5;
+        private const int TD_SHIELD_RED_BAR = ushort.MaxValue - 6;
+        private const int TD_SHIELD_GREEN_BAR = ushort.MaxValue - 7;
+        private const int TD_SHIELD_GRAY_BAR = ushort.MaxValue - 8;
 
         [Flags]
         public enum TaskDialogFlags : uint
@@ -104,7 +101,7 @@ namespace Windows_Task_Dialog_Generator
                 return 0;
             };
 
-            var config = new TaskDialogConfig
+            TaskDialogConfig config = new TaskDialogConfig
             {
                 cbSize = (uint)Marshal.SizeOf(typeof(TaskDialogConfig)),
                 hwndParent = IntPtr.Zero,
