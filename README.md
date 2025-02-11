@@ -14,13 +14,13 @@ Generates a customizable "Task Dialog" box - a more modern version of the old Wi
 
 ## Examples 
 <p align="center">
-<img width="450" alt="Example Message Box" src="https://github.com/user-attachments/assets/6f795396-9caf-4eb3-8fbf-7e77c8d9ded5">
-<img width="450" alt="Example Message Box 2" src="https://github.com/user-attachments/assets/b232caa7-8253-4ffc-ae72-d6725d99c152">
+<img width="450" alt="Example Message Box Go Touch Grass" src="https://github.com/user-attachments/assets/914b978e-3f52-4e9a-b813-cdc0cf552ea4">
+<img width="450" alt="Example Message Box Visual Studio" src="https://github.com/user-attachments/assets/b232caa7-8253-4ffc-ae72-d6725d99c152">
 </p>
 
 ## Main Window
 <p align="center">
-<img width="700" alt="Main Window" src="https://github.com/user-attachments/assets/e243bafd-ed3e-43c7-8fca-179009cf6335">
+<img width="700" alt="Main Window" src="https://github.com/user-attachments/assets/fdc24faa-4316-4344-82df-1c0905ca22ef">
 </p>
 
 ## How to Compile
