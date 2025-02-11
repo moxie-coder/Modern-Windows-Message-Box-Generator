@@ -5,7 +5,22 @@ function Get-AssemblyVersion {
         [string]$runtime = ""
     )
     
-    # Base path for obj directory
+    # First try to get version from .csproj file
+    $csprojFiles = Get-ChildItem -Filter "*.csproj"
+    if ($csprojFiles.Count -gt 0) {
+        $csprojContent = Get-Content $csprojFiles[0]
+        $versionLine = $csprojContent | Where-Object { $_ -match '<AssemblyVersion>(.*)</AssemblyVersion>' } | Select-Object -First 1
+        if ($versionLine -match '<AssemblyVersion>(\d+\.\d+\.\d+)\.(\d+)</AssemblyVersion>') {
+            $version = $matches[1]
+            if ($matches[2] -ne "0") {
+                $version = "$version.$($matches[2])"
+            }
+            Write-Host "Found assembly version in .csproj file: " + $version
+            return $version
+        }
+    }
+    
+    # Fallback to checking AssemblyInfo.cs if no version found in .csproj
     $basePath = "obj\$configuration\net9.0-windows"
     if ($runtime) {
         $basePath = "obj\$configuration\net9.0-windows\$runtime"
@@ -15,42 +30,39 @@ function Get-AssemblyVersion {
     
     if (Test-Path $assemblyInfoPath) {
         $assemblyFile = Get-Content $assemblyInfoPath
-
         # Use AssemblyVersionAttribute. Ignore the last version digit if it's zero.
-		$versionLine = $assemblyFile | Where-Object { $_ -match 'AssemblyVersionAttribute\("(.*)"\)' } | Select-Object -First 1
-		if ($versionLine -match 'AssemblyVersionAttribute\("(\d+\.\d+\.\d+)\.(\d+)"\)') {
-			$version = $matches[1]
-			if ($matches[2] -ne "0") {
-				$version = "$version.$($matches[2])"
-			}
-			Write-host "Found assembly version in AssemblyVersionAttribute: " + $version
-			return $version
-		}
-
-		# Fallback to FileVersion. Ignore the last version digit if it's zero.
-		$versionLine = $assemblyFile | Where-Object { $_ -match 'AssemblyFileVersionAttribute\("(.*)"\)' } | Select-Object -First 1
-		if ($versionLine -match 'AssemblyFileVersionAttribute\("(\d+\.\d+\.\d+)\.(\d+)"\)') {
-			$version = $matches[1]
-			if ($matches[2] -ne "0") {
-				$version = "$version.$($matches[2])"
-			}
-			Write-host "Found assembly version in AssemblyFileVersionAttribute: " + $version
-			return $version
-		}
-		
-		# Fall back to AssemblyInformationalVersionAttribute
+        $versionLine = $assemblyFile | Where-Object { $_ -match 'AssemblyVersionAttribute\("(.*)"\)' } | Select-Object -First 1
+        if ($versionLine -match 'AssemblyVersionAttribute\("(\d+\.\d+\.\d+)\.(\d+)"\)') {
+            $version = $matches[1]
+            if ($matches[2] -ne "0") {
+                $version = "$version.$($matches[2])"
+            }
+            Write-Host "Found assembly version in AssemblyVersionAttribute: " + $version
+            return $version
+        }
+        # Fallback to FileVersion. Ignore the last version digit if it's zero.
+        $versionLine = $assemblyFile | Where-Object { $_ -match 'AssemblyFileVersionAttribute\("(.*)"\)' } | Select-Object -First 1
+        if ($versionLine -match 'AssemblyFileVersionAttribute\("(\d+\.\d+\.\d+)\.(\d+)"\)') {
+            $version = $matches[1]
+            if ($matches[2] -ne "0") {
+                $version = "$version.$($matches[2])"
+            }
+            Write-Host "Found assembly version in AssemblyFileVersionAttribute: " + $version
+            return $version
+        }
+        
+        # Fall back to AssemblyInformationalVersionAttribute
         $versionLine = $assemblyFile | Where-Object { $_ -match 'AssemblyInformationalVersionAttribute\("(.*)"\)' } | Select-Object -First 1
         if ($versionLine -match 'AssemblyInformationalVersionAttribute\("(.+?)(?:\+|"\))') {
-			Write-host "Found assembly version in AssemblyInformationalVersionAttribute: " + $matches[1]
+            Write-Host "Found assembly version in AssemblyInformationalVersionAttribute: " + $matches[1]
             return $matches[1]
         }
     }
-	else
-	{
-		Write-Warning "Couldn't find assembly info file at: $assemblyInfoPath"
-		Write-Warning "Couldn't find assembly version. Using default 1.0.0"
-		return "1.0.0"
-	}
+    else {
+        Write-Warning "Couldn't find assembly info file at: $assemblyInfoPath"
+        Write-Warning "Couldn't find assembly version. Using default 1.0.0"
+        return "1.0.0"
+    }
 }
 
 # Create results directory
@@ -106,10 +118,10 @@ Get-ChildItem $resultsDir -Filter "*.exe" | ForEach-Object {
     Write-Host " - $($_.Name)"
 }
 # SIG # Begin signature block
-# MII98gYJKoZIhvcNAQcCoII94zCCPd8CAQExDzANBglghkgBZQMEAgEFADB5Bgor
+# MII97wYJKoZIhvcNAQcCoII94DCCPdwCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCBtnaM9gGxQh52m
-# Cqr1+k2OTAlKgpr5yLqSDSs0Lfdk5KCCIrQwggXMMIIDtKADAgECAhBUmNLR1FsZ
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCCEFWZ0l1vdQwF1
+# y+P7J99doh1iLLk1MvVY7QV/4WY9zqCCIrQwggXMMIIDtKADAgECAhBUmNLR1FsZ
 # lUgTecgRwIeZMA0GCSqGSIb3DQEBDAUAMHcxCzAJBgNVBAYTAlVTMR4wHAYDVQQK
 # ExVNaWNyb3NvZnQgQ29ycG9yYXRpb24xSDBGBgNVBAMTP01pY3Jvc29mdCBJZGVu
 # dGl0eSBWZXJpZmljYXRpb24gUm9vdCBDZXJ0aWZpY2F0ZSBBdXRob3JpdHkgMjAy
@@ -294,28 +306,28 @@ Get-ChildItem $resultsDir -Filter "*.exe" | ForEach-Object {
 # Dwqq/jwzwd8Wo2J83r7O3onQbDO9TyDStgaBNlHzMMQgl95nHBYMelLEHkUnVVVT
 # UsgC0Huj09duNfMaJ9ogxhPNThgq3i8w3DAGZ61AMeF0C1M+mU5eucj1Ijod5O2M
 # MPeJQ3/vKBtqGZg4eTtUHt/BPjN74SsJsyHqAdXVS5c+ItyKWg3Eforhox9k3Wgt
-# WTpgV4gkSiS4+A09roSdOI4vrRw+p+fL4WrxSK5nMYIalDCCGpACAQEwcTBaMQsw
+# WTpgV4gkSiS4+A09roSdOI4vrRw+p+fL4WrxSK5nMYIakTCCGo0CAQEwcTBaMQsw
 # CQYDVQQGEwJVUzEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSswKQYD
 # VQQDEyJNaWNyb3NvZnQgSUQgVmVyaWZpZWQgQ1MgQU9DIENBIDAyAhMzAAK5B7Gc
 # zjpXwC3oAAAAArkHMA0GCWCGSAFlAwQCAQUAoF4wEAYKKwYBBAGCNwIBDDECMAAw
-# GQYJKoZIhvcNAQkDMQwGCisGAQQBgjcCAQQwLwYJKoZIhvcNAQkEMSIEIPnKwGsf
-# 32igQ6WlXcnadvKXxPVXc++v2mksewJFXJQzMA0GCSqGSIb3DQEBAQUABIIBgDEm
-# Dgj3q06n5FRd+Xg2xVAJWnqAKLIzIqbBRlOnSJNdvN07xq9bkVTQ97+IrSUbHWFB
-# OAT50MQw7VyIrzhuC27WWFIHIxIyWAo6Al+1yz+mEin34ajTrkkPjIsWpGHUPDTZ
-# tbD3UkePdp+SmzogbTEEKKuEE2NWdfeKny97+EVbzdfta9twfqWGT02eupZyzD3v
-# 4DuG2mU6uXLNR4RggumgigAUhiG+KesXq+Wcn4dZDmGClzue91/3DlAeAZqIw2nc
-# +tKtDmzlo1/JZG2tukDqkdbWbkiQ8iEqb1a2T3dNsZoMi83lEfbz7pYL3Lmp3VBU
-# VQy4WYEGIpehQO2X8Mu7a1XPpQXUAG1ryLBnfyt21ollCAJ8aQlJBuW3wPuprjen
-# QweJ0HvCzDYpYcwVLODowIwvZZ1b1WrLsy0ZV+oIBhLBUrSD9TSiZBl/3LWzttEu
-# eac8TVOpofWGDimhHpm2xkakV2u2nBSw7+plZqJjdBOMNH20hvBY3xB31XQJiqGC
-# GBQwghgQBgorBgEEAYI3AwMBMYIYADCCF/wGCSqGSIb3DQEHAqCCF+0wghfpAgED
+# GQYJKoZIhvcNAQkDMQwGCisGAQQBgjcCAQQwLwYJKoZIhvcNAQkEMSIEIB+FMDfc
+# GlYwD9E/URJ9ZnrgkPsncO/0hkxfx882/aiFMA0GCSqGSIb3DQEBAQUABIIBgFX0
+# st+UFuRnIr5SbmLFlDWZNmsimzm5PiD/PzoR3aBJAz74whRwh50g3alSm3Aoum4h
+# d0x9b5alkTWpFZceCJbAlgJnae/CfIu7WW/O5Ltzl3JiIBwXe8g7CLoLuCXDO1Ta
+# L+siAN9la1BYAg4kYNJHxluqViVwaXlANEgEFynOGytw3VZB0dD70JHHi/j7CYaW
+# 7Y1uk7kUJpuim0YVEqY3EOtwdSXy7P16fF6OIruKM6mr3oBsDpWSg9CxuVjm0J/s
+# PTbopYbJBwkM/ag9FTGDzpbezQiSbfvlDnTbE6R11Ldqqor5RMW18MdEZYrsXAYi
+# iJHmJUQsVuvXYmzkjNbqFyXNczEbEf3AD+rsqDc7kjFbi4pGzqp54a9mPT0lD88M
+# KefEukuIyNGRSVe0XnUoXfGWZuEZTGpQw6slnp95vQTbIE/gSh6ZB/lJwvbCskQJ
+# 8DiaHhmXBVT/njCIMg8FY/u7HRFbBUz8HCkU46ha4s4FBkLIms0HXL18BBCwTqGC
+# GBEwghgNBgorBgEEAYI3AwMBMYIX/TCCF/kGCSqGSIb3DQEHAqCCF+owghfmAgED
 # MQ8wDQYJYIZIAWUDBAIBBQAwggFiBgsqhkiG9w0BCRABBKCCAVEEggFNMIIBSQIB
-# AQYKKwYBBAGEWQoDATAxMA0GCWCGSAFlAwQCAQUABCBp35EZy59qvEZnCHoaum3R
-# uwcVM5z4u2kSG9D3xt4uRwIGZ5GZwE5NGBMyMDI1MDIxMTE4NDg0My41MzZaMASA
+# AQYKKwYBBAGEWQoDATAxMA0GCWCGSAFlAwQCAQUABCBULmmQ1AbRwprL7klRk4a5
+# 535siOHPy/qsPWsIioSi5QIGZ5dsB5/8GBMyMDI1MDIxMTE5MTI0Mi40NzRaMASA
 # AgH0oIHhpIHeMIHbMQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQ
 # MA4GA1UEBxMHUmVkbW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9u
 # MSUwIwYDVQQLExxNaWNyb3NvZnQgQW1lcmljYSBPcGVyYXRpb25zMScwJQYDVQQL
-# Ex5uU2hpZWxkIFRTUyBFU046QTUwMC0wNUUwLUQ5NDcxNTAzBgNVBAMTLE1pY3Jv
+# Ex5uU2hpZWxkIFRTUyBFU046N0QwMC0wNUUwLUQ5NDcxNTAzBgNVBAMTLE1pY3Jv
 # c29mdCBQdWJsaWMgUlNBIFRpbWUgU3RhbXBpbmcgQXV0aG9yaXR5oIIPITCCB4Iw
 # ggVqoAMCAQICEzMAAAAF5c8P/2YuyYcAAAAAAAUwDQYJKoZIhvcNAQEMBQAwdzEL
 # MAkGA1UEBhMCVVMxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjFIMEYG
@@ -357,27 +369,27 @@ Get-ChildItem $resultsDir -Filter "*.exe" | ForEach-Object {
 # F0fx6URrYiarjmBprwP6ZObwtZXJ23jK3Fg/9uqM3j0P01nzVygTppBabzxPAh/h
 # Hhhls6kwo3QLJ6No803jUsZcd4JQxiYHHc+Q/wAMcPUnYKv/q2O444LO1+n6j01z
 # 5mggCSlRwD9faBIySAcA9S8h22hIAcRQqIGEjolCK9F6nK9ZyX4lhthsGHumaABd
-# WzCCB5cwggV/oAMCAQICEzMAAABIVXdyHnSSt/cAAAAAAEgwDQYJKoZIhvcNAQEM
+# WzCCB5cwggV/oAMCAQICEzMAAABLobGt4Vn85zQAAAAAAEswDQYJKoZIhvcNAQEM
 # BQAwYTELMAkGA1UEBhMCVVMxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlv
 # bjEyMDAGA1UEAxMpTWljcm9zb2Z0IFB1YmxpYyBSU0EgVGltZXN0YW1waW5nIENB
-# IDIwMjAwHhcNMjQxMTI2MTg0ODUyWhcNMjUxMTE5MTg0ODUyWjCB2zELMAkGA1UE
+# IDIwMjAwHhcNMjQxMTI2MTg0ODU3WhcNMjUxMTE5MTg0ODU3WjCB2zELMAkGA1UE
 # BhMCVVMxEzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAc
 # BgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjElMCMGA1UECxMcTWljcm9zb2Z0
-# IEFtZXJpY2EgT3BlcmF0aW9uczEnMCUGA1UECxMeblNoaWVsZCBUU1MgRVNOOkE1
+# IEFtZXJpY2EgT3BlcmF0aW9uczEnMCUGA1UECxMeblNoaWVsZCBUU1MgRVNOOjdE
 # MDAtMDVFMC1EOTQ3MTUwMwYDVQQDEyxNaWNyb3NvZnQgUHVibGljIFJTQSBUaW1l
 # IFN0YW1waW5nIEF1dGhvcml0eTCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoC
-# ggIBAMt+gPdn75JVMhgkWcWc+tWUy9oliU9OuicMd7RW6IcA2cIpMiryomTjB5n5
-# x/X68gntx2X7+DDcBpGABBP+INTq8s3pB8WDVgA7pxHu+ijbLhAMk+C4aMqka043
-# EaP185q8CQNMfiBpMme4r2aG8jNSojtMQNXsmgrpLLSRixVxZunaYXhEngWWKoSb
-# vRg1LAuOcqfmpghkmhBgqD1lZjNhpuCv1yUeyOVm0V6mxNifaGuKby9p4713KZ+T
-# umZetBfY7zlRCXyToArYHwopBW402cFrfsQBZ/HGqU73tY6+TNug1lhYdYU6VLdq
-# SW9Jr7vjY9JUjISCtoKCSogxmRW7MX7lCe7JV6Rdpn+HP7e6ObKvGyddRdtdiZCL
-# p6dPtyiZYalN9GjZZm360TO+GXjpiZD0gZER+f5lEFavwIcD7HarW6qD0ZN81S+R
-# DgfEtJ67h6oMUqP1WIiFC75if8gaK1aO5+Z8EqnaeKALgUVptF7i9KGsDvEm2ts4
-# WYneMAhG2+7Z25+IjtW4ZAI83ZtdGOJp9sFd68S6EDf33wQLPi7CcZ9IUXW74tLv
-# INktvw3PFee6I3hs/9fDcCMoEIav+WeZImILCgwRGFcLItvwpSEA7NcXToRk3TGf
-# C53YD3g5NDujrqhduKLbVnorGOdIZXVeLMk0Jr4/XIUQGpUpAgMBAAGjggHLMIIB
-# xzAdBgNVHQ4EFgQUpr139LrrfUoZ97y6Zho7Nzwc90cwHwYDVR0jBBgwFoAUa2ko
+# ggIBAJ2dirN/NIMtny38hycGFn9VLvt/PswhQprUj2YOOclE091Vai+aBTlRsBEJ
+# ssIgjNmPwnT9gN7IkENgVPJJcCBoeUPDTqtQFyvKrZ5rGhZ9KFMdJ2U6fLOENTDw
+# ZcZglPXH+r6cabqTWiu7BbbCtg1Hzr9DmyvVdgImUzzK15ZokW9kkYTq8I49DGeL
+# +UQ3aqhOurZ6OalVUw+eCRf0gwLKuXFq/jSALXlZNTt1nejX1tCzu752vNvM43Qy
+# 0qyprW8MWwe6q8farVLbXMROZ53+WWZMrlBpEsuGTlYJ33DWf8OjmAdquDom/zrW
+# 5IKoB0x02cjfh+dOwhGdoS0IZYa7tbVl3tuUdKWKAFoYAsgLrW8nNaPUxvwnGGGa
+# F89fbR3qcHUmmabiog/8VbTa4LElKr0V7zOJ52+WDibVoKqNZfRDnrr+LtWJ5Ww4
+# DevHXFFd4hsAOazGfDfpiVmiGypESxlQyNBnh7pwJ8oCVo7TZxrsaLMhGfuY2/Mc
+# 1hzjuBAIUQL5iBfZIu/DhvpHlNqrjdcnSF+EPA9I+JPrR3JKMtQhyYNyza8jzvy3
+# dbESXZqf0ckJpg8q9X9RnUDL0eORIlzdmohe+AaWHVUjuQKk9MFrJjtELQjMmXlr
+# v4MzsVwGF6L2HV4nwB1mzNVxQaT4uQX66pTcYCeNhp0kL/HZAgMBAAGjggHLMIIB
+# xzAdBgNVHQ4EFgQUIJkaxS9FUX/NOhFaQTclhaa4dCYwHwYDVR0jBBgwFoAUa2ko
 # OjUvSGNAz3vYr0npPtk92yEwbAYDVR0fBGUwYzBhoF+gXYZbaHR0cDovL3d3dy5t
 # aWNyb3NvZnQuY29tL3BraW9wcy9jcmwvTWljcm9zb2Z0JTIwUHVibGljJTIwUlNB
 # JTIwVGltZXN0YW1waW5nJTIwQ0ElMjAyMDIwLmNybDB5BggrBgEFBQcBAQRtMGsw
@@ -386,55 +398,55 @@ Get-ChildItem $resultsDir -Filter "*.exe" | ForEach-Object {
 # MjAyMDIwLmNydDAMBgNVHRMBAf8EAjAAMBYGA1UdJQEB/wQMMAoGCCsGAQUFBwMI
 # MA4GA1UdDwEB/wQEAwIHgDBmBgNVHSAEXzBdMFEGDCsGAQQBgjdMg30BATBBMD8G
 # CCsGAQUFBwIBFjNodHRwOi8vd3d3Lm1pY3Jvc29mdC5jb20vcGtpb3BzL0RvY3Mv
-# UmVwb3NpdG9yeS5odG0wCAYGZ4EMAQQCMA0GCSqGSIb3DQEBDAUAA4ICAQBNrYvg
-# HjRMA0wxiAI1dPL5y4pOMPM1nd0An5Lg9sAp/vwUHBDv2FiKGpn+oiDoZa3+NDkY
-# CwFKkFgo1k4y1QwCs1B8iVnjbLa3KUA//EEZDrDCa7S4GZfODpbdOiZNnnpuH3SW
-# Ltk7gFuKIKDYICSm+1O+uBi7sVu+9OpMi/8u9dBoInH6zG8k+xsgDJZRJ8hhN0Ba
-# VWjrewnwCQfmnOmJ++QvJeYvGraNPLBp4P+kprMQnBcBvLz67TigIZUJkNsP6wM4
-# nvneFuXpfJY5eYKldW+PbA+hcl0j5PoM+1z0Za0zFINQpm1UlXZRWAAJrPHyA4OJ
-# 2PqHdobA6vxS38Ww79fzndDUJil8dZ9bckSQtzcWyUp/YqXbMfXgQGgt5SlPKSGf
-# w1lR5eEey64qM/HyZQAtb8uCVSNlfInfIFDU+I56+nFOi3xp9dzquWr0UnaSC0zq
-# KPa5bt/1q3nIhx3AUz1VSbRoKCJe+O9GRB5JQggCbjQtfaq97aR0+A179m3zJvnM
-# NywmMeFk+1eJbdOcFRguoKwucPp9WHpflC8Vu2MuUEgy3deW8BCe5UTOGjK3eKzD
-# D3Dy36gYKDho2H3gh0q9Q1LV9/EL5D5euxPfAOVKWo1It+ijGGwK7mBcq3Ol+HHz
-# 7iX2tUcnGBkT2fAYqIBvA1fEoUHdtWCbCh0ltTGCB0YwggdCAgEBMHgwYTELMAkG
+# UmVwb3NpdG9yeS5odG0wCAYGZ4EMAQQCMA0GCSqGSIb3DQEBDAUAA4ICAQAxvdhs
+# 2DI5Qh2+uaHzIrblBbNTiRVS+UmYLKAMZ2dQqiSHhkAzNm75ztxOXD6FwIfy9vHv
+# MxFspsvOnVc5c/78G+dQrKdOAQYGRc8RsrAR7MK03AZmbt8AceHt8ALwY3RHh0Sd
+# 5kG7K9TCO/9ExrdtEI3Qi4xOwimPPA5WK8fqUNTyjp3GQTrD7USEqAiZveIKcZdL
+# WCei3MnqhrTHeVgy6Ktg6ksWVznjElHVGdwkEqpWoL7a+7fUZFpWYGLBVT9sW5g3
+# SjotWcA9Ny7V8wNyfq2zkRtblyGAQwUihQze1IMw1egwhCQxC83dt5mmOcsNvhXw
+# 4A0t3mhfP5t36nnNbbW/qh0ZMFRf+qGNLEGFNvBM+qVXX8PH3nH/r/nY+sROrptB
+# vq3pMAWrh+ldOZGjy4FWPWmQZWWMk8PG+LoPJoFkQKqUdDCzzAzioNZOT2FMhmsq
+# Ur+a8PoneFHvzYcsbpYmIS65VLG/7zOwjzqJs8rrLDCOUGWgfr/5gS1C1LiAjHgP
+# /XGc/upV8rsVw+1E7gAcTDaD42bftH7oH5EOKZ7ha9S/FHwXB42MSvLRAa1BW9lw
+# Qh+UNevIinZR1AgiBb7OZQ7ZvTlO6WQU8iyJWyBwBg9mN4G7ImR2WFmlh0/Qmlg9
+# CJRlNjeGOS6bef/sWcRpWE5X5l1L7RddVrcDuTGCB0Mwggc/AgEBMHgwYTELMAkG
 # A1UEBhMCVVMxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEyMDAGA1UE
 # AxMpTWljcm9zb2Z0IFB1YmxpYyBSU0EgVGltZXN0YW1waW5nIENBIDIwMjACEzMA
-# AABIVXdyHnSSt/cAAAAAAEgwDQYJYIZIAWUDBAIBBQCgggSfMBEGCyqGSIb3DQEJ
+# AABLobGt4Vn85zQAAAAAAEswDQYJYIZIAWUDBAIBBQCgggScMBEGCyqGSIb3DQEJ
 # EAIPMQIFADAaBgkqhkiG9w0BCQMxDQYLKoZIhvcNAQkQAQQwHAYJKoZIhvcNAQkF
-# MQ8XDTI1MDIxMTE4NDg0M1owLwYJKoZIhvcNAQkEMSIEIFg5etH9b4xH9NTnAvjz
-# 0jUKevzSCs99rmo7t3lJV+TSMIG5BgsqhkiG9w0BCRACLzGBqTCBpjCBozCBoAQg
-# 6ioBV5tPCNafQ/SAvBnTdh+NfdC8O0dkSXfybyLzHUEwfDBlpGMwYTELMAkGA1UE
+# MQ8XDTI1MDIxMTE5MTI0MlowLwYJKoZIhvcNAQkEMSIEIBYnTAAaaMaSFVyPuN8B
+# LnbatwjxpH2cjvOXzQo0d5U3MIG5BgsqhkiG9w0BCRACLzGBqTCBpjCBozCBoAQg
+# 24konSuy9FxJybjChmYIqjAxJOH0NabQ5I0B5QAGRKcwfDBlpGMwYTELMAkGA1UE
 # BhMCVVMxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEyMDAGA1UEAxMp
-# TWljcm9zb2Z0IFB1YmxpYyBSU0EgVGltZXN0YW1waW5nIENBIDIwMjACEzMAAABI
-# VXdyHnSSt/cAAAAAAEgwggNhBgsqhkiG9w0BCRACEjGCA1AwggNMoYIDSDCCA0Qw
-# ggIsAgEBMIIBCaGB4aSB3jCB2zELMAkGA1UEBhMCVVMxEzARBgNVBAgTCldhc2hp
+# TWljcm9zb2Z0IFB1YmxpYyBSU0EgVGltZXN0YW1waW5nIENBIDIwMjACEzMAAABL
+# obGt4Vn85zQAAAAAAEswggNeBgsqhkiG9w0BCRACEjGCA00wggNJoYIDRTCCA0Ew
+# ggIpAgEBMIIBCaGB4aSB3jCB2zELMAkGA1UEBhMCVVMxEzARBgNVBAgTCldhc2hp
 # bmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jw
 # b3JhdGlvbjElMCMGA1UECxMcTWljcm9zb2Z0IEFtZXJpY2EgT3BlcmF0aW9uczEn
-# MCUGA1UECxMeblNoaWVsZCBUU1MgRVNOOkE1MDAtMDVFMC1EOTQ3MTUwMwYDVQQD
+# MCUGA1UECxMeblNoaWVsZCBUU1MgRVNOOjdEMDAtMDVFMC1EOTQ3MTUwMwYDVQQD
 # EyxNaWNyb3NvZnQgUHVibGljIFJTQSBUaW1lIFN0YW1waW5nIEF1dGhvcml0eaIj
-# CgEBMAcGBSsOAwIaAxUA5hJ9QZRXOOnEOHn3+omINFlowyegZzBlpGMwYTELMAkG
+# CgEBMAcGBSsOAwIaAxUA9XrCzpvkU0dQ6YQgsANWDOqXmTOgZzBlpGMwYTELMAkG
 # A1UEBhMCVVMxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEyMDAGA1UE
 # AxMpTWljcm9zb2Z0IFB1YmxpYyBSU0EgVGltZXN0YW1waW5nIENBIDIwMjAwDQYJ
-# KoZIhvcNAQELBQACBQDrVc1eMCIYDzIwMjUwMjExMTMyMTM0WhgPMjAyNTAyMTIx
-# MzIxMzRaMHcwPQYKKwYBBAGEWQoEATEvMC0wCgIFAOtVzV4CAQAwCgIBAAICEqgC
-# Af8wBwIBAAICEqowCgIFAOtXHt4CAQAwNgYKKwYBBAGEWQoEAjEoMCYwDAYKKwYB
-# BAGEWQoDAqAKMAgCAQACAwehIKEKMAgCAQACAwGGoDANBgkqhkiG9w0BAQsFAAOC
-# AQEAUNWTQQ34WTiBGTKYQvolEnhDvxzZWSkyGXzI8PI36cMYjQv2R+fsoM5jhPCt
-# KNZYV9Ed0bu2v7+DNULd1dBVYdKrxMXXCNphxjZlxL0Za+VSiN/I0KhHW8QQCJvN
-# nyygtRC3FCan+v1fIn6l0Rjdex5VAOUpEdh0KA1CVq22g82vqCVdgqkI6eNFIk9P
-# NVWwbG3z1KmCC8q3hdwU/HJKK2jbwiviREhdFUjCItS1Sn+UWlUaqcC4xLU4+XqB
-# ASYsbNXqCHsQG20K0Lp6IbEj0fphboP9fnAjn0IGJxTEvwf3hALUjqTngVi/HTcm
-# 7HHS/lk2g9cws7msGPfa1g2k3TANBgkqhkiG9w0BAQEFAASCAgCaiCKDuMOQAVB2
-# rg559ZWEnBRBjEtirAESuR745i3TGuPbAsq7dIr6+Ne1KWlRRXo1rew3+Z7229iv
-# ZH0+mk70pKH6dp1oNJqHU6lE/oO3gOisl7M4rquNNls6t5LxViup0x5Bmf3taADV
-# pcv3ekvpJm9ciYzESIBXHqesQmEDWOTPzcJlRzwMVLGurUQi8CbptNYk4P3rXyPe
-# LVsLyCqxNLfgJkC8ncgsh+anwkEYLKKpGfoFOg18XXl69aOZes+gdCijS26oLrDy
-# CuBoDGr/e1Ercx6F/6/PmEHk6w4jNgIoBoI5cL12TvySiIUURC/YfIUViNa7C1Pw
-# jj3Ync2/XpJ3ApE+lFVe/BvMnR5Hdlh2zMjPvKCH7riwRP56zAIjur/TSYVAnAcX
-# XCW46kTPcQbpQG5U4yRagTCxQE7ZQHcs2vl/VaWBuOT8cVqpO6HiIhLfSyRwjhIA
-# ZE4DttLxyIa1CNhNItyPlY/EQ0f7+JUA4QYrkzLkElboZ4aRmFv/tT1C+a5fUnzF
-# e7EAgPRCaf9mncI4bNNZaML0cfFDA7mQ5yXNLyeo5k1l+ynhshUIwbQNq8AfGwpK
-# 0rNucbo6hsxSyeamsXzBkMAVUjUkI8UgK0QH5/rIi8669EOOMTYPTXZW8Cnbplqz
-# ivfEhQg53GNEcffmwzPQqpLynHpwsA==
+# KoZIhvcNAQELBQACBQDrVbDsMCIYDzIwMjUwMjExMTEyMDEyWhgPMjAyNTAyMTIx
+# MTIwMTJaMHQwOgYKKwYBBAGEWQoEATEsMCowCgIFAOtVsOwCAQAwBwIBAAICO4Iw
+# BwIBAAICEngwCgIFAOtXAmwCAQAwNgYKKwYBBAGEWQoEAjEoMCYwDAYKKwYBBAGE
+# WQoDAqAKMAgCAQACAwehIKEKMAgCAQACAwGGoDANBgkqhkiG9w0BAQsFAAOCAQEA
+# blXLQpVUx0cXQJD7PUAEm0la/MgkMUDqLcb1zli9agFghJgpTEBb77A0LkbgmWCK
+# PoWLedD4UhpOGahE4e4LoK0jL+ZcIi2ZBUlEuqwFpEjU0RYAEkxdUvE1N2e5f2kF
+# m0WsX60R7DkuFdn9VFiS6SgITIALHkmKtSJ4gnXSiiHTLw8AZpQa2nRmhQn3HAYD
+# nSpQJ0k/GJw8rSVqI29y3OtDFuxDAR4scInGXBB6Ttb1h9R+EDzKlyA3K2KbYCB/
+# j7Qwh7p4FwfjvvsNAeg8IKELKtbSIWPVCRDSThzsBQyfdN2zeiPOShrlkt4trj5/
+# kZTPDpUoMVS3HEz7Fj+TzjANBgkqhkiG9w0BAQEFAASCAgBAqfhQ/ZXV3GxdYvWz
+# QZF/cje7VJWDpxqUWsoLjh8RBLl6mJi5/SmPHpP5pEul6LnTLx1TNuIrDJXUmxTs
+# tWcY5Bcs8p6rixdEV2iNG5iVSzw7I3eX7bmZS7dQGpLVDBibXx6s2gx6/5uOS2X+
+# 7hM0V3dFJ/RhVH81h2/tLMJrgbuOkdVwxCer2EOnGoCZFZ+I4PO7Soagt+/dwNWg
+# q32g3/OyT/kIDIKpskOj/i00I6MbAYEwPjlFTWcbs/tn2bbmf/kpLlYSreAyH4gB
+# MksQK/6y7uzyTgRWNoM5v0SMoMnJEMboxO/7PXSmjbtdevKuuvPi/gfgWNLZhmvS
+# T0UROknTrGGpuiR9k2e1WJzdNC+uYJMaItZV+g97nzj8zf3+0UFqPDc4DdE1NS0H
+# j1oiEjf9Iw3eca2ZsOSfn8jOe1pgFo+NuPzFbjSQUBAH0cNc40Ub69DSwrcFxsR4
+# dUo8JHrEp+4KceSql7oHI9YnPy4CRssu5PoVESl0keCQkX4OETZAVY3Obx+1lypU
+# Lai57YNrrrqChG0KAL+U0MXOSV0MO9CnVyUWpOlUS1jFaxwTC96spCaYHNnCGU8Y
+# sw+wj6Z9X3dd+kXh//W4Cp71/Ywc7wWqu08MJSkofeKtABFy0SoHiPqe9FupIFGE
+# d9IMNZqIp8Z2No320WK0yUC63A==
 # SIG # End signature block
