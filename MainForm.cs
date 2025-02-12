@@ -329,7 +329,7 @@ namespace Windows_Task_Dialog_Generator
 
             foreach ( (var radioButton, int iconID) in radioButtonsWithIcons )
             {
-                int ScaledSize = (int)((radioButton.Height - 8) * dpiScale);
+                int ScaledSize = (int)((16) * dpiScale);
                 radioButton.Image = GetIconImageFromImageRes(iconID, ScaledSize);
                 radioButton.ImageAlign = ContentAlignment.MiddleLeft;
                 radioButton.TextImageRelation = TextImageRelation.ImageBeforeText;
