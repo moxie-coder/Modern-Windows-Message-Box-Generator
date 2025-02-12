@@ -268,7 +268,6 @@
             labelSelectMainIcon.Size = new Size(34, 15);
             labelSelectMainIcon.TabIndex = 25;
             labelSelectMainIcon.Text = "Main";
-            labelSelectMainIcon.Click += labelSelectMainIcon_Click;
             // 
             // splitContainer1
             // 
@@ -438,6 +437,7 @@
             rbIconTitleCustomID.TabIndex = 11;
             rbIconTitleCustomID.TextImageRelation = TextImageRelation.ImageBeforeText;
             rbIconTitleCustomID.UseVisualStyleBackColor = true;
+            rbIconTitleCustomID.CheckedChanged += rbIconTitleCustomID_CheckedChanged;
             // 
             // rbIconTitleCustomFile
             // 
@@ -658,6 +658,7 @@
             rbIconMainCustomID.Text = "Custom (imageres.dll ID)";
             rbIconMainCustomID.TextImageRelation = TextImageRelation.ImageBeforeText;
             rbIconMainCustomID.UseVisualStyleBackColor = true;
+            rbIconMainCustomID.CheckedChanged += rbIconMainCustomID_CheckedChanged;
             // 
             // rbIconMainCustomFile
             // 
@@ -947,6 +948,7 @@
             textBoxCustomIconMainID.Name = "textBoxCustomIconMainID";
             textBoxCustomIconMainID.Size = new Size(125, 23);
             textBoxCustomIconMainID.TabIndex = 14;
+            textBoxCustomIconMainID.Enter += textBoxCustomIconMainID_Enter;
             // 
             // lblMessage
             // 
@@ -1046,6 +1048,7 @@
             textBoxCustomIconTitleID.Name = "textBoxCustomIconTitleID";
             textBoxCustomIconTitleID.Size = new Size(125, 23);
             textBoxCustomIconTitleID.TabIndex = 14;
+            textBoxCustomIconTitleID.Enter += textBoxCustomIconTitleID_Enter;
             // 
             // groupBoxCustomIconTitleFile
             // 

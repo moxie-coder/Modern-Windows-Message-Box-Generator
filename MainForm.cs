@@ -14,7 +14,9 @@ namespace Windows_Task_Dialog_Generator
         [LibraryImport("user32.dll", EntryPoint = "SendMessageW")]
         private static partial IntPtr SendMessage(IntPtr hWnd, uint Msg, UIntPtr wParam, IntPtr lParam);
 
+        // Class level variables
         public static string VERSION = "Error getting version";
+        public static IDSelectionBox LastUsedIDTextBox = IDSelectionBox.None; // Use to decide where to put selected imagres Icon IDS
 
         public MainForm()
         {
@@ -691,9 +693,21 @@ namespace Windows_Task_Dialog_Generator
             return icon;
         }
 
+        public enum IDSelectionBox
+        {
+            MainIcon,
+            TitleIcon,
+            None
+        }
+
         public void SetCustomID(int id)
         {
-            textBoxCustomIconMainID.Text = id.ToString();
+            if ( LastUsedIDTextBox == IDSelectionBox.MainIcon )
+                textBoxCustomIconMainID.Text = id.ToString();
+            else if ( LastUsedIDTextBox == IDSelectionBox.TitleIcon )
+                textBoxCustomIconTitleID.Text = id.ToString();
+            else // Default to the main icon text box
+                textBoxCustomIconMainID.Text = id.ToString();
         }
 
         private void EnableDisableNecessaryMainIconControls(object? sender, EventArgs e)
@@ -745,11 +759,31 @@ namespace Windows_Task_Dialog_Generator
             imageresIcons.Show();
         }
 
-        private void labelSelectMainIcon_Click(object sender, EventArgs e)
+        // ------------ Handlers specifically to set the LastUsedIDTextBox variable ------------
+        private void rbIconMainCustomID_CheckedChanged(object sender, EventArgs e)
         {
-
+            // Only set the LastUsedIDTextBox if the radio button is checked
+            if ( rbIconMainCustomID.Checked )
+            {
+                LastUsedIDTextBox = IDSelectionBox.MainIcon;
+            }
         }
-
-        
+        private void rbIconTitleCustomID_CheckedChanged(object sender, EventArgs e)
+        {
+            // Only set the LastUsedIDTextBox if the radio button is checked
+            if ( rbIconTitleCustomID.Checked )
+            {
+                LastUsedIDTextBox = IDSelectionBox.TitleIcon;
+            }
+        }
+        private void textBoxCustomIconMainID_Enter(object sender, EventArgs e)
+        {
+            LastUsedIDTextBox = IDSelectionBox.MainIcon;
+        }
+        private void textBoxCustomIconTitleID_Enter(object sender, EventArgs e)
+        {
+            LastUsedIDTextBox = IDSelectionBox.TitleIcon;
+        }
+        // --------------------------------------------------------------------------------------
     }
 }
