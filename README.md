@@ -5,8 +5,8 @@ Generates a customizable "Task Dialog" box - a more modern version of the old Wi
 ## Key Features
 
 - **Set Any Text**: Choose the text to display for each element, or leave it blank to not show that part.
-- **Icons:**
-    - Select from a range of default icons.
+- **Choose Icons:**
+    - Select from a range of default icons for both the main icon and title bar icon.
     - Use custom icons from image files. Including image files, icon files, or the icon associated with any Exe file.
     - Choose icons directly from the `imageres.dll` file using their ID.
 - **Icon Selection Helper:** Click the "View Icon IDs" button to see icons from `imageres.dll`. Click any of them to automatically set it as the selected icon.
@@ -24,7 +24,7 @@ Generates a customizable "Task Dialog" box - a more modern version of the old Wi
 
 ## Main Window
 <p align="center">
-<img width="700" alt="Main Window" src="https://github.com/user-attachments/assets/fdc24faa-4316-4344-82df-1c0905ca22ef">
+<img width="700" alt="Main Window" src="https://github.com/user-attachments/assets/87ba24c2-1005-426f-bba0-bb7122e9b5e9">
 </p>
 
 ## How to Compile
