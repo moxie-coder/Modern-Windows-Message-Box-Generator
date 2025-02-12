@@ -80,6 +80,8 @@
             buttonImageResIcons = new Button();
             flowLayoutPanel1 = new FlowLayoutPanel();
             labelVersion = new Label();
+            cboxThemeSelect = new ComboBox();
+            lblTheme = new Label();
             gbButtons.SuspendLayout();
             gbIcon.SuspendLayout();
             flowIconSelect.SuspendLayout();
@@ -111,7 +113,7 @@
             lblTitle.Location = new Point(5, 5);
             lblTitle.Margin = new Padding(5, 5, 5, 2);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(33, 15);
+            lblTitle.Size = new Size(32, 15);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Title:";
             // 
@@ -430,7 +432,7 @@
             lblExpandedInfo.Location = new Point(5, 213);
             lblExpandedInfo.Margin = new Padding(5, 5, 5, 2);
             lblExpandedInfo.Name = "lblExpandedInfo";
-            lblExpandedInfo.Size = new Size(124, 15);
+            lblExpandedInfo.Size = new Size(125, 15);
             lblExpandedInfo.TabIndex = 8;
             lblExpandedInfo.Text = "Expanded Information";
             // 
@@ -672,11 +674,34 @@
             labelVersion.TabIndex = 23;
             labelVersion.Text = "Version: ";
             // 
+            // cboxThemeSelect
+            // 
+            cboxThemeSelect.FormattingEnabled = true;
+            cboxThemeSelect.Items.AddRange(new object[] { "System", "Light", "Dark" });
+            cboxThemeSelect.Location = new Point(223, 482);
+            cboxThemeSelect.MaxDropDownItems = 3;
+            cboxThemeSelect.Name = "cboxThemeSelect";
+            cboxThemeSelect.Size = new Size(74, 23);
+            cboxThemeSelect.TabIndex = 24;
+            cboxThemeSelect.Text = "System";
+            cboxThemeSelect.SelectedIndexChanged += cboxThemeSelect_SelectedIndexChanged;
+            // 
+            // lblTheme
+            // 
+            lblTheme.AutoSize = true;
+            lblTheme.Location = new Point(171, 485);
+            lblTheme.Name = "lblTheme";
+            lblTheme.Size = new Size(46, 15);
+            lblTheme.TabIndex = 25;
+            lblTheme.Text = "Theme:";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(815, 517);
+            Controls.Add(lblTheme);
+            Controls.Add(cboxThemeSelect);
             Controls.Add(labelVersion);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(buttonImageResIcons);
@@ -764,5 +789,7 @@
         private FlowLayoutPanel flowIconSelect;
         private FlowLayoutPanel flowLayoutPanel1;
         private Label labelVersion;
+        private ComboBox cboxThemeSelect;
+        private Label lblTheme;
     }
 }

@@ -20,14 +20,16 @@ namespace Windows_Task_Dialog_Generator
             VERSION = DetermineVersion();
             labelVersion.Text = "Version: " + VERSION;
 
-            #if DEBUG
+#if DEBUG
             buttonTest.Visible = true;
-            #endif
+#endif
+
+            SetTheme();
 
             // Attach event handler to all radio buttons in the gbIcon group to enable/disable necessary controls when the radio button selection changes
-            foreach ( Control control in flowIconSelect.Controls )
+            foreach (Control control in flowIconSelect.Controls)
             {
-                if ( control is RadioButton rb )
+                if (control is RadioButton rb)
                 {
                     rb.CheckedChanged += EnableDisableNecessaryControls;
                 }
@@ -48,7 +50,7 @@ namespace Windows_Task_Dialog_Generator
             version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "Unknown Version";
 
             // If the last digit is zero, remove it
-            if ( version.EndsWith(".0") )
+            if (version.EndsWith(".0"))
             {
                 version = version.Substring(0, version.Length - 2);
             }
@@ -67,7 +69,7 @@ namespace Windows_Task_Dialog_Generator
                 AllowCancel = true,
             };
 
-            if ( !string.IsNullOrEmpty(txtExpandedInfo.Text) )
+            if (!string.IsNullOrEmpty(txtExpandedInfo.Text))
             {
                 page.Expander = new TaskDialogExpander()
                 {
@@ -78,7 +80,7 @@ namespace Windows_Task_Dialog_Generator
                 };
             }
 
-            if ( chkVerification.Checked )
+            if (chkVerification.Checked)
             {
                 page.Verification = new TaskDialogVerificationCheckBox()
                 {
@@ -88,24 +90,24 @@ namespace Windows_Task_Dialog_Generator
             }
 
             page.Buttons.Clear();
-            if ( rbOk.Checked ) page.Buttons.Add(TaskDialogButton.OK);
-            else if ( rbOkCancel.Checked )
+            if (rbOk.Checked) page.Buttons.Add(TaskDialogButton.OK);
+            else if (rbOkCancel.Checked)
             {
                 page.Buttons.Add(TaskDialogButton.OK);
                 page.Buttons.Add(TaskDialogButton.Cancel);
             }
-            else if ( rbYesNo.Checked )
+            else if (rbYesNo.Checked)
             {
                 page.Buttons.Add(TaskDialogButton.Yes);
                 page.Buttons.Add(TaskDialogButton.No);
             }
-            else if ( rbYesNoCancel.Checked )
+            else if (rbYesNoCancel.Checked)
             {
                 page.Buttons.Add(TaskDialogButton.Yes);
                 page.Buttons.Add(TaskDialogButton.No);
                 page.Buttons.Add(TaskDialogButton.Cancel);
             }
-            else if ( rbAbortRetryIgnore.Checked )
+            else if (rbAbortRetryIgnore.Checked)
             {
                 TaskDialogButton abortButton = new TaskDialogButton("Abort");
                 TaskDialogButton retryButton = new TaskDialogButton("Retry");
@@ -115,7 +117,7 @@ namespace Windows_Task_Dialog_Generator
                 page.Buttons.Add(retryButton);
                 page.Buttons.Add(ignoreButton);
             }
-            else if ( rbRetryCancel.Checked )
+            else if (rbRetryCancel.Checked)
             {
                 page.Buttons.Add(TaskDialogButton.Retry);
                 page.Buttons.Add(TaskDialogButton.Cancel);
@@ -130,20 +132,20 @@ namespace Windows_Task_Dialog_Generator
             var page = AssembleTaskDialogPage();
 
             TaskDialogIcon chosenIcon;
-            if ( rbIconCustomFile.Checked )
+            if (rbIconCustomFile.Checked)
             {
                 var customIcon = GetCustomIconFromPath();
 
-                if ( customIcon != null )
+                if (customIcon != null)
                     chosenIcon = customIcon;
                 else
                     return; // If error / invalid custom icon, return without showing the dialog
             }
-            else if ( rbIconCustomID.Checked )
+            else if (rbIconCustomID.Checked)
             {
                 var extractedIcon = GetCustomIconObjectFromID();
 
-                if ( extractedIcon == null )
+                if (extractedIcon == null)
                     return; // If error / invalid custom icon, return without showing the dialog. Error will have been shown in GetCustomIconObjectFromID()
                 else
                     chosenIcon = extractedIcon;
@@ -154,7 +156,7 @@ namespace Windows_Task_Dialog_Generator
             }
 
             // Directly set the icon if we don't need to specify a custom color bar
-            if ( rbBarColorDefault.Checked )
+            if (rbBarColorDefault.Checked)
             {
                 page.Icon = chosenIcon;
             }
@@ -172,17 +174,17 @@ namespace Windows_Task_Dialog_Generator
         {
             TaskDialogIcon temporaryColorBarIcon;
 
-            if ( rbBarColorGreen.Checked )
+            if (rbBarColorGreen.Checked)
                 temporaryColorBarIcon = TaskDialogIcon.ShieldSuccessGreenBar;
-            else if ( rbBarColorBlue.Checked )
+            else if (rbBarColorBlue.Checked)
                 temporaryColorBarIcon = TaskDialogIcon.ShieldBlueBar;
-            else if ( rbBarColorGray.Checked )
+            else if (rbBarColorGray.Checked)
                 temporaryColorBarIcon = TaskDialogIcon.ShieldGrayBar;
-            else if ( rbBarColorRed.Checked )
+            else if (rbBarColorRed.Checked)
                 temporaryColorBarIcon = TaskDialogIcon.ShieldErrorRedBar;
-            else if ( rbBarColorYellow.Checked )
+            else if (rbBarColorYellow.Checked)
                 temporaryColorBarIcon = TaskDialogIcon.ShieldWarningYellowBar;
-            else if ( rbBarColorNone.Checked )
+            else if (rbBarColorNone.Checked)
                 temporaryColorBarIcon = TaskDialogIcon.None;
             else
                 temporaryColorBarIcon = TaskDialogIcon.None; // This should not happen since the radio buttons are mutually exclusive, but just in case
@@ -202,7 +204,7 @@ namespace Windows_Task_Dialog_Generator
         {
             TaskDialogPage? dialogPage = sender as TaskDialogPage;
             var dialog = dialogPage?.BoundDialog;
-            if ( dialog != null )
+            if (dialog != null)
             {
                 IntPtr hwnd = dialog.Handle;
                 try
@@ -211,7 +213,7 @@ namespace Windows_Task_Dialog_Generator
                     // We do NOT use the negative of the ID, since the API is doing other stuff with the ID and handles it automatically
                     SendMessage(hwnd, (int)WinEnums.TDM.UPDATE_ICON, IntPtr.Zero, new IntPtr(chosenIconID));
                 }
-                catch ( Exception ex )
+                catch (Exception ex)
                 {
                     MessageBox.Show("Error updating icon: " + ex.Message);
                 }
@@ -226,14 +228,14 @@ namespace Windows_Task_Dialog_Generator
             {
                 id = int.Parse(textBoxCustomIconID.Text);
             }
-            catch ( Exception ex )
+            catch (Exception ex)
             {
                 MessageBox.Show("Invalid icon ID. Please enter a valid integer. Error: \n\n" + ex);
                 return null;
             }
 
             // Ensure the absolute value of the ID is within the valid range, since it can be negative
-            if ( id < 0 || id > ushort.MaxValue )
+            if (id < 0 || id > ushort.MaxValue)
             {
                 MessageBox.Show("Invalid icon ID. Valid values are from 0 to 65535.");
                 return null;
@@ -247,7 +249,7 @@ namespace Windows_Task_Dialog_Generator
             int? parsedID = ParseAndValidateCustomID();
             int id;
 
-            if ( parsedID == null )
+            if (parsedID == null)
                 return null;
             else
                 id = (int)parsedID;
@@ -255,7 +257,7 @@ namespace Windows_Task_Dialog_Generator
             // Get System.Drawing.Icon from the imageres.dll file of the given ID, then convert to TaskDialogIcon
             TaskDialogIcon extractedIcon;
 
-            if ( id < 0 || id > ushort.MaxValue )
+            if (id < 0 || id > ushort.MaxValue)
             {
                 MessageBox.Show("Invalid icon ID. Valid values are from 0 to 65535.");
                 return null;
@@ -268,7 +270,7 @@ namespace Windows_Task_Dialog_Generator
                 // When extracting icons from imageres.dll, we need to use the negative of the ID
                 Icon? imageresIcon = System.Drawing.Icon.ExtractIcon(imageresPath, -1 * id);
 
-                if ( imageresIcon != null )
+                if (imageresIcon != null)
                 {
                     extractedIcon = new TaskDialogIcon(imageresIcon);
                 }
@@ -278,7 +280,7 @@ namespace Windows_Task_Dialog_Generator
                     return null;
                 }
 
-                if ( extractedIcon != null )
+                if (extractedIcon != null)
                 {
                     return extractedIcon;
                 }
@@ -327,7 +329,7 @@ namespace Windows_Task_Dialog_Generator
                 (rbIconShieldSuccessGreenBar,  106)
             ];
 
-            foreach ( (var radioButton, int iconID) in radioButtonsWithIcons )
+            foreach ((var radioButton, int iconID) in radioButtonsWithIcons)
             {
                 int ScaledSize = (int)((16) * dpiScale);
                 radioButton.Image = GetIconImageFromImageRes(iconID, ScaledSize);
@@ -346,46 +348,46 @@ namespace Windows_Task_Dialog_Generator
         {
             var chosenIcon = TaskDialogIcon.None;
 
-            if ( rbIconNone.Checked ) chosenIcon = TaskDialogIcon.None;
-            else if ( rbIconInformation.Checked ) chosenIcon = TaskDialogIcon.Information;
-            else if ( rbIconWarning.Checked ) chosenIcon = TaskDialogIcon.Warning;
-            else if ( rbIconError.Checked ) chosenIcon = TaskDialogIcon.Error;
-            else if ( rbIconShield.Checked ) chosenIcon = TaskDialogIcon.Shield;
-            else if ( rbIconShieldBlueBar.Checked ) chosenIcon = TaskDialogIcon.ShieldBlueBar;
-            else if ( rbIconShieldGrayBar.Checked ) chosenIcon = TaskDialogIcon.ShieldGrayBar;
-            else if ( rbIconShieldWarningYellowBar.Checked ) chosenIcon = TaskDialogIcon.ShieldWarningYellowBar;
-            else if ( rbIconShieldErrorRedBar.Checked ) chosenIcon = TaskDialogIcon.ShieldErrorRedBar;
-            else if ( rbIconShieldSuccessGreenBar.Checked ) chosenIcon = TaskDialogIcon.ShieldSuccessGreenBar;
+            if (rbIconNone.Checked) chosenIcon = TaskDialogIcon.None;
+            else if (rbIconInformation.Checked) chosenIcon = TaskDialogIcon.Information;
+            else if (rbIconWarning.Checked) chosenIcon = TaskDialogIcon.Warning;
+            else if (rbIconError.Checked) chosenIcon = TaskDialogIcon.Error;
+            else if (rbIconShield.Checked) chosenIcon = TaskDialogIcon.Shield;
+            else if (rbIconShieldBlueBar.Checked) chosenIcon = TaskDialogIcon.ShieldBlueBar;
+            else if (rbIconShieldGrayBar.Checked) chosenIcon = TaskDialogIcon.ShieldGrayBar;
+            else if (rbIconShieldWarningYellowBar.Checked) chosenIcon = TaskDialogIcon.ShieldWarningYellowBar;
+            else if (rbIconShieldErrorRedBar.Checked) chosenIcon = TaskDialogIcon.ShieldErrorRedBar;
+            else if (rbIconShieldSuccessGreenBar.Checked) chosenIcon = TaskDialogIcon.ShieldSuccessGreenBar;
 
             return chosenIcon;
         }
 
         private int DetermineChosenIconFromSelection_Int()
         {
-            if ( rbIconWarning.Checked )
+            if (rbIconWarning.Checked)
                 return (int)WinEnums.StandardIcons.Warning;
-            else if ( rbIconError.Checked )
+            else if (rbIconError.Checked)
                 return (int)WinEnums.StandardIcons.Error;
-            else if ( rbIconInformation.Checked )
+            else if (rbIconInformation.Checked)
                 return (int)WinEnums.StandardIcons.Information;
-            else if ( rbIconShield.Checked )
+            else if (rbIconShield.Checked)
                 return (int)WinEnums.StandardIcons.Shield;
-            else if ( rbIconShieldBlueBar.Checked )
+            else if (rbIconShieldBlueBar.Checked)
                 return (int)WinEnums.ShieldIcons.BlueBar;
-            else if ( rbIconShieldGrayBar.Checked )
+            else if (rbIconShieldGrayBar.Checked)
                 return (int)WinEnums.ShieldIcons.GrayBar;
-            else if ( rbIconShieldWarningYellowBar.Checked )
+            else if (rbIconShieldWarningYellowBar.Checked)
                 return (int)WinEnums.ShieldIcons.YellowBar;
-            else if ( rbIconShieldErrorRedBar.Checked )
+            else if (rbIconShieldErrorRedBar.Checked)
                 return (int)WinEnums.ShieldIcons.RedBar;
-            else if ( rbIconShieldSuccessGreenBar.Checked )
+            else if (rbIconShieldSuccessGreenBar.Checked)
                 return (int)WinEnums.ShieldIcons.GreenBar;
 
             // For custom icon ID
-            else if ( rbIconCustomID.Checked )
+            else if (rbIconCustomID.Checked)
             {
                 int? parsedID = ParseAndValidateCustomID();
-                if ( parsedID == null )
+                if (parsedID == null)
                     return 0;
                 else
                     return (int)parsedID;
@@ -402,7 +404,7 @@ namespace Windows_Task_Dialog_Generator
                 Filter = "Image files (*.ico;*.bmp;*.gif;*.jpg;*.jpeg;*.png;*.tiff)|*.ico;*.bmp;*.gif;*.jpg;*.jpeg;*.png;*.tiff|Icon files (*.ico)|*.ico|Icon From Exe (*.exe)|*.exe|All files (*.*)|*.*"
             };
 
-            if ( openFileDialog.ShowDialog() == DialogResult.OK )
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 textBoxCustomIconPath.Text = openFileDialog.FileName;
             }
@@ -416,12 +418,12 @@ namespace Windows_Task_Dialog_Generator
             filePath = filePath.Trim('"');
 
             // Get the file path from the text box, and get info about the file type
-            if ( string.IsNullOrEmpty(filePath) )
+            if (string.IsNullOrEmpty(filePath))
             {
                 MessageBox.Show("No custom icon path specified.");
                 return null;
             }
-            if ( !File.Exists(filePath) )
+            if (!File.Exists(filePath))
             {
                 MessageBox.Show("Custom icon path does not exist.");
                 return null;
@@ -431,26 +433,26 @@ namespace Windows_Task_Dialog_Generator
             TaskDialogIcon taskDialogIcon;
 
             // If it's an icon file, we can use it directly
-            if ( Path.GetExtension(filePath).Equals(".ico", StringComparison.CurrentCultureIgnoreCase) )
+            if (Path.GetExtension(filePath).Equals(".ico", StringComparison.CurrentCultureIgnoreCase))
             {
                 try
                 {
                     icon = new Icon(filePath);
                     taskDialogIcon = new TaskDialogIcon(icon);
                 }
-                catch ( Exception ex )
+                catch (Exception ex)
                 {
                     MessageBox.Show("Error loading icon: " + ex.Message);
                     return null;
                 }
             }
             // If it's an EXE, try to load the main icon
-            else if ( Path.GetExtension(filePath).Equals(".exe", StringComparison.CurrentCultureIgnoreCase) )
+            else if (Path.GetExtension(filePath).Equals(".exe", StringComparison.CurrentCultureIgnoreCase))
             {
                 try
                 {
                     icon = Icon.ExtractAssociatedIcon(filePath);
-                    if ( icon != null )
+                    if (icon != null)
                     {
                         taskDialogIcon = new TaskDialogIcon(icon);
                     }
@@ -461,7 +463,7 @@ namespace Windows_Task_Dialog_Generator
                     }
 
                 }
-                catch ( Exception ex )
+                catch (Exception ex)
                 {
                     MessageBox.Show("Error loading icon: " + ex.Message);
                     return null;
@@ -474,7 +476,7 @@ namespace Windows_Task_Dialog_Generator
                 try
                 {
                     using Image img = Image.FromFile(filePath);
-                    if ( img is Bitmap bitmap )
+                    if (img is Bitmap bitmap)
                     {
                         taskDialogIcon = new TaskDialogIcon(bitmap);
                     }
@@ -484,12 +486,12 @@ namespace Windows_Task_Dialog_Generator
                         return null;
                     }
                 }
-                catch ( OutOfMemoryException )
+                catch (OutOfMemoryException)
                 {
                     MessageBox.Show("The file is not a valid image. Must be one of the following: ICO, BMP, GIF, JPG, PNG or TIFF");
                     return null;
                 }
-                catch ( Exception ex )
+                catch (Exception ex)
                 {
                     MessageBox.Show("Error loading image: " + ex.Message);
                     return null;
@@ -510,7 +512,7 @@ namespace Windows_Task_Dialog_Generator
             groupBoxBarColor.Enabled = !rbIconCustomFile.Checked; // We cannot use bar colors with custom icons from a file, only an imageRes.dll ID
             groupBoxCustomIconID.Enabled = rbIconCustomID.Checked; // Custom ID and custom file are mutually exclusive
 
-            if ( rbIconCustomFile.Checked )
+            if (rbIconCustomFile.Checked)
             {
                 // If the custom icon is selected, disable the bar color options
                 rbBarColorDefault.Checked = true;
@@ -530,9 +532,9 @@ namespace Windows_Task_Dialog_Generator
         private void buttonImageResIcons_Click(object sender, EventArgs e)
         {
             // Check if the form is already open or already created
-            foreach ( Form form in Application.OpenForms )
+            foreach (Form form in Application.OpenForms)
             {
-                if ( form is Imageres_Icons )
+                if (form is Imageres_Icons)
                 {
                     form.Show();
                     form.BringToFront();
@@ -543,6 +545,38 @@ namespace Windows_Task_Dialog_Generator
             // Open the Imageres_Icons form
             Imageres_Icons imageresIcons = new Imageres_Icons(this);
             imageresIcons.Show();
+        }
+
+        private void cboxThemeSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetTheme();
+        }
+
+        private void SetTheme()
+        {
+            var Theme = ThemeProvider.LightThemeColors;
+
+            switch (cboxThemeSelect.Text)
+            {
+                case "System":
+                    Theme = ThemeProvider.IsSystemDarkTheme() ? ThemeProvider.DarkThemeColors : ThemeProvider.LightThemeColors;
+                    break;
+
+                case "Light":
+                    Theme = ThemeProvider.LightThemeColors;
+                    break;
+
+                case "Dark":
+                    Theme = ThemeProvider.DarkThemeColors;
+                    break;
+
+                default:
+                    MessageBox.Show("Invalid Theme - Selecting Light");
+                    Theme = ThemeProvider.LightThemeColors;
+                    break;
+            }
+
+            ThemeProvider.ApplyThemeRecursive(this, Theme);
         }
     }
 }
