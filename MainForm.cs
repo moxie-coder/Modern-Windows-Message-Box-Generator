@@ -58,9 +58,15 @@ namespace Windows_Task_Dialog_Generator
 
         private TaskDialogPage AssembleTaskDialogPage()
         {
+            string captionText = txtTitle.Text;
+            if ( string.IsNullOrEmpty(captionText) )
+            {
+                captionText = " "; // Add a single space to prevent it from defaulting to the executable file name
+            }
+
             TaskDialogPage page = new TaskDialogPage()
             {
-                Caption = txtTitle.Text,
+                Caption = captionText,
                 Heading = txtHeading.Text,
                 Text = txtMessage.Text,
                 Footnote = new TaskDialogFootnote() { Text = txtFooter.Text },
@@ -127,12 +133,12 @@ namespace Windows_Task_Dialog_Generator
         private void CreateAndShowDialog()
         {
             // Create the initial dialog page by adding buttons, but not yet setting the icon
-            var page = AssembleTaskDialogPage();
+            TaskDialogPage page = AssembleTaskDialogPage();
 
             TaskDialogIcon chosenIcon;
             if ( rbIconCustomFile.Checked )
             {
-                var customIcon = GetCustomIconFromPath();
+                TaskDialogIcon? customIcon = GetCustomIconFromPath();
 
                 if ( customIcon != null )
                     chosenIcon = customIcon;
@@ -141,7 +147,7 @@ namespace Windows_Task_Dialog_Generator
             }
             else if ( rbIconCustomID.Checked )
             {
-                var extractedIcon = GetCustomIconObjectFromID();
+                TaskDialogIcon? extractedIcon = GetCustomIconObjectFromID();
 
                 if ( extractedIcon == null )
                     return; // If error / invalid custom icon, return without showing the dialog. Error will have been shown in GetCustomIconObjectFromID()
@@ -201,7 +207,7 @@ namespace Windows_Task_Dialog_Generator
         private static void UpdateIcon_OnCreated(object? sender, int chosenIconID)
         {
             TaskDialogPage? dialogPage = sender as TaskDialogPage;
-            var dialog = dialogPage?.BoundDialog;
+            TaskDialog? dialog = dialogPage?.BoundDialog;
             if ( dialog != null )
             {
                 IntPtr hwnd = dialog.Handle;
@@ -327,7 +333,7 @@ namespace Windows_Task_Dialog_Generator
                 (rbIconShieldSuccessGreenBar,  106)
             ];
 
-            foreach ( (var radioButton, int iconID) in radioButtonsWithIcons )
+            foreach ( (RadioButton? radioButton, int iconID) in radioButtonsWithIcons )
             {
                 int ScaledSize = (int)((16) * dpiScale);
                 radioButton.Image = GetIconImageFromImageRes(iconID, ScaledSize);
@@ -344,7 +350,7 @@ namespace Windows_Task_Dialog_Generator
 
         private TaskDialogIcon DetermineChosenIconFromSelection()
         {
-            var chosenIcon = TaskDialogIcon.None;
+            TaskDialogIcon chosenIcon = TaskDialogIcon.None;
 
             if ( rbIconNone.Checked ) chosenIcon = TaskDialogIcon.None;
             else if ( rbIconInformation.Checked ) chosenIcon = TaskDialogIcon.Information;
