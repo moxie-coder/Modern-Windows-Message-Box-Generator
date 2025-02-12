@@ -1,6 +1,8 @@
 # Modern Windows Message Box Generator
 
-Generates a customizable "Task Dialog" box - a more modern version of the old Windows message box.
+**Purpose:**  Generates a customizable "Task Dialog" box - a more modern version of the old Windows message box.'
+
+↘️ **How to Download:** Visit the [Releases](https://github.com/ThioJoe/Modern-Windows-Message-Box-Generator/releases) page
 
 ## Key Features
 
