@@ -54,10 +54,9 @@ namespace Windows_Task_Dialog_Generator
             CreateAndShowDialog();
         }
 
-        private string DetermineVersion()
+        private static string DetermineVersion()
         {
-            string version = string.Empty;
-            version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "Unknown Version";
+            string version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "Unknown Version";
 
             // If the last digit is zero, remove it
             if ( version.EndsWith(".0") )
@@ -293,7 +292,18 @@ namespace Windows_Task_Dialog_Generator
 
             if ( dialog != null )
             {
-                IntPtr hwnd = dialog.Handle;
+                IntPtr hwnd;
+                try
+                {
+                    hwnd = dialog.Handle;
+                }
+                catch ( Exception ex )
+                {
+                    // Handle the case where the dialog is already closed or something
+                    Console.WriteLine("Error getting dialog handle: " + ex.Message);
+                    return;
+                }
+
                 try
                 {
                     // Set the window title icon to null
@@ -365,7 +375,7 @@ namespace Windows_Task_Dialog_Generator
             }
         }
 
-        private Icon? GetCustomIconObjectFromID(string idText)
+        private static Icon? GetCustomIconObjectFromID(string idText)
         {
             int? parsedID = ParseAndValidateCustomID(idText);
             int id;
@@ -441,13 +451,13 @@ namespace Windows_Task_Dialog_Generator
             }
         }
 
-        private static Image? GetIconPreviewImageFromImageRes(int id, int size)
+        private static System.Drawing.Bitmap? GetIconPreviewImageFromImageRes(int id, int size)
         {
             string winPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
             string imageresPath = Path.Combine(winPath, "imageres.dll");
             try
             {
-                return Icon.ExtractIcon(imageresPath, -1 * id, size).ToBitmap(); // Negative ID to extract from imageres.dll
+                return Icon.ExtractIcon(imageresPath, -1 * id, size)?.ToBitmap(); // Negative ID to extract from imageres.dll
             }
             catch ( Exception ex )
             {
@@ -481,11 +491,14 @@ namespace Windows_Task_Dialog_Generator
             foreach ( (RadioButton? radioButton, int iconID) in radioButtonsWithIcons )
             {
                 int ScaledSize = (int)((16) * dpiScale);
-                radioButton.Image = GetIconPreviewImageFromImageRes(iconID, ScaledSize);
+                Bitmap? image = GetIconPreviewImageFromImageRes(iconID, ScaledSize);
+                if ( image != null )
+                {
+                    radioButton.Image = image;
+                }
                 radioButton.ImageAlign = ContentAlignment.MiddleLeft;
                 radioButton.TextImageRelation = TextImageRelation.ImageBeforeText;
             }
-
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -564,7 +577,7 @@ namespace Windows_Task_Dialog_Generator
                 return (int)StandardIcons.None;
         }
 
-        private string GetPathFromBrowseDialog()
+        private static string GetPathFromBrowseDialog()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
@@ -602,7 +615,7 @@ namespace Windows_Task_Dialog_Generator
             }
         }
 
-        private TaskDialogIcon? GetCustomTaskDialogIconFromPath(string filePath)
+        private static TaskDialogIcon? GetCustomTaskDialogIconFromPath(string filePath)
         {
             Icon? icon = GetCustomIconFromPath(filePath: filePath);
             if ( icon == null )
@@ -611,7 +624,7 @@ namespace Windows_Task_Dialog_Generator
                 return new TaskDialogIcon(icon);
         }
 
-        private Icon? GetCustomIconFromPath(string filePath)
+        private static Icon? GetCustomIconFromPath(string filePath)
         {
             // Strip quotes if present
             filePath = filePath.Trim('"');
