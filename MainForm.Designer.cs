@@ -97,6 +97,8 @@
             flowLayoutPanel1 = new FlowLayoutPanel();
             flowLayoutPanel2 = new FlowLayoutPanel();
             labelVersion = new Label();
+            rbIconTitleSame = new RadioButton();
+            labelSame = new Label();
             gbButtons.SuspendLayout();
             gbIconMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -237,7 +239,7 @@
             gbIconMain.Controls.Add(splitContainer1);
             gbIconMain.Location = new Point(576, 13);
             gbIconMain.Name = "gbIconMain";
-            gbIconMain.Size = new Size(225, 361);
+            gbIconMain.Size = new Size(225, 376);
             gbIconMain.TabIndex = 7;
             gbIconMain.TabStop = false;
             gbIconMain.Text = "Icons";
@@ -263,7 +265,6 @@
             // 
             // splitContainer1
             // 
-            splitContainer1.Dock = DockStyle.Bottom;
             splitContainer1.FixedPanel = FixedPanel.Panel1;
             splitContainer1.Location = new Point(3, 39);
             splitContainer1.Name = "splitContainer1";
@@ -275,7 +276,7 @@
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(tableLayoutMainIconSelect);
-            splitContainer1.Size = new Size(219, 319);
+            splitContainer1.Size = new Size(219, 331);
             splitContainer1.SplitterDistance = 56;
             splitContainer1.TabIndex = 24;
             // 
@@ -295,6 +296,7 @@
             tableLayoutTitleIconSelect.Controls.Add(rbIconTitleCustomFile, 0, 12);
             tableLayoutTitleIconSelect.Controls.Add(rbIconTitleShield, 0, 5);
             tableLayoutTitleIconSelect.Controls.Add(rbIconTitleWarning, 0, 2);
+            tableLayoutTitleIconSelect.Controls.Add(rbIconTitleSame, 0, 14);
             tableLayoutTitleIconSelect.Dock = DockStyle.Fill;
             tableLayoutTitleIconSelect.Location = new Point(0, 0);
             tableLayoutTitleIconSelect.Name = "tableLayoutTitleIconSelect";
@@ -313,8 +315,8 @@
             tableLayoutTitleIconSelect.RowStyles.Add(new RowStyle(SizeType.Absolute, 10F));
             tableLayoutTitleIconSelect.RowStyles.Add(new RowStyle(SizeType.Absolute, 24F));
             tableLayoutTitleIconSelect.RowStyles.Add(new RowStyle(SizeType.Absolute, 24F));
-            tableLayoutTitleIconSelect.RowStyles.Add(new RowStyle(SizeType.Absolute, 0F));
-            tableLayoutTitleIconSelect.Size = new Size(56, 319);
+            tableLayoutTitleIconSelect.RowStyles.Add(new RowStyle(SizeType.Absolute, 24F));
+            tableLayoutTitleIconSelect.Size = new Size(56, 331);
             tableLayoutTitleIconSelect.TabIndex = 26;
             // 
             // rbIconTitleNone
@@ -503,6 +505,7 @@
             tableLayoutMainIconSelect.Controls.Add(rbIconMainCustomFile, 0, 12);
             tableLayoutMainIconSelect.Controls.Add(rbIconMainShield, 0, 5);
             tableLayoutMainIconSelect.Controls.Add(rbIconMainWarning, 0, 2);
+            tableLayoutMainIconSelect.Controls.Add(labelSame, 0, 14);
             tableLayoutMainIconSelect.Dock = DockStyle.Fill;
             tableLayoutMainIconSelect.Location = new Point(0, 0);
             tableLayoutMainIconSelect.Name = "tableLayoutMainIconSelect";
@@ -521,8 +524,8 @@
             tableLayoutMainIconSelect.RowStyles.Add(new RowStyle(SizeType.Absolute, 10F));
             tableLayoutMainIconSelect.RowStyles.Add(new RowStyle(SizeType.Absolute, 24F));
             tableLayoutMainIconSelect.RowStyles.Add(new RowStyle(SizeType.Absolute, 24F));
-            tableLayoutMainIconSelect.RowStyles.Add(new RowStyle(SizeType.Absolute, 0F));
-            tableLayoutMainIconSelect.Size = new Size(159, 319);
+            tableLayoutMainIconSelect.RowStyles.Add(new RowStyle(SizeType.Absolute, 24F));
+            tableLayoutMainIconSelect.Size = new Size(159, 331);
             tableLayoutMainIconSelect.TabIndex = 25;
             // 
             // rbIconMainNone
@@ -994,6 +997,28 @@
             labelVersion.TabIndex = 23;
             labelVersion.Text = "Version: ";
             // 
+            // rbIconTitleSame
+            // 
+            rbIconTitleSame.AutoSize = true;
+            rbIconTitleSame.CheckAlign = ContentAlignment.MiddleCenter;
+            rbIconTitleSame.Dock = DockStyle.Fill;
+            rbIconTitleSame.Location = new Point(3, 311);
+            rbIconTitleSame.Name = "rbIconTitleSame";
+            rbIconTitleSame.Size = new Size(50, 18);
+            rbIconTitleSame.TabIndex = 12;
+            rbIconTitleSame.TabStop = true;
+            rbIconTitleSame.UseVisualStyleBackColor = true;
+            // 
+            // labelSame
+            // 
+            labelSame.Anchor = AnchorStyles.Left;
+            labelSame.AutoSize = true;
+            labelSame.Location = new Point(3, 312);
+            labelSame.Name = "labelSame";
+            labelSame.Size = new Size(36, 15);
+            labelSame.TabIndex = 12;
+            labelSame.Text = "Same";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1111,5 +1136,7 @@
         private RadioButton rbIconTitleWarning;
         private Label labelSelectTitleIcon;
         private Label labelSelectMainIcon;
+        private RadioButton rbIconTitleSame;
+        private Label labelSame;
     }
 }

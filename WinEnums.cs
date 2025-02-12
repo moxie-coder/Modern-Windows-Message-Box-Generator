@@ -112,9 +112,16 @@
         Information = 65533,
         Shield = 65532
     }
-    class WinEnums
-    {
-        
 
+    public enum ImageresIconIDs : int
+    {
+        Information = 99,
+        Warning = 84,
+        Error = 98,
+        Shield = 78,
+        ShieldSuccess = 106,
+        ShieldWarning = 107,
+        ShieldError = 105
     }
+
 }

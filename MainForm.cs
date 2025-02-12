@@ -1,3 +1,4 @@
+using System.Diagnostics.Eventing.Reader;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -147,7 +148,7 @@ namespace Windows_Task_Dialog_Generator
             }
             else if ( rbIconMainCustomID.Checked )
             {
-                TaskDialogIcon? extractedIcon = GetCustomIconObjectFromID();
+                TaskDialogIcon? extractedIcon = GetCustomTaskDialogIconObjectFromID();
 
                 if ( extractedIcon == null )
                     return; // If error / invalid custom icon, return without showing the dialog. Error will have been shown in GetCustomIconObjectFromID()
@@ -156,12 +157,12 @@ namespace Windows_Task_Dialog_Generator
             }
             else
             {
-                chosenIcon = DetermineChosenIconFromSelection();
+                chosenIcon = DetermineChosenMainIconFromSelection();
 
-                if ( chosenIcon == TaskDialogIcon.None )
-                {
-                    page.Created += RemoveTitlebarIcon_OnCreated; // It will add a default icon to the title bar if none is selected, so we need to remove it
-                }
+                //if ( chosenIcon == TaskDialogIcon.None )
+                //{
+                //    page.Created += RemoveTitlebarIcon_OnCreated; // It will add a default icon to the title bar if none is selected, so we need to remove it
+                //}
             }
 
             // Directly set the icon if we don't need to specify a custom color bar
@@ -172,16 +173,46 @@ namespace Windows_Task_Dialog_Generator
             // Otherwise we'll set the icon after the dialog is created, after creating it with the temporary color bar icon
             else
             {
-                page = SetupIconUpdate(page);
+                page = SetupMainIconUpdate(page);
             }
 
-            page.Created += RemoveTitlebarIcon_OnCreated; // TESTING
+            // Set title bar icon
+            Icon? chosenTitlebarIcon;
+            if ( rbIconTitleSame.Checked )
+            {
+                IntPtr iconHandle = IntPtr.Zero;
+                try
+                {
+                    iconHandle = chosenIcon.IconHandle;
+                    chosenTitlebarIcon = Icon.FromHandle(iconHandle);
+                }
+                catch ( InvalidOperationException )
+                {
+                    // It doesn't use a handle and throws an exception when trying to get it, so we'll use the corresponding icon from imageres.dll
+                    // Apparently no way to check without try/catch, since IsHandleIcon throws an exception instead of returning null or something
+                    chosenTitlebarIcon = GetCorrespondingIconFromTaskDialogIcon(chosenIcon);
+                }
+            }
+            else
+            {
+                chosenTitlebarIcon = DetermineChosenTitlebarIconFromSelection();
+            }
+
+            if ( chosenTitlebarIcon == null )
+            {
+                page.Created += RemoveTitlebarIcon_OnCreated;
+            }
+            else
+            {
+                //page.Icon = chosenIcon;
+                page.Created += (sender, e) => UpdateTitlebarIcon_OnCreated(sender, chosenTitlebarIcon);
+            }
 
             // Shows the actual dialog. Returns the button that was pressed
             TaskDialog.ShowDialog(page);
         }
 
-        private TaskDialogPage SetupIconUpdate(TaskDialogPage page)
+        private TaskDialogPage SetupMainIconUpdate(TaskDialogPage page)
         {
             TaskDialogIcon temporaryColorBarIcon;
 
@@ -206,7 +237,7 @@ namespace Windows_Task_Dialog_Generator
             int chosenIconInt = DetermineChosenIconFromSelection_Int();
 
             // This will fire after the dialog is created
-            page.Created += (sender, e) => UpdateIcon_OnCreated(sender, chosenIconInt);
+            page.Created += (sender, e) => UpdateMainIcon_OnCreated(sender, chosenIconInt);
 
             return page;
         }
@@ -231,7 +262,29 @@ namespace Windows_Task_Dialog_Generator
             }
         }
 
-        private static void UpdateIcon_OnCreated(object? sender, int chosenIconID)
+        private static void UpdateTitlebarIcon_OnCreated(object? sender, Icon chosenIcon)
+        {
+            TaskDialogPage? dialogPage = sender as TaskDialogPage;
+            TaskDialog? dialog = dialogPage?.BoundDialog;
+            IntPtr hIcon = chosenIcon.Handle;
+
+            if ( dialog != null )
+            {
+                IntPtr hwnd = dialog.Handle;
+                try
+                {
+                    // Set the window title icon to null
+                    SendMessage(hwnd, (uint)WM.WM_SETICON, (UIntPtr)WPARAM.ICON_BIG, hIcon);
+                    SendMessage(hwnd, (uint)WM.WM_SETICON, (UIntPtr)WPARAM.ICON_SMALL, hIcon);
+                }
+                catch ( Exception ex )
+                {
+                    MessageBox.Show("Error updating icon: " + ex.Message);
+                }
+            }
+        }
+
+        private static void UpdateMainIcon_OnCreated(object? sender, int chosenIconID)
         {
             TaskDialogPage? dialogPage = sender as TaskDialogPage;
             TaskDialog? dialog = dialogPage?.BoundDialog;
@@ -275,7 +328,7 @@ namespace Windows_Task_Dialog_Generator
             return id;
         }
 
-        private TaskDialogIcon? GetCustomIconObjectFromID()
+        private TaskDialogIcon? GetCustomTaskDialogIconObjectFromID()
         {
             int? parsedID = ParseAndValidateCustomID();
             int id;
@@ -323,7 +376,48 @@ namespace Windows_Task_Dialog_Generator
             }
         }
 
-        private static Image? GetIconImageFromImageRes(int id, int size)
+        private static Icon? GetCorrespondingIconFromTaskDialogIcon(TaskDialogIcon? icon)
+        {
+            if ( icon == null ) return null;
+
+            int iconID = -1;
+
+            if ( icon == TaskDialogIcon.Information ) { iconID = (int)ImageresIconIDs.Information; }
+            else if ( icon == TaskDialogIcon.Warning ) { iconID = (int)ImageresIconIDs.Warning; }
+            else if ( icon == TaskDialogIcon.Error ) { iconID = (int)ImageresIconIDs.Error; }
+            else if ( icon == TaskDialogIcon.Shield ) { iconID = (int)ImageresIconIDs.Shield; }
+            else if ( icon == TaskDialogIcon.ShieldBlueBar ) { iconID = (int)ImageresIconIDs.Shield; }
+            else if ( icon == TaskDialogIcon.ShieldGrayBar ) { iconID = (int)ImageresIconIDs.Shield; }
+            else if ( icon == TaskDialogIcon.ShieldSuccessGreenBar ) { iconID = (int)ImageresIconIDs.ShieldSuccess; }
+            else if ( icon == TaskDialogIcon.ShieldWarningYellowBar ) { iconID = (int)ImageresIconIDs.ShieldWarning; }
+            else if ( icon == TaskDialogIcon.ShieldErrorRedBar ) { iconID = (int)ImageresIconIDs.ShieldError; }
+
+            if ( iconID != -1 )
+            {
+                return GetIconObjectFromImageRes(iconID);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private static Icon? GetIconObjectFromImageRes(int id)
+        {
+            string winPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
+            string imageresPath = Path.Combine(winPath, "imageres.dll");
+            try
+            {
+                return Icon.ExtractIcon(imageresPath, -1 * id); // Negative ID to extract from imageres.dll
+            }
+            catch ( Exception ex )
+            {
+                Console.WriteLine("Error loading icon: " + ex.Message);
+                return null;
+            }
+        }
+
+        private static Image? GetIconPreviewImageFromImageRes(int id, int size)
         {
             string winPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
             string imageresPath = Path.Combine(winPath, "imageres.dll");
@@ -363,7 +457,7 @@ namespace Windows_Task_Dialog_Generator
             foreach ( (RadioButton? radioButton, int iconID) in radioButtonsWithIcons )
             {
                 int ScaledSize = (int)((16) * dpiScale);
-                radioButton.Image = GetIconImageFromImageRes(iconID, ScaledSize);
+                radioButton.Image = GetIconPreviewImageFromImageRes(iconID, ScaledSize);
                 radioButton.ImageAlign = ContentAlignment.MiddleLeft;
                 radioButton.TextImageRelation = TextImageRelation.ImageBeforeText;
             }
@@ -375,7 +469,25 @@ namespace Windows_Task_Dialog_Generator
             SetRadioIcons();
         }
 
-        private TaskDialogIcon DetermineChosenIconFromSelection()
+        private Icon? DetermineChosenTitlebarIconFromSelection()
+        {
+            Icon? icon = null;
+
+            if (rbIconTitleNone.Checked) icon = null;
+            else if ( rbIconTitleInformation.Checked ) icon = GetIconObjectFromImageRes((int)ImageresIconIDs.Information);
+            else if ( rbIconTitleWarning.Checked ) icon = GetIconObjectFromImageRes((int)ImageresIconIDs.Warning);
+            else if ( rbIconTitleError.Checked ) icon = GetIconObjectFromImageRes((int)ImageresIconIDs.Error);
+            else if ( rbIconTitleShield.Checked ) icon = GetIconObjectFromImageRes((int)ImageresIconIDs.Shield);
+            else if ( rbIconTitleShieldBlueBar.Checked ) icon = GetIconObjectFromImageRes((int)ImageresIconIDs.Shield);
+            else if ( rbIconTitleShieldGrayBar.Checked ) icon = GetIconObjectFromImageRes((int)ImageresIconIDs.Shield);
+            else if ( rbIconTitleShieldSuccess.Checked ) icon = GetIconObjectFromImageRes((int)ImageresIconIDs.ShieldSuccess);
+            else if ( rbIconTitleShieldWarning.Checked ) icon = GetIconObjectFromImageRes((int)ImageresIconIDs.ShieldWarning);
+            else if ( rbIconTitleShieldError.Checked ) icon = GetIconObjectFromImageRes((int)ImageresIconIDs.ShieldError);
+
+            return icon;
+        }
+
+        private TaskDialogIcon DetermineChosenMainIconFromSelection()
         {
             TaskDialogIcon chosenIcon = TaskDialogIcon.None;
 
