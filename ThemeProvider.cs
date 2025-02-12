@@ -57,22 +57,22 @@ namespace Windows_Task_Dialog_Generator
         // Type => Foreground Color, Background Color
         public static Dictionary<Type, (Color, Color)> DarkThemeColors = new()
         {
-            { typeof(Form), (DarkThemePallet.Text, DarkThemePallet.Base) },
+            { typeof(Form), (DarkThemePalette.Text, DarkThemePalette.Base) },
 
-            { typeof(Button), (DarkThemePallet.Text, DarkThemePallet.Element) },
-            { typeof(TextBox), (DarkThemePallet.Text, DarkThemePallet.Element) },
-            { typeof(Label), (DarkThemePallet.Text, DarkThemePallet.Base) },
+            { typeof(Button), (DarkThemePalette.Text, DarkThemePalette.Element) },
+            { typeof(TextBox), (DarkThemePalette.Text, DarkThemePalette.Element) },
+            { typeof(Label), (DarkThemePalette.Text, DarkThemePalette.Base) },
 
-            { typeof(ComboBox), (DarkThemePallet.Text, DarkThemePallet.Element) },
-            { typeof(CheckBox), (DarkThemePallet.Text, DarkThemePallet.Base) },
-            { typeof(RadioButton), (DarkThemePallet.Text, DarkThemePallet.Base) },
+            { typeof(ComboBox), (DarkThemePalette.Text, DarkThemePalette.Element) },
+            { typeof(CheckBox), (DarkThemePalette.Text, DarkThemePalette.Base) },
+            { typeof(RadioButton), (DarkThemePalette.Text, DarkThemePalette.Base) },
 
-            { typeof(FlowLayoutPanel), (DarkThemePallet.Text, DarkThemePallet.Base) },
-            { typeof(GroupBox), (DarkThemePallet.Text, DarkThemePallet.Base) }
+            { typeof(FlowLayoutPanel), (DarkThemePalette.Text, DarkThemePalette.Base) },
+            { typeof(GroupBox), (DarkThemePalette.Text, DarkThemePalette.Base) }
         };
     }
 
-    public static class DarkThemePallet
+    public static class DarkThemePalette
     {
         public static Color Base = ColorTranslator.FromHtml("#202020");
         public static Color Element = ColorTranslator.FromHtml("#353535");
