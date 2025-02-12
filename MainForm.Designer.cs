@@ -45,7 +45,6 @@
             labelSelectMainIcon = new Label();
             splitContainer1 = new SplitContainer();
             tableLayoutTitleIconSelect = new TableLayoutPanel();
-            rbIconTitleNone = new RadioButton();
             rbIconTitleShieldSuccess = new RadioButton();
             rbIconTitleError = new RadioButton();
             rbIconTitleShieldWarning = new RadioButton();
@@ -57,8 +56,9 @@
             rbIconTitleCustomFile = new RadioButton();
             rbIconTitleShield = new RadioButton();
             rbIconTitleWarning = new RadioButton();
+            rbIconTitleNone = new RadioButton();
+            rbIconTitleSame = new RadioButton();
             tableLayoutMainIconSelect = new TableLayoutPanel();
-            rbIconMainNone = new RadioButton();
             rbIconMainShieldSuccessGreenBar = new RadioButton();
             rbIconMainError = new RadioButton();
             rbIconMainShieldWarningYellowBar = new RadioButton();
@@ -70,6 +70,8 @@
             rbIconMainCustomFile = new RadioButton();
             rbIconMainShield = new RadioButton();
             rbIconMainWarning = new RadioButton();
+            rbIconMainNone = new RadioButton();
+            labelSame = new Label();
             btnShowDialog = new Button();
             lblFooter = new Label();
             txtFooter = new TextBox();
@@ -97,8 +99,11 @@
             flowLayoutPanel1 = new FlowLayoutPanel();
             flowLayoutPanel2 = new FlowLayoutPanel();
             labelVersion = new Label();
-            rbIconTitleSame = new RadioButton();
-            labelSame = new Label();
+            groupBoxCustomIconTitleID = new GroupBox();
+            textBoxCustomIconTitleID = new TextBox();
+            groupBoxCustomIconTitleFile = new GroupBox();
+            textBoxCustomIconTitlePath = new TextBox();
+            buttonBrowseCustomIconTitle = new Button();
             gbButtons.SuspendLayout();
             gbIconMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -112,6 +117,8 @@
             groupBoxCustomIconMainID.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
+            groupBoxCustomIconTitleID.SuspendLayout();
+            groupBoxCustomIconTitleFile.SuspendLayout();
             SuspendLayout();
             // 
             // txtTitle
@@ -266,6 +273,7 @@
             // splitContainer1
             // 
             splitContainer1.FixedPanel = FixedPanel.Panel1;
+            splitContainer1.IsSplitterFixed = true;
             splitContainer1.Location = new Point(3, 39);
             splitContainer1.Name = "splitContainer1";
             // 
@@ -284,7 +292,6 @@
             // 
             tableLayoutTitleIconSelect.ColumnCount = 1;
             tableLayoutTitleIconSelect.ColumnStyles.Add(new ColumnStyle());
-            tableLayoutTitleIconSelect.Controls.Add(rbIconTitleNone, 0, 0);
             tableLayoutTitleIconSelect.Controls.Add(rbIconTitleShieldSuccess, 0, 8);
             tableLayoutTitleIconSelect.Controls.Add(rbIconTitleError, 0, 3);
             tableLayoutTitleIconSelect.Controls.Add(rbIconTitleShieldWarning, 0, 9);
@@ -296,6 +303,7 @@
             tableLayoutTitleIconSelect.Controls.Add(rbIconTitleCustomFile, 0, 12);
             tableLayoutTitleIconSelect.Controls.Add(rbIconTitleShield, 0, 5);
             tableLayoutTitleIconSelect.Controls.Add(rbIconTitleWarning, 0, 2);
+            tableLayoutTitleIconSelect.Controls.Add(rbIconTitleNone, 0, 0);
             tableLayoutTitleIconSelect.Controls.Add(rbIconTitleSame, 0, 14);
             tableLayoutTitleIconSelect.Dock = DockStyle.Fill;
             tableLayoutTitleIconSelect.Location = new Point(0, 0);
@@ -318,22 +326,6 @@
             tableLayoutTitleIconSelect.RowStyles.Add(new RowStyle(SizeType.Absolute, 24F));
             tableLayoutTitleIconSelect.Size = new Size(56, 331);
             tableLayoutTitleIconSelect.TabIndex = 26;
-            // 
-            // rbIconTitleNone
-            // 
-            rbIconTitleNone.AutoSize = true;
-            rbIconTitleNone.CheckAlign = ContentAlignment.MiddleCenter;
-            rbIconTitleNone.Checked = true;
-            rbIconTitleNone.Dock = DockStyle.Fill;
-            rbIconTitleNone.ImageAlign = ContentAlignment.MiddleLeft;
-            rbIconTitleNone.Location = new Point(0, 0);
-            rbIconTitleNone.Margin = new Padding(0);
-            rbIconTitleNone.Name = "rbIconTitleNone";
-            rbIconTitleNone.Size = new Size(56, 24);
-            rbIconTitleNone.TabIndex = 0;
-            rbIconTitleNone.TabStop = true;
-            rbIconTitleNone.TextImageRelation = TextImageRelation.ImageBeforeText;
-            rbIconTitleNone.UseVisualStyleBackColor = true;
             // 
             // rbIconTitleShieldSuccess
             // 
@@ -489,11 +481,37 @@
             rbIconTitleWarning.TextImageRelation = TextImageRelation.ImageBeforeText;
             rbIconTitleWarning.UseVisualStyleBackColor = true;
             // 
+            // rbIconTitleNone
+            // 
+            rbIconTitleNone.AutoSize = true;
+            rbIconTitleNone.CheckAlign = ContentAlignment.MiddleCenter;
+            rbIconTitleNone.Dock = DockStyle.Fill;
+            rbIconTitleNone.ImageAlign = ContentAlignment.MiddleLeft;
+            rbIconTitleNone.Location = new Point(0, 0);
+            rbIconTitleNone.Margin = new Padding(0);
+            rbIconTitleNone.Name = "rbIconTitleNone";
+            rbIconTitleNone.Size = new Size(56, 24);
+            rbIconTitleNone.TabIndex = 0;
+            rbIconTitleNone.TextImageRelation = TextImageRelation.ImageBeforeText;
+            rbIconTitleNone.UseVisualStyleBackColor = true;
+            // 
+            // rbIconTitleSame
+            // 
+            rbIconTitleSame.AutoSize = true;
+            rbIconTitleSame.CheckAlign = ContentAlignment.MiddleCenter;
+            rbIconTitleSame.Checked = true;
+            rbIconTitleSame.Dock = DockStyle.Fill;
+            rbIconTitleSame.Location = new Point(3, 311);
+            rbIconTitleSame.Name = "rbIconTitleSame";
+            rbIconTitleSame.Size = new Size(50, 18);
+            rbIconTitleSame.TabIndex = 12;
+            rbIconTitleSame.TabStop = true;
+            rbIconTitleSame.UseVisualStyleBackColor = true;
+            // 
             // tableLayoutMainIconSelect
             // 
             tableLayoutMainIconSelect.ColumnCount = 1;
             tableLayoutMainIconSelect.ColumnStyles.Add(new ColumnStyle());
-            tableLayoutMainIconSelect.Controls.Add(rbIconMainNone, 0, 0);
             tableLayoutMainIconSelect.Controls.Add(rbIconMainShieldSuccessGreenBar, 0, 8);
             tableLayoutMainIconSelect.Controls.Add(rbIconMainError, 0, 3);
             tableLayoutMainIconSelect.Controls.Add(rbIconMainShieldWarningYellowBar, 0, 9);
@@ -505,6 +523,7 @@
             tableLayoutMainIconSelect.Controls.Add(rbIconMainCustomFile, 0, 12);
             tableLayoutMainIconSelect.Controls.Add(rbIconMainShield, 0, 5);
             tableLayoutMainIconSelect.Controls.Add(rbIconMainWarning, 0, 2);
+            tableLayoutMainIconSelect.Controls.Add(rbIconMainNone, 0, 0);
             tableLayoutMainIconSelect.Controls.Add(labelSame, 0, 14);
             tableLayoutMainIconSelect.Dock = DockStyle.Fill;
             tableLayoutMainIconSelect.Location = new Point(0, 0);
@@ -527,22 +546,6 @@
             tableLayoutMainIconSelect.RowStyles.Add(new RowStyle(SizeType.Absolute, 24F));
             tableLayoutMainIconSelect.Size = new Size(159, 331);
             tableLayoutMainIconSelect.TabIndex = 25;
-            // 
-            // rbIconMainNone
-            // 
-            rbIconMainNone.AutoSize = true;
-            rbIconMainNone.Checked = true;
-            rbIconMainNone.Dock = DockStyle.Fill;
-            rbIconMainNone.ImageAlign = ContentAlignment.MiddleLeft;
-            rbIconMainNone.Location = new Point(0, 0);
-            rbIconMainNone.Margin = new Padding(0);
-            rbIconMainNone.Name = "rbIconMainNone";
-            rbIconMainNone.Size = new Size(159, 24);
-            rbIconMainNone.TabIndex = 0;
-            rbIconMainNone.TabStop = true;
-            rbIconMainNone.Text = "None";
-            rbIconMainNone.TextImageRelation = TextImageRelation.ImageBeforeText;
-            rbIconMainNone.UseVisualStyleBackColor = true;
             // 
             // rbIconMainShieldSuccessGreenBar
             // 
@@ -697,6 +700,32 @@
             rbIconMainWarning.Text = "Warning";
             rbIconMainWarning.TextImageRelation = TextImageRelation.ImageBeforeText;
             rbIconMainWarning.UseVisualStyleBackColor = true;
+            // 
+            // rbIconMainNone
+            // 
+            rbIconMainNone.AutoSize = true;
+            rbIconMainNone.Checked = true;
+            rbIconMainNone.Dock = DockStyle.Fill;
+            rbIconMainNone.ImageAlign = ContentAlignment.MiddleLeft;
+            rbIconMainNone.Location = new Point(0, 0);
+            rbIconMainNone.Margin = new Padding(0);
+            rbIconMainNone.Name = "rbIconMainNone";
+            rbIconMainNone.Size = new Size(159, 24);
+            rbIconMainNone.TabIndex = 0;
+            rbIconMainNone.TabStop = true;
+            rbIconMainNone.Text = "None";
+            rbIconMainNone.TextImageRelation = TextImageRelation.ImageBeforeText;
+            rbIconMainNone.UseVisualStyleBackColor = true;
+            // 
+            // labelSame
+            // 
+            labelSame.Anchor = AnchorStyles.Left;
+            labelSame.AutoSize = true;
+            labelSame.Location = new Point(3, 312);
+            labelSame.Name = "labelSame";
+            labelSame.Size = new Size(36, 15);
+            labelSame.TabIndex = 12;
+            labelSame.Text = "Same";
             // 
             // btnShowDialog
             // 
@@ -997,33 +1026,67 @@
             labelVersion.TabIndex = 23;
             labelVersion.Text = "Version: ";
             // 
-            // rbIconTitleSame
+            // groupBoxCustomIconTitleID
             // 
-            rbIconTitleSame.AutoSize = true;
-            rbIconTitleSame.CheckAlign = ContentAlignment.MiddleCenter;
-            rbIconTitleSame.Dock = DockStyle.Fill;
-            rbIconTitleSame.Location = new Point(3, 311);
-            rbIconTitleSame.Name = "rbIconTitleSame";
-            rbIconTitleSame.Size = new Size(50, 18);
-            rbIconTitleSame.TabIndex = 12;
-            rbIconTitleSame.TabStop = true;
-            rbIconTitleSame.UseVisualStyleBackColor = true;
+            groupBoxCustomIconTitleID.Controls.Add(textBoxCustomIconTitleID);
+            groupBoxCustomIconTitleID.Enabled = false;
+            groupBoxCustomIconTitleID.Location = new Point(334, 453);
+            groupBoxCustomIconTitleID.Margin = new Padding(2);
+            groupBoxCustomIconTitleID.Name = "groupBoxCustomIconTitleID";
+            groupBoxCustomIconTitleID.Padding = new Padding(2);
+            groupBoxCustomIconTitleID.Size = new Size(145, 55);
+            groupBoxCustomIconTitleID.TabIndex = 19;
+            groupBoxCustomIconTitleID.TabStop = false;
+            groupBoxCustomIconTitleID.Text = "Custom Title Icon (ID)";
             // 
-            // labelSame
+            // textBoxCustomIconTitleID
             // 
-            labelSame.Anchor = AnchorStyles.Left;
-            labelSame.AutoSize = true;
-            labelSame.Location = new Point(3, 312);
-            labelSame.Name = "labelSame";
-            labelSame.Size = new Size(36, 15);
-            labelSame.TabIndex = 12;
-            labelSame.Text = "Same";
+            textBoxCustomIconTitleID.Location = new Point(15, 23);
+            textBoxCustomIconTitleID.Margin = new Padding(2);
+            textBoxCustomIconTitleID.Name = "textBoxCustomIconTitleID";
+            textBoxCustomIconTitleID.Size = new Size(125, 23);
+            textBoxCustomIconTitleID.TabIndex = 14;
+            // 
+            // groupBoxCustomIconTitleFile
+            // 
+            groupBoxCustomIconTitleFile.Controls.Add(textBoxCustomIconTitlePath);
+            groupBoxCustomIconTitleFile.Controls.Add(buttonBrowseCustomIconTitle);
+            groupBoxCustomIconTitleFile.Enabled = false;
+            groupBoxCustomIconTitleFile.Location = new Point(483, 453);
+            groupBoxCustomIconTitleFile.Margin = new Padding(2);
+            groupBoxCustomIconTitleFile.Name = "groupBoxCustomIconTitleFile";
+            groupBoxCustomIconTitleFile.Padding = new Padding(2);
+            groupBoxCustomIconTitleFile.Size = new Size(318, 55);
+            groupBoxCustomIconTitleFile.TabIndex = 18;
+            groupBoxCustomIconTitleFile.TabStop = false;
+            groupBoxCustomIconTitleFile.Text = "Custom Title Icon (File)";
+            // 
+            // textBoxCustomIconTitlePath
+            // 
+            textBoxCustomIconTitlePath.Location = new Point(9, 23);
+            textBoxCustomIconTitlePath.Margin = new Padding(2);
+            textBoxCustomIconTitlePath.Name = "textBoxCustomIconTitlePath";
+            textBoxCustomIconTitlePath.Size = new Size(225, 23);
+            textBoxCustomIconTitlePath.TabIndex = 12;
+            // 
+            // buttonBrowseCustomIconTitle
+            // 
+            buttonBrowseCustomIconTitle.Location = new Point(236, 20);
+            buttonBrowseCustomIconTitle.Margin = new Padding(2);
+            buttonBrowseCustomIconTitle.Name = "buttonBrowseCustomIconTitle";
+            buttonBrowseCustomIconTitle.Size = new Size(78, 26);
+            buttonBrowseCustomIconTitle.TabIndex = 13;
+            buttonBrowseCustomIconTitle.Text = "Browse";
+            buttonBrowseCustomIconTitle.UseVisualStyleBackColor = true;
+            buttonBrowseCustomIconTitle.Click += buttonBrowseCustomIconTitle_Click;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1663, 517);
+            ClientSize = new Size(812, 517);
+            Controls.Add(groupBoxCustomIconTitleID);
+            Controls.Add(groupBoxCustomIconTitleFile);
             Controls.Add(labelVersion);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(buttonImageResIcons);
@@ -1062,6 +1125,10 @@
             flowLayoutPanel1.PerformLayout();
             flowLayoutPanel2.ResumeLayout(false);
             flowLayoutPanel2.PerformLayout();
+            groupBoxCustomIconTitleID.ResumeLayout(false);
+            groupBoxCustomIconTitleID.PerformLayout();
+            groupBoxCustomIconTitleFile.ResumeLayout(false);
+            groupBoxCustomIconTitleFile.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1138,5 +1205,10 @@
         private Label labelSelectMainIcon;
         private RadioButton rbIconTitleSame;
         private Label labelSame;
+        private GroupBox groupBoxCustomIconTitleID;
+        private TextBox textBoxCustomIconTitleID;
+        private GroupBox groupBoxCustomIconTitleFile;
+        private TextBox textBoxCustomIconTitlePath;
+        private Button buttonBrowseCustomIconTitle;
     }
 }
