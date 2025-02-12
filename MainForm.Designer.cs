@@ -79,6 +79,7 @@
             textBoxVerification = new TextBox();
             buttonImageResIcons = new Button();
             flowLayoutPanel1 = new FlowLayoutPanel();
+            flowLayoutPanel2 = new FlowLayoutPanel();
             labelVersion = new Label();
             gbButtons.SuspendLayout();
             gbIcon.SuspendLayout();
@@ -87,6 +88,7 @@
             groupBoxBarColor.SuspendLayout();
             groupBoxCustomIconID.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
+            flowLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
             // txtTitle
@@ -94,7 +96,7 @@
             txtTitle.Location = new Point(5, 24);
             txtTitle.Margin = new Padding(5, 2, 5, 5);
             txtTitle.Name = "txtTitle";
-            txtTitle.Size = new Size(300, 23);
+            txtTitle.Size = new Size(304, 23);
             txtTitle.TabIndex = 1;
             // 
             // txtHeading
@@ -102,7 +104,7 @@
             txtHeading.Location = new Point(5, 76);
             txtHeading.Margin = new Padding(5, 2, 5, 5);
             txtHeading.Name = "txtHeading";
-            txtHeading.Size = new Size(300, 23);
+            txtHeading.Size = new Size(304, 23);
             txtHeading.TabIndex = 3;
             // 
             // lblTitle
@@ -411,13 +413,13 @@
             txtFooter.Location = new Point(5, 180);
             txtFooter.Margin = new Padding(5, 2, 5, 5);
             txtFooter.Name = "txtFooter";
-            txtFooter.Size = new Size(300, 23);
+            txtFooter.Size = new Size(304, 23);
             txtFooter.TabIndex = 5;
             // 
             // chkVerification
             // 
             chkVerification.AutoSize = true;
-            chkVerification.Location = new Point(12, 358);
+            chkVerification.Location = new Point(3, 3);
             chkVerification.Name = "chkVerification";
             chkVerification.Size = new Size(120, 19);
             chkVerification.TabIndex = 10;
@@ -440,7 +442,7 @@
             txtExpandedInfo.Margin = new Padding(5, 2, 5, 5);
             txtExpandedInfo.Multiline = true;
             txtExpandedInfo.Name = "txtExpandedInfo";
-            txtExpandedInfo.Size = new Size(300, 92);
+            txtExpandedInfo.Size = new Size(304, 92);
             txtExpandedInfo.TabIndex = 9;
             // 
             // textBoxCustomIconPath
@@ -621,15 +623,15 @@
             txtMessage.Location = new Point(5, 128);
             txtMessage.Margin = new Padding(5, 2, 5, 5);
             txtMessage.Name = "txtMessage";
-            txtMessage.Size = new Size(300, 23);
+            txtMessage.Size = new Size(304, 23);
             txtMessage.TabIndex = 19;
             // 
             // textBoxVerification
             // 
-            textBoxVerification.Location = new Point(136, 357);
+            textBoxVerification.Location = new Point(128, 2);
             textBoxVerification.Margin = new Padding(2);
             textBoxVerification.Name = "textBoxVerification";
-            textBoxVerification.PlaceholderText = "Don't ask again";
+            textBoxVerification.PlaceholderText = " Don't ask again";
             textBoxVerification.Size = new Size(176, 23);
             textBoxVerification.TabIndex = 20;
             // 
@@ -656,11 +658,23 @@
             flowLayoutPanel1.Controls.Add(txtFooter);
             flowLayoutPanel1.Controls.Add(lblExpandedInfo);
             flowLayoutPanel1.Controls.Add(txtExpandedInfo);
+            flowLayoutPanel1.Controls.Add(flowLayoutPanel2);
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel1.Location = new Point(12, 13);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(317, 335);
+            flowLayoutPanel1.Size = new Size(317, 374);
             flowLayoutPanel1.TabIndex = 22;
+            // 
+            // flowLayoutPanel2
+            // 
+            flowLayoutPanel2.AutoSize = true;
+            flowLayoutPanel2.Controls.Add(chkVerification);
+            flowLayoutPanel2.Controls.Add(textBoxVerification);
+            flowLayoutPanel2.Location = new Point(3, 334);
+            flowLayoutPanel2.Margin = new Padding(3, 5, 3, 3);
+            flowLayoutPanel2.Name = "flowLayoutPanel2";
+            flowLayoutPanel2.Size = new Size(306, 27);
+            flowLayoutPanel2.TabIndex = 24;
             // 
             // labelVersion
             // 
@@ -676,16 +690,14 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(815, 517);
+            ClientSize = new Size(812, 517);
             Controls.Add(labelVersion);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(buttonImageResIcons);
-            Controls.Add(textBoxVerification);
             Controls.Add(groupBoxCustomIconID);
             Controls.Add(groupBoxBarColor);
             Controls.Add(buttonTest);
             Controls.Add(groupBoxCustomIconFile);
-            Controls.Add(chkVerification);
             Controls.Add(btnShowDialog);
             Controls.Add(gbIcon);
             Controls.Add(gbButtons);
@@ -707,6 +719,8 @@
             groupBoxCustomIconID.PerformLayout();
             flowLayoutPanel1.ResumeLayout(false);
             flowLayoutPanel1.PerformLayout();
+            flowLayoutPanel2.ResumeLayout(false);
+            flowLayoutPanel2.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -764,5 +778,6 @@
         private FlowLayoutPanel flowIconSelect;
         private FlowLayoutPanel flowLayoutPanel1;
         private Label labelVersion;
+        private FlowLayoutPanel flowLayoutPanel2;
     }
 }
