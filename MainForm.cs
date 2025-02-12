@@ -9,7 +9,7 @@ namespace Windows_Task_Dialog_Generator
     public partial class MainForm : Form
     {
         [LibraryImport("user32.dll", EntryPoint = "SendMessageW")]
-        private static partial IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
+        private static partial IntPtr SendMessage(IntPtr hWnd, uint Msg, UIntPtr wParam, IntPtr lParam);
 
         public static string VERSION = "Error getting version";
 
@@ -157,6 +157,11 @@ namespace Windows_Task_Dialog_Generator
             else
             {
                 chosenIcon = DetermineChosenIconFromSelection();
+
+                if (chosenIcon == TaskDialogIcon.None )
+                {
+                    page.Created += RemoveTitlebarIcon_OnCreated; // It will add a default icon to the title bar if none is selected, so we need to remove it
+                }
             }
 
             // Directly set the icon if we don't need to specify a custom color bar
@@ -204,6 +209,26 @@ namespace Windows_Task_Dialog_Generator
             return page;
         }
 
+        private static void RemoveTitlebarIcon_OnCreated(object? sender, EventArgs e)
+        {
+            TaskDialogPage? dialogPage = sender as TaskDialogPage;
+            TaskDialog? dialog = dialogPage?.BoundDialog;
+            if ( dialog != null )
+            {
+                IntPtr hwnd = dialog.Handle;
+                try
+                {
+                    // Set the window title icon to null
+                    SendMessage(hwnd, (uint)WM.WM_SETICON, (UIntPtr)WPARAM.ICON_BIG, IntPtr.Zero);
+                    SendMessage(hwnd, (uint)WM.WM_SETICON, (UIntPtr)WPARAM.ICON_SMALL, IntPtr.Zero);
+                }
+                catch ( Exception ex )
+                {
+                    MessageBox.Show("Error removing icon: " + ex.Message);
+                }
+            }
+        }
+
         private static void UpdateIcon_OnCreated(object? sender, int chosenIconID)
         {
             TaskDialogPage? dialogPage = sender as TaskDialogPage;
@@ -215,7 +240,7 @@ namespace Windows_Task_Dialog_Generator
                 {
                     // We can update the icon using a SendMessage call. But we must specify the icon via ID, not an object or hIcon handle
                     // We do NOT use the negative of the ID, since the API is doing other stuff with the ID and handles it automatically
-                    SendMessage(hwnd, (int)WinEnums.TDM.UPDATE_ICON, IntPtr.Zero, new IntPtr(chosenIconID));
+                    SendMessage(hwnd, (uint)TDM.UPDATE_ICON, UIntPtr.Zero, new IntPtr(chosenIconID));
                 }
                 catch ( Exception ex )
                 {
@@ -369,23 +394,23 @@ namespace Windows_Task_Dialog_Generator
         private int DetermineChosenIconFromSelection_Int()
         {
             if ( rbIconWarning.Checked )
-                return (int)WinEnums.StandardIcons.Warning;
+                return (int)StandardIcons.Warning;
             else if ( rbIconError.Checked )
-                return (int)WinEnums.StandardIcons.Error;
+                return (int)StandardIcons.Error;
             else if ( rbIconInformation.Checked )
-                return (int)WinEnums.StandardIcons.Information;
+                return (int)StandardIcons.Information;
             else if ( rbIconShield.Checked )
-                return (int)WinEnums.StandardIcons.Shield;
+                return (int)StandardIcons.Shield;
             else if ( rbIconShieldBlueBar.Checked )
-                return (int)WinEnums.ShieldIcons.BlueBar;
+                return (int)ShieldIcons.BlueBar;
             else if ( rbIconShieldGrayBar.Checked )
-                return (int)WinEnums.ShieldIcons.GrayBar;
+                return (int)ShieldIcons.GrayBar;
             else if ( rbIconShieldWarningYellowBar.Checked )
-                return (int)WinEnums.ShieldIcons.YellowBar;
+                return (int)ShieldIcons.YellowBar;
             else if ( rbIconShieldErrorRedBar.Checked )
-                return (int)WinEnums.ShieldIcons.RedBar;
+                return (int)ShieldIcons.RedBar;
             else if ( rbIconShieldSuccessGreenBar.Checked )
-                return (int)WinEnums.ShieldIcons.GreenBar;
+                return (int)ShieldIcons.GreenBar;
 
             // For custom icon ID
             else if ( rbIconCustomID.Checked )
@@ -398,7 +423,7 @@ namespace Windows_Task_Dialog_Generator
             }
 
             else
-                return (int)WinEnums.StandardIcons.None;
+                return (int)StandardIcons.None;
         }
 
         private void buttonBrowseCustomIcon_Click(object sender, EventArgs e)
