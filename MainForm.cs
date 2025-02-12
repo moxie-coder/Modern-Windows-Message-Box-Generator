@@ -175,6 +175,8 @@ namespace Windows_Task_Dialog_Generator
                 page = SetupIconUpdate(page);
             }
 
+            page.Created += RemoveTitlebarIcon_OnCreated; // TESTING
+
             // Shows the actual dialog. Returns the button that was pressed
             TaskDialog.ShowDialog(page);
         }
@@ -255,7 +257,7 @@ namespace Windows_Task_Dialog_Generator
             int id;
             try
             {
-                id = int.Parse(textBoxCustomIconID.Text);
+                id = int.Parse(textBoxCustomIconMainID.Text);
             }
             catch ( Exception ex )
             {
@@ -435,13 +437,13 @@ namespace Windows_Task_Dialog_Generator
 
             if ( openFileDialog.ShowDialog() == DialogResult.OK )
             {
-                textBoxCustomIconPath.Text = openFileDialog.FileName;
+                textBoxCustomIconMainPath.Text = openFileDialog.FileName;
             }
         }
 
         private TaskDialogIcon? GetCustomIconFromPath()
         {
-            String filePath = textBoxCustomIconPath.Text;
+            String filePath = textBoxCustomIconMainPath.Text;
 
             // Strip quotes if present
             filePath = filePath.Trim('"');
@@ -532,14 +534,14 @@ namespace Windows_Task_Dialog_Generator
 
         public void SetCustomID(int id)
         {
-            textBoxCustomIconID.Text = id.ToString();
+            textBoxCustomIconMainID.Text = id.ToString();
         }
 
         private void EnableDisableNecessaryControls(object? sender, EventArgs e)
         {
-            groupBoxCustomIconFile.Enabled = rbIconCustomFile.Checked; // Enable the custom file path group box if the custom file radio button is checked
+            groupBoxCustomIconMainFile.Enabled = rbIconCustomFile.Checked; // Enable the custom file path group box if the custom file radio button is checked
             groupBoxBarColor.Enabled = !rbIconCustomFile.Checked; // We cannot use bar colors with custom icons from a file, only an imageRes.dll ID
-            groupBoxCustomIconID.Enabled = rbIconCustomID.Checked; // Custom ID and custom file are mutually exclusive
+            groupBoxCustomIconMainID.Enabled = rbIconCustomID.Checked; // Custom ID and custom file are mutually exclusive
 
             if ( rbIconCustomFile.Checked )
             {

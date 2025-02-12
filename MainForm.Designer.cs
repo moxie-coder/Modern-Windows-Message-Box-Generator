@@ -40,7 +40,7 @@
             rbYesNo = new RadioButton();
             rbOkCancel = new RadioButton();
             rbOk = new RadioButton();
-            gbIcon = new GroupBox();
+            gbIconMain = new GroupBox();
             flowIconSelect = new FlowLayoutPanel();
             rbIconNone = new RadioButton();
             rbIconInformation = new RadioButton();
@@ -60,9 +60,9 @@
             chkVerification = new CheckBox();
             lblExpandedInfo = new Label();
             txtExpandedInfo = new TextBox();
-            textBoxCustomIconPath = new TextBox();
-            buttonBrowseCustomIcon = new Button();
-            groupBoxCustomIconFile = new GroupBox();
+            textBoxCustomIconMainPath = new TextBox();
+            buttonBrowseCustomIconMain = new Button();
+            groupBoxCustomIconMainFile = new GroupBox();
             buttonTest = new Button();
             groupBoxBarColor = new GroupBox();
             rbBarColorNone = new RadioButton();
@@ -72,8 +72,8 @@
             rbBarColorYellow = new RadioButton();
             rbBarColorGray = new RadioButton();
             rbBarColorBlue = new RadioButton();
-            groupBoxCustomIconID = new GroupBox();
-            textBoxCustomIconID = new TextBox();
+            groupBoxCustomIconMainID = new GroupBox();
+            textBoxCustomIconMainID = new TextBox();
             lblMessage = new Label();
             txtMessage = new TextBox();
             textBoxVerification = new TextBox();
@@ -82,11 +82,11 @@
             flowLayoutPanel2 = new FlowLayoutPanel();
             labelVersion = new Label();
             gbButtons.SuspendLayout();
-            gbIcon.SuspendLayout();
+            gbIconMain.SuspendLayout();
             flowIconSelect.SuspendLayout();
-            groupBoxCustomIconFile.SuspendLayout();
+            groupBoxCustomIconMainFile.SuspendLayout();
             groupBoxBarColor.SuspendLayout();
-            groupBoxCustomIconID.SuspendLayout();
+            groupBoxCustomIconMainID.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
             SuspendLayout();
@@ -209,15 +209,15 @@
             rbOk.Text = "OK";
             rbOk.UseVisualStyleBackColor = true;
             // 
-            // gbIcon
+            // gbIconMain
             // 
-            gbIcon.Controls.Add(flowIconSelect);
-            gbIcon.Location = new Point(576, 13);
-            gbIcon.Name = "gbIcon";
-            gbIcon.Size = new Size(225, 335);
-            gbIcon.TabIndex = 7;
-            gbIcon.TabStop = false;
-            gbIcon.Text = "Icon";
+            gbIconMain.Controls.Add(flowIconSelect);
+            gbIconMain.Location = new Point(576, 13);
+            gbIconMain.Name = "gbIconMain";
+            gbIconMain.Size = new Size(225, 335);
+            gbIconMain.TabIndex = 7;
+            gbIconMain.TabStop = false;
+            gbIconMain.Text = "Main Icon";
             // 
             // flowIconSelect
             // 
@@ -445,42 +445,42 @@
             txtExpandedInfo.Size = new Size(304, 92);
             txtExpandedInfo.TabIndex = 9;
             // 
-            // textBoxCustomIconPath
+            // textBoxCustomIconMainPath
             // 
-            textBoxCustomIconPath.Location = new Point(10, 23);
-            textBoxCustomIconPath.Margin = new Padding(2);
-            textBoxCustomIconPath.Name = "textBoxCustomIconPath";
-            textBoxCustomIconPath.Size = new Size(224, 23);
-            textBoxCustomIconPath.TabIndex = 12;
+            textBoxCustomIconMainPath.Location = new Point(9, 23);
+            textBoxCustomIconMainPath.Margin = new Padding(2);
+            textBoxCustomIconMainPath.Name = "textBoxCustomIconMainPath";
+            textBoxCustomIconMainPath.Size = new Size(225, 23);
+            textBoxCustomIconMainPath.TabIndex = 12;
             // 
-            // buttonBrowseCustomIcon
+            // buttonBrowseCustomIconMain
             // 
-            buttonBrowseCustomIcon.Location = new Point(238, 23);
-            buttonBrowseCustomIcon.Margin = new Padding(2);
-            buttonBrowseCustomIcon.Name = "buttonBrowseCustomIcon";
-            buttonBrowseCustomIcon.Size = new Size(78, 26);
-            buttonBrowseCustomIcon.TabIndex = 13;
-            buttonBrowseCustomIcon.Text = "Browse";
-            buttonBrowseCustomIcon.UseVisualStyleBackColor = true;
-            buttonBrowseCustomIcon.Click += buttonBrowseCustomIcon_Click;
+            buttonBrowseCustomIconMain.Location = new Point(236, 20);
+            buttonBrowseCustomIconMain.Margin = new Padding(2);
+            buttonBrowseCustomIconMain.Name = "buttonBrowseCustomIconMain";
+            buttonBrowseCustomIconMain.Size = new Size(78, 26);
+            buttonBrowseCustomIconMain.TabIndex = 13;
+            buttonBrowseCustomIconMain.Text = "Browse";
+            buttonBrowseCustomIconMain.UseVisualStyleBackColor = true;
+            buttonBrowseCustomIconMain.Click += buttonBrowseCustomIcon_Click;
             // 
-            // groupBoxCustomIconFile
+            // groupBoxCustomIconMainFile
             // 
-            groupBoxCustomIconFile.Controls.Add(textBoxCustomIconPath);
-            groupBoxCustomIconFile.Controls.Add(buttonBrowseCustomIcon);
-            groupBoxCustomIconFile.Enabled = false;
-            groupBoxCustomIconFile.Location = new Point(471, 357);
-            groupBoxCustomIconFile.Margin = new Padding(2);
-            groupBoxCustomIconFile.Name = "groupBoxCustomIconFile";
-            groupBoxCustomIconFile.Padding = new Padding(2);
-            groupBoxCustomIconFile.Size = new Size(330, 59);
-            groupBoxCustomIconFile.TabIndex = 14;
-            groupBoxCustomIconFile.TabStop = false;
-            groupBoxCustomIconFile.Text = "Custom Icon (File)";
+            groupBoxCustomIconMainFile.Controls.Add(textBoxCustomIconMainPath);
+            groupBoxCustomIconMainFile.Controls.Add(buttonBrowseCustomIconMain);
+            groupBoxCustomIconMainFile.Enabled = false;
+            groupBoxCustomIconMainFile.Location = new Point(483, 361);
+            groupBoxCustomIconMainFile.Margin = new Padding(2);
+            groupBoxCustomIconMainFile.Name = "groupBoxCustomIconMainFile";
+            groupBoxCustomIconMainFile.Padding = new Padding(2);
+            groupBoxCustomIconMainFile.Size = new Size(318, 55);
+            groupBoxCustomIconMainFile.TabIndex = 14;
+            groupBoxCustomIconMainFile.TabStop = false;
+            groupBoxCustomIconMainFile.Text = "Custom Main Icon (File)";
             // 
             // buttonTest
             // 
-            buttonTest.Location = new Point(183, 432);
+            buttonTest.Location = new Point(17, 406);
             buttonTest.Margin = new Padding(2);
             buttonTest.Name = "buttonTest";
             buttonTest.Size = new Size(78, 25);
@@ -499,11 +499,11 @@
             groupBoxBarColor.Controls.Add(rbBarColorYellow);
             groupBoxBarColor.Controls.Add(rbBarColorGray);
             groupBoxBarColor.Controls.Add(rbBarColorBlue);
-            groupBoxBarColor.Location = new Point(470, 420);
+            groupBoxBarColor.Location = new Point(334, 198);
             groupBoxBarColor.Margin = new Padding(2);
             groupBoxBarColor.Name = "groupBoxBarColor";
             groupBoxBarColor.Padding = new Padding(2);
-            groupBoxBarColor.Size = new Size(332, 86);
+            groupBoxBarColor.Size = new Size(222, 139);
             groupBoxBarColor.TabIndex = 16;
             groupBoxBarColor.TabStop = false;
             groupBoxBarColor.Text = "Bar Color";
@@ -511,7 +511,7 @@
             // rbBarColorNone
             // 
             rbBarColorNone.AutoSize = true;
-            rbBarColorNone.Location = new Point(227, 27);
+            rbBarColorNone.Location = new Point(27, 97);
             rbBarColorNone.Margin = new Padding(2);
             rbBarColorNone.Name = "rbBarColorNone";
             rbBarColorNone.Size = new Size(86, 19);
@@ -546,7 +546,7 @@
             // rbBarColorRed
             // 
             rbBarColorRed.AutoSize = true;
-            rbBarColorRed.Location = new Point(163, 27);
+            rbBarColorRed.Location = new Point(27, 71);
             rbBarColorRed.Margin = new Padding(2);
             rbBarColorRed.Name = "rbBarColorRed";
             rbBarColorRed.Size = new Size(45, 19);
@@ -579,7 +579,7 @@
             // rbBarColorBlue
             // 
             rbBarColorBlue.AutoSize = true;
-            rbBarColorBlue.Location = new Point(163, 48);
+            rbBarColorBlue.Location = new Point(97, 71);
             rbBarColorBlue.Margin = new Padding(2);
             rbBarColorBlue.Name = "rbBarColorBlue";
             rbBarColorBlue.Size = new Size(48, 19);
@@ -587,26 +587,26 @@
             rbBarColorBlue.Text = "Blue";
             rbBarColorBlue.UseVisualStyleBackColor = true;
             // 
-            // groupBoxCustomIconID
+            // groupBoxCustomIconMainID
             // 
-            groupBoxCustomIconID.Controls.Add(textBoxCustomIconID);
-            groupBoxCustomIconID.Enabled = false;
-            groupBoxCustomIconID.Location = new Point(334, 420);
-            groupBoxCustomIconID.Margin = new Padding(2);
-            groupBoxCustomIconID.Name = "groupBoxCustomIconID";
-            groupBoxCustomIconID.Padding = new Padding(2);
-            groupBoxCustomIconID.Size = new Size(120, 55);
-            groupBoxCustomIconID.TabIndex = 17;
-            groupBoxCustomIconID.TabStop = false;
-            groupBoxCustomIconID.Text = "Custom Icon (ID)";
+            groupBoxCustomIconMainID.Controls.Add(textBoxCustomIconMainID);
+            groupBoxCustomIconMainID.Enabled = false;
+            groupBoxCustomIconMainID.Location = new Point(334, 361);
+            groupBoxCustomIconMainID.Margin = new Padding(2);
+            groupBoxCustomIconMainID.Name = "groupBoxCustomIconMainID";
+            groupBoxCustomIconMainID.Padding = new Padding(2);
+            groupBoxCustomIconMainID.Size = new Size(145, 55);
+            groupBoxCustomIconMainID.TabIndex = 17;
+            groupBoxCustomIconMainID.TabStop = false;
+            groupBoxCustomIconMainID.Text = "Custom Main Icon (ID)";
             // 
-            // textBoxCustomIconID
+            // textBoxCustomIconMainID
             // 
-            textBoxCustomIconID.Location = new Point(15, 23);
-            textBoxCustomIconID.Margin = new Padding(2);
-            textBoxCustomIconID.Name = "textBoxCustomIconID";
-            textBoxCustomIconID.Size = new Size(96, 23);
-            textBoxCustomIconID.TabIndex = 14;
+            textBoxCustomIconMainID.Location = new Point(15, 23);
+            textBoxCustomIconMainID.Margin = new Padding(2);
+            textBoxCustomIconMainID.Name = "textBoxCustomIconMainID";
+            textBoxCustomIconMainID.Size = new Size(125, 23);
+            textBoxCustomIconMainID.TabIndex = 14;
             // 
             // lblMessage
             // 
@@ -637,7 +637,7 @@
             // 
             // buttonImageResIcons
             // 
-            buttonImageResIcons.Location = new Point(334, 479);
+            buttonImageResIcons.Location = new Point(165, 474);
             buttonImageResIcons.Margin = new Padding(2);
             buttonImageResIcons.Name = "buttonImageResIcons";
             buttonImageResIcons.Size = new Size(120, 27);
@@ -694,12 +694,12 @@
             Controls.Add(labelVersion);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(buttonImageResIcons);
-            Controls.Add(groupBoxCustomIconID);
+            Controls.Add(groupBoxCustomIconMainID);
             Controls.Add(groupBoxBarColor);
             Controls.Add(buttonTest);
-            Controls.Add(groupBoxCustomIconFile);
+            Controls.Add(groupBoxCustomIconMainFile);
             Controls.Add(btnShowDialog);
-            Controls.Add(gbIcon);
+            Controls.Add(gbIconMain);
             Controls.Add(gbButtons);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -709,14 +709,14 @@
             Load += MainForm_Load;
             gbButtons.ResumeLayout(false);
             gbButtons.PerformLayout();
-            gbIcon.ResumeLayout(false);
+            gbIconMain.ResumeLayout(false);
             flowIconSelect.ResumeLayout(false);
-            groupBoxCustomIconFile.ResumeLayout(false);
-            groupBoxCustomIconFile.PerformLayout();
+            groupBoxCustomIconMainFile.ResumeLayout(false);
+            groupBoxCustomIconMainFile.PerformLayout();
             groupBoxBarColor.ResumeLayout(false);
             groupBoxBarColor.PerformLayout();
-            groupBoxCustomIconID.ResumeLayout(false);
-            groupBoxCustomIconID.PerformLayout();
+            groupBoxCustomIconMainID.ResumeLayout(false);
+            groupBoxCustomIconMainID.PerformLayout();
             flowLayoutPanel1.ResumeLayout(false);
             flowLayoutPanel1.PerformLayout();
             flowLayoutPanel2.ResumeLayout(false);
@@ -738,7 +738,7 @@
         private RadioButton rbYesNo;
         private RadioButton rbOkCancel;
         private RadioButton rbOk;
-        private GroupBox gbIcon;
+        private GroupBox gbIconMain;
         private RadioButton rbIconError;
         private RadioButton rbIconShield;
         private RadioButton rbIconWarning;
@@ -756,9 +756,9 @@
         private RadioButton rbIconShieldGrayBar;
         private RadioButton rbIconShieldBlueBar;
         private RadioButton rbIconCustomFile;
-        private TextBox textBoxCustomIconPath;
-        private Button buttonBrowseCustomIcon;
-        private GroupBox groupBoxCustomIconFile;
+        private TextBox textBoxCustomIconMainPath;
+        private Button buttonBrowseCustomIconMain;
+        private GroupBox groupBoxCustomIconMainFile;
         private Button buttonTest;
         private GroupBox groupBoxBarColor;
         private RadioButton rbBarColorRed;
@@ -768,8 +768,8 @@
         private RadioButton rbBarColorDefault;
         private RadioButton rbBarColorGreen;
         private RadioButton rbIconCustomID;
-        private GroupBox groupBoxCustomIconID;
-        private TextBox textBoxCustomIconID;
+        private GroupBox groupBoxCustomIconMainID;
+        private TextBox textBoxCustomIconMainID;
         private RadioButton rbBarColorNone;
         private Label lblMessage;
         private TextBox txtMessage;
