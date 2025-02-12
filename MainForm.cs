@@ -20,12 +20,12 @@ namespace Windows_Task_Dialog_Generator
             VERSION = DetermineVersion();
             labelVersion.Text = "Version: " + VERSION;
 
-            #if DEBUG
+#if DEBUG
             buttonTest.Visible = true;
-            #endif
+#endif
 
             // Attach event handler to all radio buttons in the gbIcon group to enable/disable necessary controls when the radio button selection changes
-            foreach ( Control control in flowIconSelect.Controls )
+            foreach ( Control control in tableLayoutMainIconSelect.Controls )
             {
                 if ( control is RadioButton rb )
                 {
@@ -136,7 +136,7 @@ namespace Windows_Task_Dialog_Generator
             TaskDialogPage page = AssembleTaskDialogPage();
 
             TaskDialogIcon chosenIcon;
-            if ( rbIconCustomFile.Checked )
+            if ( rbIconMainCustomFile.Checked )
             {
                 TaskDialogIcon? customIcon = GetCustomIconFromPath();
 
@@ -145,7 +145,7 @@ namespace Windows_Task_Dialog_Generator
                 else
                     return; // If error / invalid custom icon, return without showing the dialog
             }
-            else if ( rbIconCustomID.Checked )
+            else if ( rbIconMainCustomID.Checked )
             {
                 TaskDialogIcon? extractedIcon = GetCustomIconObjectFromID();
 
@@ -158,7 +158,7 @@ namespace Windows_Task_Dialog_Generator
             {
                 chosenIcon = DetermineChosenIconFromSelection();
 
-                if (chosenIcon == TaskDialogIcon.None )
+                if ( chosenIcon == TaskDialogIcon.None )
                 {
                     page.Created += RemoveTitlebarIcon_OnCreated; // It will add a default icon to the title bar if none is selected, so we need to remove it
                 }
@@ -331,7 +331,7 @@ namespace Windows_Task_Dialog_Generator
             {
                 return Icon.ExtractIcon(imageresPath, -1 * id, size).ToBitmap(); // Negative ID to extract from imageres.dll
             }
-            catch (Exception ex)
+            catch ( Exception ex )
             {
                 Console.WriteLine("Error loading icon: " + ex.Message);
                 return null;
@@ -349,15 +349,15 @@ namespace Windows_Task_Dialog_Generator
             // Icon IDs aren't necessarily the same as the enum values, so we need to get the actual icon from the imageres.dll file
             List<(RadioButton, int)> radioButtonsWithIcons =
             [
-                (rbIconInformation,            81),
-                (rbIconWarning,                84),
-                (rbIconError,                  98),
-                (rbIconShield,                 78),
-                (rbIconShieldBlueBar,          78),
-                (rbIconShieldGrayBar,          78),
-                (rbIconShieldWarningYellowBar, 107),
-                (rbIconShieldErrorRedBar,      105),
-                (rbIconShieldSuccessGreenBar,  106)
+                (rbIconMainInformation,            81),
+                (rbIconMainWarning,                84),
+                (rbIconMainError,                  98),
+                (rbIconMainShield,                 78),
+                (rbIconMainShieldBlueBar,          78),
+                (rbIconMainShieldGrayBar,          78),
+                (rbIconMainShieldWarningYellowBar, 107),
+                (rbIconMainShieldErrorRedBar,      105),
+                (rbIconMainShieldSuccessGreenBar,  106)
             ];
 
             foreach ( (RadioButton? radioButton, int iconID) in radioButtonsWithIcons )
@@ -379,43 +379,43 @@ namespace Windows_Task_Dialog_Generator
         {
             TaskDialogIcon chosenIcon = TaskDialogIcon.None;
 
-            if ( rbIconNone.Checked ) chosenIcon = TaskDialogIcon.None;
-            else if ( rbIconInformation.Checked ) chosenIcon = TaskDialogIcon.Information;
-            else if ( rbIconWarning.Checked ) chosenIcon = TaskDialogIcon.Warning;
-            else if ( rbIconError.Checked ) chosenIcon = TaskDialogIcon.Error;
-            else if ( rbIconShield.Checked ) chosenIcon = TaskDialogIcon.Shield;
-            else if ( rbIconShieldBlueBar.Checked ) chosenIcon = TaskDialogIcon.ShieldBlueBar;
-            else if ( rbIconShieldGrayBar.Checked ) chosenIcon = TaskDialogIcon.ShieldGrayBar;
-            else if ( rbIconShieldWarningYellowBar.Checked ) chosenIcon = TaskDialogIcon.ShieldWarningYellowBar;
-            else if ( rbIconShieldErrorRedBar.Checked ) chosenIcon = TaskDialogIcon.ShieldErrorRedBar;
-            else if ( rbIconShieldSuccessGreenBar.Checked ) chosenIcon = TaskDialogIcon.ShieldSuccessGreenBar;
+            if ( rbIconMainNone.Checked ) chosenIcon = TaskDialogIcon.None;
+            else if ( rbIconMainInformation.Checked ) chosenIcon = TaskDialogIcon.Information;
+            else if ( rbIconMainWarning.Checked ) chosenIcon = TaskDialogIcon.Warning;
+            else if ( rbIconMainError.Checked ) chosenIcon = TaskDialogIcon.Error;
+            else if ( rbIconMainShield.Checked ) chosenIcon = TaskDialogIcon.Shield;
+            else if ( rbIconMainShieldBlueBar.Checked ) chosenIcon = TaskDialogIcon.ShieldBlueBar;
+            else if ( rbIconMainShieldGrayBar.Checked ) chosenIcon = TaskDialogIcon.ShieldGrayBar;
+            else if ( rbIconMainShieldWarningYellowBar.Checked ) chosenIcon = TaskDialogIcon.ShieldWarningYellowBar;
+            else if ( rbIconMainShieldErrorRedBar.Checked ) chosenIcon = TaskDialogIcon.ShieldErrorRedBar;
+            else if ( rbIconMainShieldSuccessGreenBar.Checked ) chosenIcon = TaskDialogIcon.ShieldSuccessGreenBar;
 
             return chosenIcon;
         }
 
         private int DetermineChosenIconFromSelection_Int()
         {
-            if ( rbIconWarning.Checked )
+            if ( rbIconMainWarning.Checked )
                 return (int)StandardIcons.Warning;
-            else if ( rbIconError.Checked )
+            else if ( rbIconMainError.Checked )
                 return (int)StandardIcons.Error;
-            else if ( rbIconInformation.Checked )
+            else if ( rbIconMainInformation.Checked )
                 return (int)StandardIcons.Information;
-            else if ( rbIconShield.Checked )
+            else if ( rbIconMainShield.Checked )
                 return (int)StandardIcons.Shield;
-            else if ( rbIconShieldBlueBar.Checked )
+            else if ( rbIconMainShieldBlueBar.Checked )
                 return (int)ShieldIcons.BlueBar;
-            else if ( rbIconShieldGrayBar.Checked )
+            else if ( rbIconMainShieldGrayBar.Checked )
                 return (int)ShieldIcons.GrayBar;
-            else if ( rbIconShieldWarningYellowBar.Checked )
+            else if ( rbIconMainShieldWarningYellowBar.Checked )
                 return (int)ShieldIcons.YellowBar;
-            else if ( rbIconShieldErrorRedBar.Checked )
+            else if ( rbIconMainShieldErrorRedBar.Checked )
                 return (int)ShieldIcons.RedBar;
-            else if ( rbIconShieldSuccessGreenBar.Checked )
+            else if ( rbIconMainShieldSuccessGreenBar.Checked )
                 return (int)ShieldIcons.GreenBar;
 
             // For custom icon ID
-            else if ( rbIconCustomID.Checked )
+            else if ( rbIconMainCustomID.Checked )
             {
                 int? parsedID = ParseAndValidateCustomID();
                 if ( parsedID == null )
@@ -539,11 +539,11 @@ namespace Windows_Task_Dialog_Generator
 
         private void EnableDisableNecessaryControls(object? sender, EventArgs e)
         {
-            groupBoxCustomIconMainFile.Enabled = rbIconCustomFile.Checked; // Enable the custom file path group box if the custom file radio button is checked
-            groupBoxBarColor.Enabled = !rbIconCustomFile.Checked; // We cannot use bar colors with custom icons from a file, only an imageRes.dll ID
-            groupBoxCustomIconMainID.Enabled = rbIconCustomID.Checked; // Custom ID and custom file are mutually exclusive
+            groupBoxCustomIconMainFile.Enabled = rbIconMainCustomFile.Checked; // Enable the custom file path group box if the custom file radio button is checked
+            groupBoxBarColor.Enabled = !rbIconMainCustomFile.Checked; // We cannot use bar colors with custom icons from a file, only an imageRes.dll ID
+            groupBoxCustomIconMainID.Enabled = rbIconMainCustomID.Checked; // Custom ID and custom file are mutually exclusive
 
-            if ( rbIconCustomFile.Checked )
+            if ( rbIconMainCustomFile.Checked )
             {
                 // If the custom icon is selected, disable the bar color options
                 rbBarColorDefault.Checked = true;
@@ -576,6 +576,11 @@ namespace Windows_Task_Dialog_Generator
             // Open the Imageres_Icons form
             Imageres_Icons imageresIcons = new Imageres_Icons(this);
             imageresIcons.Show();
+        }
+
+        private void labelSelectMainIcon_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
