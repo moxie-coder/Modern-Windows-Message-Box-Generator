@@ -106,6 +106,11 @@
             buttonBrowseCustomIconTitle = new Button();
             cboxThemeSelect = new ComboBox();
             lblTheme = new Label();
+            groupBox1 = new GroupBox();
+            textBox1 = new TextBox();
+            groupBox2 = new GroupBox();
+            textBox2 = new TextBox();
+            button1 = new Button();
             gbButtons.SuspendLayout();
             gbIconMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -121,6 +126,8 @@
             flowLayoutPanel2.SuspendLayout();
             groupBoxCustomIconTitleID.SuspendLayout();
             groupBoxCustomIconTitleFile.SuspendLayout();
+            groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
             SuspendLayout();
             // 
             // txtTitle
@@ -145,7 +152,7 @@
             lblTitle.Location = new Point(5, 5);
             lblTitle.Margin = new Padding(5, 5, 5, 2);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(32, 15);
+            lblTitle.Size = new Size(33, 15);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Title:";
             // 
@@ -775,7 +782,7 @@
             lblExpandedInfo.Location = new Point(5, 213);
             lblExpandedInfo.Margin = new Padding(5, 5, 5, 2);
             lblExpandedInfo.Name = "lblExpandedInfo";
-            lblExpandedInfo.Size = new Size(125, 15);
+            lblExpandedInfo.Size = new Size(124, 15);
             lblExpandedInfo.TabIndex = 8;
             lblExpandedInfo.Text = "Expanded Information";
             // 
@@ -1084,11 +1091,12 @@
             buttonBrowseCustomIconTitle.Text = "Browse";
             buttonBrowseCustomIconTitle.UseVisualStyleBackColor = true;
             buttonBrowseCustomIconTitle.Click += buttonBrowseCustomIconTitle_Click;
+            // 
             // cboxThemeSelect
             // 
             cboxThemeSelect.FormattingEnabled = true;
             cboxThemeSelect.Items.AddRange(new object[] { "System", "Light", "Dark" });
-            cboxThemeSelect.Location = new Point(223, 482);
+            cboxThemeSelect.Location = new Point(64, 391);
             cboxThemeSelect.MaxDropDownItems = 3;
             cboxThemeSelect.Name = "cboxThemeSelect";
             cboxThemeSelect.Size = new Size(74, 23);
@@ -1099,17 +1107,72 @@
             // lblTheme
             // 
             lblTheme.AutoSize = true;
-            lblTheme.Location = new Point(171, 485);
+            lblTheme.Location = new Point(14, 394);
             lblTheme.Name = "lblTheme";
-            lblTheme.Size = new Size(46, 15);
+            lblTheme.Size = new Size(47, 15);
             lblTheme.TabIndex = 25;
             lblTheme.Text = "Theme:";
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(textBox1);
+            groupBox1.Enabled = false;
+            groupBox1.Location = new Point(334, 453);
+            groupBox1.Margin = new Padding(2);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Padding = new Padding(2);
+            groupBox1.Size = new Size(145, 55);
+            groupBox1.TabIndex = 26;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Custom Title Icon (ID)";
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(15, 23);
+            textBox1.Margin = new Padding(2);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(125, 23);
+            textBox1.TabIndex = 14;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(textBox2);
+            groupBox2.Controls.Add(button1);
+            groupBox2.Enabled = false;
+            groupBox2.Location = new Point(483, 453);
+            groupBox2.Margin = new Padding(2);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Padding = new Padding(2);
+            groupBox2.Size = new Size(318, 55);
+            groupBox2.TabIndex = 27;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Custom Title Icon (File)";
+            // 
+            // textBox2
+            // 
+            textBox2.Location = new Point(9, 23);
+            textBox2.Margin = new Padding(2);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(225, 23);
+            textBox2.TabIndex = 12;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(236, 20);
+            button1.Margin = new Padding(2);
+            button1.Name = "button1";
+            button1.Size = new Size(78, 26);
+            button1.TabIndex = 13;
+            button1.Text = "Browse";
+            button1.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(815, 517);
+            Controls.Add(groupBox2);
+            Controls.Add(groupBox1);
             Controls.Add(lblTheme);
             Controls.Add(cboxThemeSelect);
             Controls.Add(labelVersion);
@@ -1154,6 +1217,10 @@
             groupBoxCustomIconTitleID.PerformLayout();
             groupBoxCustomIconTitleFile.ResumeLayout(false);
             groupBoxCustomIconTitleFile.PerformLayout();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1237,5 +1304,10 @@
         private Button buttonBrowseCustomIconTitle;
         private ComboBox cboxThemeSelect;
         private Label lblTheme;
+        private GroupBox groupBox1;
+        private TextBox textBox1;
+        private GroupBox groupBox2;
+        private TextBox textBox2;
+        private Button button1;
     }
 }
